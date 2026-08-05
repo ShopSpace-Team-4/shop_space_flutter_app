@@ -2,13 +2,17 @@
 
 ## Repository status
 
-- **Docs/governance only right now.** There is NO Flutter project yet — no
-  `pubspec.yaml`, `lib/`, or tests. The app is created starting in Phase 0 of
-  the implementation plan. Do not run `flutter analyze` / `flutter test`
-  until the scaffold exists.
+- **Flutter scaffold exists.** Phase 0 (project foundation) is complete:
+  `pubspec.yaml`, `lib/` (feature-first layout + `core/`), and tests
+  (unit/cubit/widget/integration) are in place. `flutter analyze` /
+  `flutter test` are allowed and must stay green. See
+  `specs/001-phase0-project-foundation/tasks.md` for Phase 0 status.
+- Quality gate: `dart run tool/quality.dart` runs `flutter analyze` + the
+  full `flutter test` suite (incl. `test/integration_test/`) and exits
+  non-zero on any failure.
 - Two files govern all work — read them before implementing anything:
   - `.specify/memory/constitution.md` — non-negotiable engineering rules
-    (HOW things are built; versioned v1.0.0).
+    (HOW things are built; versioned v1.2.0).
   - `ShopSpace_Flutter_Implementation_Plan.md` — the phased plan (WHAT is
     built; Phase 0–6, in order). Contains the finalized Auth & User API
     (`/api/v1`, envelope `{ message, status, data }`, dev base
@@ -30,12 +34,20 @@
 - `flutter_bloc` — Cubit-first; full BLoC only when discrete events warrant it.
   No Provider / Riverpod / GetX / `setState` business logic.
 - `go_router` · `dio` · `get_it` + `injectable` · `freezed` + `json_serializable`.
+- Persistence: `flutter_secure_storage` (tokens) · `shared_preferences`
+  (non-sensitive prefs like locale, `activeRole`). Images: `image_picker` +
+  `cached_network_image`. Links: `url_launcher`. Sign-in: `google_sign_in`
+  (ID token for `/auth/google`). Forms: manual `Form` + custom validators —
+  NO external form-validation package.
+- Tests: `bloc_test` + `mocktail` for Cubits, `integration_test` for
+  cross-feature flows.
 - `flutter_screenutil` scales individual values (`.sp`/`.w`/`.h`/`.r`) against
   the Figma reference frame; Material 3 window size classes decide layout
   structure (compact <600dp, medium 600–839dp, expanded ≥840dp). They have
   DIFFERENT jobs — screenutil never picks layout, breakpoints never scale
-  values. App shell uses `flutter_adaptive_scaffold` (bottom nav on compact,
-  nav rail on medium/expanded).
+  values. App shell uses the hand-rolled `AppAdaptiveShell` (bottom nav on
+  compact, nav rail on medium/expanded) — `flutter_adaptive_scaffold` is
+  discontinued upstream and is NOT used (approved decision D1).
 - Localization: English + Arabic, full RTL. No hardcoded user-facing strings,
   ever — externalize from the first line of code.
 
@@ -53,8 +65,12 @@
   a role) = inject the same repository into both Cubits. Never duplicate logic
   or reach into another feature's internals.
 - `core/` holds only cross-cutting concerns (network, router, theme,
-  responsive, localization, storage, errors, shared widgets, DI) — never
-  feature logic.
+  responsive, localization, storage, errors, shared widgets, DI,
+  env config) — never feature logic.
+- `auth/` and `user/` are separate features by session boundary: `auth/`
+  owns unauthenticated flows (signup, login, OTP, password reset) + token
+  lifecycle; `user/` owns everything behind a valid session (profile,
+  roles, password change, account deletion).
 
 ## API conventions
 
@@ -79,12 +95,21 @@
 - Accounts default to tenant; landlord is added via ONE shared
   `UserRepository.addRole('landlord')` (→ `POST /users/me/roles`). Never
   duplicate per screen/feature.
+- Accounts can hold both roles; `activeRole` only picks which dashboard
+  renders and is persisted (`shared_preferences`) so the app reopens on
+  the last-used dashboard.
 - Permission-sensitive UI reads `roles[]`, never `activeRole` alone.
 - `addRole` returns a fresh token pair — MUST replace stored tokens
-  immediately. After a successful password change, clear session and go to
-  login right away (don't wait for a 401).
+  immediately (old access token may not carry the new role's
+  permissions). After a successful password change, clear session and go
+  to login right away (don't wait for a 401).
+
+## Product rules
+
 - Landlord contact is a WhatsApp deep link (`https://wa.me/<phone>`), not
-  in-app chat. Advisor chat is request → full response, no streaming.
+  in-app chat; every contact is recorded as an Inquiry, not a chat thread.
+- Advisor chat is request → full response, no streaming.
+- Signup always routes to OTP verification, never straight to login.
 
 ## Testing & quality gates (a feature is not done until)
 
