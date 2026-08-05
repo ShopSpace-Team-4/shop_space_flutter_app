@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [".agents/skills"]
+  },
+  "lsp": {
+    "dart": {
+      "command": ["C:\\flutter\\bin\\cache\\dart-sdk\\bin\\dart.exe", "language-server"],
+      "extensions": [".dart"],
+      "env": { "PUB_ENVIRONMENT": "opencode" }
+    }
+  }
+}
