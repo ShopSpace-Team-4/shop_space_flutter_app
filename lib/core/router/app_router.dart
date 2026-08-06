@@ -1,36 +1,75 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
 
+import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/otp_screen.dart';
+import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../localization/app_localizations.dart';
 import '../responsive/app_adaptive_shell.dart';
 import '../widgets/placeholder_screen.dart';
+import 'route_guards.dart';
 
-/// Phase 0 route table.
+/// Forwards [AuthSessionCubit] emissions to go_router so redirect guards
+/// re-evaluate when the session changes (T021). The router keeps this alive
+/// via `refreshListenable`; it is only constructed when a session is wired.
+class _SessionRefresh extends ChangeNotifier {
+  _SessionRefresh(AuthSessionCubit session) {
+    _subscription = session.stream.listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<AuthSessionState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
+/// Route table (Phase 1).
 ///
-/// Registers a placeholder route for every planned feature area (plan.md
-/// Scale/Scope): auth login/signup/otp/reset, user profile, listings, search,
-/// advisor, inquiries. No feature folders exist in Phase 0 — every non-home
-/// route renders the shared [AppPlaceholderScreen]. Unknown routes fall back
-/// to a graceful, localized [errorBuilder] instead of crashing.
-@singleton
+/// Auth routes (login/signup/otp/reset) are public. Everything behind a
+/// session (`/`, `/profile`, `/change-password`) is wrapped in an [AuthGuard];
+/// when no session is wired (widget tests, pre-bootstrap) the guard is absent
+/// and behavior matches Phase 0. Unknown routes fall back to a graceful,
+/// localized [errorBuilder] instead of crashing.
 class AppRouter {
-  AppRouter() {
+  AppRouter({AuthSessionCubit? session}) {
+    final AuthGuard? guard = session == null
+        ? null
+        : AuthGuard(session: session, signInPath: '/login');
+
     _router = GoRouter(
+      refreshListenable: session == null ? null : _SessionRefresh(session),
       routes: [
         GoRoute(
           path: '/',
+          redirect: guard?.call,
           builder: (context, state) => AppAdaptiveShell(
             body: const HomeScreen(),
             destinations: _shellDestinations(context),
           ),
         ),
-        _placeholderRoute('/login', (l10n) => l10n.authLogin),
-        _placeholderRoute('/signup', (l10n) => l10n.authSignup),
-        _placeholderRoute('/otp', (l10n) => l10n.authOtp),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => const LoginScreen(),
+        ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) => const SignupScreen(),
+        ),
+        GoRoute(
+          path: '/otp',
+          builder: (context, state) => OtpScreen(
+            email: state.uri.queryParameters['email'],
+          ),
+        ),
         _placeholderRoute('/reset-password', (l10n) => l10n.authResetPassword),
-        _placeholderRoute('/profile', (l10n) => l10n.navProfile),
+        _protectedPlaceholderRoute('/profile', (l10n) => l10n.navProfile, guard),
         _placeholderRoute('/listings', (l10n) => l10n.navListings),
         _placeholderRoute('/search', (l10n) => l10n.navSearch),
         _placeholderRoute('/advisor', (l10n) => l10n.navAdvisor),
@@ -53,6 +92,21 @@ class AppRouter {
   ) {
     return GoRoute(
       path: path,
+      builder: (context, state) {
+        final AppLocalizations l10n = AppLocalizations.of(context);
+        return AppPlaceholderScreen(title: title(l10n));
+      },
+    );
+  }
+
+  GoRoute _protectedPlaceholderRoute(
+    String path,
+    String Function(AppLocalizations l10n) title,
+    AuthGuard? guard,
+  ) {
+    return GoRoute(
+      path: path,
+      redirect: guard?.call,
       builder: (context, state) {
         final AppLocalizations l10n = AppLocalizations.of(context);
         return AppPlaceholderScreen(title: title(l10n));

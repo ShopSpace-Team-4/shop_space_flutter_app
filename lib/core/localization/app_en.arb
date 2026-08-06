@@ -53,6 +53,7 @@
   },
   "authOtpFieldSemanticLabel": "6-digit verification code",
   "authOtpVerifySubmit": "Verify",
+  "authOtpSuccess": "Your email is verified. You can now sign in.",
   "authOtpResend": "Resend code",
   "authOtpResendIn": "Resend in {seconds}s",
   "@authOtpResendIn": {

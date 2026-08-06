@@ -165,6 +165,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authOtpVerifySubmit => 'تحقق';
 
   @override
+  String get authOtpSuccess =>
+      'تم التحقق من بريدك الإلكتروني. يمكنك الآن تسجيل الدخول.';
+
+  @override
   String get authOtpResend => 'إعادة إرسال الرمز';
 
   @override

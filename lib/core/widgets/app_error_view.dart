@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../errors/failure_messages.dart';
 import '../errors/failures.dart';
 import '../localization/app_localizations.dart';
 import '../theme/app_colors.dart';
@@ -28,22 +29,6 @@ class AppErrorView extends StatelessWidget {
   /// Invoked when an unauthorized failure's sign-in surface is tapped.
   final VoidCallback? onSignIn;
 
-  String _message(AppLocalizations l10n) => switch (failure) {
-        OfflineFailure() => l10n.errorOffline,
-        TimeoutFailure() => l10n.errorTimeout,
-        ServerFailure() => l10n.errorServer,
-        UnauthorizedFailure() => l10n.errorUnauthorized,
-        ValidationFailure() => l10n.errorValidation,
-        NetworkFailure() => l10n.errorNetwork,
-        EmailAlreadyRegistered() => l10n.errorEmailAlreadyRegistered,
-        InvalidOtp() => l10n.errorInvalidOtp,
-        OtpAttemptsExceeded() => l10n.errorOtpAttemptsExceeded,
-        InvalidCredentials() => l10n.errorInvalidCredentials,
-        EmailNotVerified() => l10n.errorEmailNotVerified,
-        GoogleSignInCancelled() => l10n.errorGoogleSignInCancelled,
-        RateLimited() => l10n.errorRateLimited,
-      };
-
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context);
@@ -68,7 +53,7 @@ class AppErrorView extends StatelessWidget {
             Icon(icon, size: 48, color: color),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              _message(l10n),
+              failureMessage(l10n, failure),
               textAlign: TextAlign.center,
               style: AppTypography.heading4,
             ),

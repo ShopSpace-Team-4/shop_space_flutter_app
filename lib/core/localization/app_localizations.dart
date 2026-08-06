@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// **'Verify'**
   String get authOtpVerifySubmit;
 
+  /// No description provided for @authOtpSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is verified. You can now sign in.'**
+  String get authOtpSuccess;
+
   /// No description provided for @authOtpResend.
   ///
   /// In en, this message translates to:

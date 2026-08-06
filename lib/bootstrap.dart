@@ -9,18 +9,33 @@ import 'core/localization/app_localizations.dart';
 import 'core/localization/localization_cubit.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/google/auth_google_service.dart';
+import 'features/auth/presentation/cubits/auth_session_cubit.dart';
 
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
 
   final LocalizationCubit localizationCubit = getIt<LocalizationCubit>();
+  final AuthSessionCubit sessionCubit = getIt<AuthSessionCubit>();
+  final AuthGoogleService googleAuth = getIt<AuthGoogleService>();
+
+  // Google sign-in singleton init must complete before the router builds
+  // (contract `contracts/google-signin-flow.md`, 7.x rules); guarded against
+  // double-init inside the implementation.
+  await googleAuth.initialize();
+
+  // Restores a stored session (D3): unblocks the UI immediately when a valid
+  // token exists, hydrating roles/`activeRole` in the background.
+  await sessionCubit.initialize();
+
   final AppRouter appRouter = getIt<AppRouter>();
 
   runApp(
     ShopSpaceApp(
       localizationCubit: localizationCubit,
       router: appRouter.router,
+      sessionCubit: sessionCubit,
     ),
   );
 }
@@ -30,10 +45,12 @@ class ShopSpaceApp extends StatelessWidget {
     super.key,
     required this.localizationCubit,
     required this.router,
+    this.sessionCubit,
   });
 
   final LocalizationCubit localizationCubit;
   final GoRouter router;
+  final AuthSessionCubit? sessionCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +61,29 @@ class ShopSpaceApp extends StatelessWidget {
       builder: (context, child) => BlocProvider.value(
         value: localizationCubit,
         child: BlocBuilder<LocalizationCubit, Locale>(
-          builder: (context, locale) => MaterialApp.router(
-            title: 'ShopSpace',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.build(context),
-            locale: locale,
-            supportedLocales: const [Locale('en'), Locale('ar')],
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            routerConfig: router,
-          ),
+          builder: (context, locale) {
+            Widget app = MaterialApp.router(
+              title: 'ShopSpace',
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.build(context),
+              locale: locale,
+              supportedLocales: const [Locale('en'), Locale('ar')],
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              routerConfig: router,
+            );
+            if (sessionCubit != null) {
+              app = BlocProvider.value(
+                value: sessionCubit!,
+                child: app,
+              );
+            }
+            return app;
+          },
         ),
       ),
     );

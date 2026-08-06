@@ -165,6 +165,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authOtpVerifySubmit => 'Verify';
 
   @override
+  String get authOtpSuccess => 'Your email is verified. You can now sign in.';
+
+  @override
   String get authOtpResend => 'Resend code';
 
   @override

@@ -5,12 +5,15 @@ import 'package:injectable/injectable.dart';
 import '../../features/auth/data/auth_datasource.dart';
 import '../../features/auth/data/models/auth_tokens.dart' as feature;
 import '../../features/auth/data/models/refresh_token_request.dart';
+import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
 import '../env/app_env.dart';
 import '../errors/error_mapper.dart';
 import '../network/dio_client.dart';
 import '../network/session_controller.dart';
 import '../network/token_provider.dart';
 import '../network/token_refresher.dart';
+import '../router/app_router.dart';
+import '../router/route_guards.dart';
 import '../storage/preferences_service.dart';
 import '../storage/token_storage.dart';
 
@@ -51,6 +54,19 @@ abstract class CoreModule {
           );
         },
       );
+
+  // Router owns the initialized session (T021): bootstrap awaits
+  // `session.initialize()` before `runApp`, so guards assume it is resolved.
+  @singleton
+  AppRouter provideAppRouter(AuthSessionCubit session) =>
+      AppRouter(session: session);
+
+  // The session cubit registers as `SessionReader`; alias the concrete key so
+  // `getIt<AuthSessionCubit>()` resolves to the same instance (bootstrap,
+  // login screen, etc.).
+  @singleton
+  AuthSessionCubit provideAuthSessionCubit(SessionReader reader) =>
+      reader as AuthSessionCubit;
 
   @singleton
   Dio dio(

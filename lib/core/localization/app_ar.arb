@@ -53,6 +53,7 @@
   },
   "authOtpFieldSemanticLabel": "رمز التحقق من 6 أرقام",
   "authOtpVerifySubmit": "تحقق",
+  "authOtpSuccess": "تم التحقق من بريدك الإلكتروني. يمكنك الآن تسجيل الدخول.",
   "authOtpResend": "إعادة إرسال الرمز",
   "authOtpResendIn": "أعد الإرسال خلال {seconds} ث",
   "@authOtpResendIn": {
