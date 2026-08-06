@@ -12,6 +12,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'شوب سبيس';
 
   @override
+  String get commonBack => 'رجوع';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override
@@ -124,7 +127,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authNewPasswordLabel => 'كلمة المرور الجديدة';
 
   @override
-  String get authLoginTitle => 'مرحباً بعودتك';
+  String get authLoginTitle => 'مرحباً بعودتك 👋';
+
+  @override
+  String get authLoginSubtitle => 'سجّل الدخول إلى حسابك في شوب سبيس';
 
   @override
   String get authLoginSubmit => 'تسجيل الدخول';
@@ -133,22 +139,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authLoginForgotPassword => 'هل نسيت كلمة المرور؟';
 
   @override
-  String get authLoginNoAccount => 'ليس لديك حساب؟';
-
-  @override
-  String get authLoginCreateAccount => 'إنشاء حساب';
-
-  @override
   String get authSignupTitle => 'أنشئ حسابك';
+
+  @override
+  String get authSignupSubtitle => 'حساب واحد للعرض والاستئجار';
 
   @override
   String get authSignupSubmit => 'إنشاء حساب';
 
   @override
-  String get authSignupHaveAccount => 'لديك حساب بالفعل؟';
-
-  @override
-  String get authSignupSignIn => 'تسجيل الدخول';
+  String get authOr => 'أو';
 
   @override
   String get authOtpTitle => 'تحقق من بريدك الإلكتروني';
@@ -225,7 +225,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authInvalidEmail => 'أدخل بريداً إلكترونياً صحيحاً';
 
   @override
-  String get authInvalidPhone => 'أدخل رقم هاتف صحيحاً';
+  String get authInvalidPhone => 'يجب أن يتكون رقم الهاتف من 11 رقماً';
 
   @override
   String get authPasswordRequired => 'أدخل كلمة المرور';
@@ -235,10 +235,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
 
   @override
-  String get authPasswordRequiresLetter => 'يجب أن تحتوي كلمة المرور على حرف';
+  String get authPasswordTooLong => 'يجب ألا تزيد كلمة المرور عن 20 حرفاً';
 
   @override
-  String get authPasswordRequiresDigit => 'يجب أن تحتوي كلمة المرور على رقم';
+  String get authPasswordStrength =>
+      'استخدم 8-20 حرفاً مع حرف كبير ورقم وأحد الرموز @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'أدخل كلمة المرور الحالية';

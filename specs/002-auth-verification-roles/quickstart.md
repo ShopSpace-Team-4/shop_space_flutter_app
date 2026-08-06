@@ -100,7 +100,8 @@ l10n keys + `ErrorMapper` entries. Every user-facing string is externalized (EN 
 - `flutter_secure_storage`: keys `auth.accessToken`/`auth.refreshToken`, namespace `shop_space`,
   iOS account `com.shopspace.shopspace` (Phase 0) — keep them.
 - Google iOS: reversed-client-ID must be in `CFBundleURLTypes`; Android: pass the web client ID as
-  `serverClientId` (no `google-services.json`).
+  `serverClientId` (no `google-services.json`). Provisioning `GoogleService-Info.plist` (real iOS
+  client) is a dev/ops step — the app must still build and run without it in dev (T026).
 - Never parse the envelope in features; never touch dio outside datasources; never decide
   permissions from `activeRole` alone.
 - OTP cooldown: Cubit holds the absolute deadline; the widget's 1s `Timer` dies in `dispose()`.

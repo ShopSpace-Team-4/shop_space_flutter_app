@@ -1,4 +1,4 @@
-﻿name: shop_space
+name: shop_space
 description: "ShopSpace - shop space listings and advisor app."
 publish_to: 'none'
 
@@ -28,6 +28,7 @@ dependencies:
   cached_network_image: 3.4.1
   url_launcher: 6.3.2
   google_sign_in: 7.2.0
+  pretty_dio_logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:

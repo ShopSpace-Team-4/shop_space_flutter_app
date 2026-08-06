@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "appTitle": "ShopSpace",
+  "commonBack": "Back",
   "navHome": "Home",
   "navProfile": "Profile",
   "navListings": "Listings",
@@ -35,20 +36,21 @@
   "authPhoneLabel": "Phone number",
   "authCurrentPasswordLabel": "Current password",
   "authNewPasswordLabel": "New password",
-  "authLoginTitle": "Welcome back",
+  "authLoginTitle": "Welcome back 👋",
+  "authLoginSubtitle": "Sign in to your ShopSpace account",
   "authLoginSubmit": "Sign in",
   "authLoginForgotPassword": "Forgot your password?",
-  "authLoginNoAccount": "Don't have an account?",
-  "authLoginCreateAccount": "Create account",
-  "authSignupTitle": "Create your account",
+  "authSignupTitle": "Create account",
+  "authSignupSubtitle": "One account for listing and renting",
   "authSignupSubmit": "Create account",
-  "authSignupHaveAccount": "Already have an account?",
-  "authSignupSignIn": "Sign in",
+  "authOr": "or",
   "authOtpTitle": "Verify your email",
   "authOtpSubtitle": "We sent a 6-digit code to {email}",
   "@authOtpSubtitle": {
     "placeholders": {
-      "email": { "type": "String" }
+      "email": {
+        "type": "String"
+      }
     }
   },
   "authOtpFieldSemanticLabel": "6-digit verification code",
@@ -58,13 +60,17 @@
   "authOtpResendIn": "Resend in {seconds}s",
   "@authOtpResendIn": {
     "placeholders": {
-      "seconds": { "type": "int" }
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "authOtpAttemptsRemaining": "{count} attempts remaining",
   "@authOtpAttemptsRemaining": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "authOtpLocked": "Too many incorrect attempts. Request a new code to try again.",
@@ -76,7 +82,9 @@
   "authForgotPasswordCheckEmail": "We sent a reset code to {email}",
   "@authForgotPasswordCheckEmail": {
     "placeholders": {
-      "email": { "type": "String" }
+      "email": {
+        "type": "String"
+      }
     }
   },
   "authResetPasswordTitle": "Reset your password",
@@ -85,11 +93,11 @@
   "authGoogleButton": "Continue with Google",
   "authNameRequired": "Enter your name",
   "authInvalidEmail": "Enter a valid email address",
-  "authInvalidPhone": "Enter a valid phone number",
+  "authInvalidPhone": "Phone number must be 11 digits",
   "authPasswordRequired": "Enter your password",
   "authPasswordTooShort": "Password must be at least 8 characters",
-  "authPasswordRequiresLetter": "Password must include a letter",
-  "authPasswordRequiresDigit": "Password must include a number",
+  "authPasswordTooLong": "Password must be at most 20 characters",
+  "authPasswordStrength": "Use characters with a capital letter, a number and one of @ $ ! % * ? &",
   "authCurrentPasswordRequired": "Enter your current password",
   "authBackToLogin": "Back to sign in",
   "profileTitle": "Profile",

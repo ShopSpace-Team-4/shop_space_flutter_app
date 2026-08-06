@@ -47,10 +47,18 @@ class AppEnv {
 
   factory AppEnv.fromDartDefine() {
     const String value = String.fromEnvironment('APP_ENV');
+    const String baseOverride = String.fromEnvironment('API_BASE_URL');
     return switch (value) {
       'staging' => staging,
       'prod' => prod,
-      _ => dev,
+      _ => baseOverride.isNotEmpty
+          ? const AppEnv(
+              name: AppEnvironment.dev,
+              apiBaseUrl: baseOverride,
+              isLoggingEnabled: true,
+              isRelease: false,
+            )
+          : dev,
     };
   }
 }

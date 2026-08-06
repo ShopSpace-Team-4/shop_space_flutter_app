@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'ShopSpace';
 
   @override
+  String get commonBack => 'Back';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -124,7 +127,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authNewPasswordLabel => 'New password';
 
   @override
-  String get authLoginTitle => 'Welcome back';
+  String get authLoginTitle => 'Welcome back 👋';
+
+  @override
+  String get authLoginSubtitle => 'Sign in to your ShopSpace account';
 
   @override
   String get authLoginSubmit => 'Sign in';
@@ -133,22 +139,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authLoginForgotPassword => 'Forgot your password?';
 
   @override
-  String get authLoginNoAccount => 'Don\'t have an account?';
+  String get authSignupTitle => 'Create account';
 
   @override
-  String get authLoginCreateAccount => 'Create account';
-
-  @override
-  String get authSignupTitle => 'Create your account';
+  String get authSignupSubtitle => 'One account for listing and renting';
 
   @override
   String get authSignupSubmit => 'Create account';
 
   @override
-  String get authSignupHaveAccount => 'Already have an account?';
-
-  @override
-  String get authSignupSignIn => 'Sign in';
+  String get authOr => 'or';
 
   @override
   String get authOtpTitle => 'Verify your email';
@@ -224,7 +224,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authInvalidEmail => 'Enter a valid email address';
 
   @override
-  String get authInvalidPhone => 'Enter a valid phone number';
+  String get authInvalidPhone => 'Phone number must be 11 digits';
 
   @override
   String get authPasswordRequired => 'Enter your password';
@@ -233,10 +233,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPasswordTooShort => 'Password must be at least 8 characters';
 
   @override
-  String get authPasswordRequiresLetter => 'Password must include a letter';
+  String get authPasswordTooLong => 'Password must be at most 20 characters';
 
   @override
-  String get authPasswordRequiresDigit => 'Password must include a number';
+  String get authPasswordStrength =>
+      'Use 8-20 characters with a capital letter, a number and one of @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'Enter your current password';

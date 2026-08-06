@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../env/app_env.dart';
 import '../errors/error_mapper.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/envelope_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
-import 'interceptors/logging_interceptor.dart';
 import 'interceptors/session_interceptor.dart';
 import 'session_controller.dart';
 import 'token_provider.dart';
@@ -44,7 +44,7 @@ abstract class DioClient {
       ..add(const EnvelopeInterceptor())
       ..add(sessionInterceptor)
       ..add(ErrorInterceptor(errorMapper))
-      ..add(LoggingInterceptor(env));
+      ..add(PrettyDioLogger(enabled: env.isLoggingEnabled));
     sessionInterceptor.attachDio(dio);
     return dio;
   }

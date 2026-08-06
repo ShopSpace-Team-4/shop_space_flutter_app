@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'ShopSpace'**
   String get appTitle;
 
+  /// No description provided for @commonBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get commonBack;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
@@ -311,8 +317,14 @@ abstract class AppLocalizations {
   /// No description provided for @authLoginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Welcome back'**
+  /// **'Welcome back 👋'**
   String get authLoginTitle;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your ShopSpace account'**
+  String get authLoginSubtitle;
 
   /// No description provided for @authLoginSubmit.
   ///
@@ -326,23 +338,17 @@ abstract class AppLocalizations {
   /// **'Forgot your password?'**
   String get authLoginForgotPassword;
 
-  /// No description provided for @authLoginNoAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Don\'t have an account?'**
-  String get authLoginNoAccount;
-
-  /// No description provided for @authLoginCreateAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Create account'**
-  String get authLoginCreateAccount;
-
   /// No description provided for @authSignupTitle.
   ///
   /// In en, this message translates to:
-  /// **'Create your account'**
+  /// **'Create account'**
   String get authSignupTitle;
+
+  /// No description provided for @authSignupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One account for listing and renting'**
+  String get authSignupSubtitle;
 
   /// No description provided for @authSignupSubmit.
   ///
@@ -350,17 +356,11 @@ abstract class AppLocalizations {
   /// **'Create account'**
   String get authSignupSubmit;
 
-  /// No description provided for @authSignupHaveAccount.
+  /// No description provided for @authOr.
   ///
   /// In en, this message translates to:
-  /// **'Already have an account?'**
-  String get authSignupHaveAccount;
-
-  /// No description provided for @authSignupSignIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
-  String get authSignupSignIn;
+  /// **'or'**
+  String get authOr;
 
   /// No description provided for @authOtpTitle.
   ///
@@ -491,7 +491,7 @@ abstract class AppLocalizations {
   /// No description provided for @authInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number'**
+  /// **'Phone number must be 11 digits'**
   String get authInvalidPhone;
 
   /// No description provided for @authPasswordRequired.
@@ -506,17 +506,17 @@ abstract class AppLocalizations {
   /// **'Password must be at least 8 characters'**
   String get authPasswordTooShort;
 
-  /// No description provided for @authPasswordRequiresLetter.
+  /// No description provided for @authPasswordTooLong.
   ///
   /// In en, this message translates to:
-  /// **'Password must include a letter'**
-  String get authPasswordRequiresLetter;
+  /// **'Password must be at most 20 characters'**
+  String get authPasswordTooLong;
 
-  /// No description provided for @authPasswordRequiresDigit.
+  /// No description provided for @authPasswordStrength.
   ///
   /// In en, this message translates to:
-  /// **'Password must include a number'**
-  String get authPasswordRequiresDigit;
+  /// **'Use 8-20 characters with a capital letter, a number and one of @ \$ ! % * ? &'**
+  String get authPasswordStrength;
 
   /// No description provided for @authCurrentPasswordRequired.
   ///

@@ -14,6 +14,7 @@ class AppAdaptiveShell extends StatefulWidget {
     required this.destinations,
     this.body,
     this.initialIndex = 0,
+    this.onDestinationSelected,
   });
 
   /// The navigation destinations rendered by the shell.
@@ -28,6 +29,11 @@ class AppAdaptiveShell extends StatefulWidget {
   /// The initially selected destination index.
   final int initialIndex;
 
+  /// Optional callback invoked after the shell's internal selection index
+  /// updates. Lets the router navigate (e.g. the Profile destination →
+  /// `/profile`); when null the shell keeps its index-only behavior.
+  final ValueChanged<int>? onDestinationSelected;
+
   @override
   State<AppAdaptiveShell> createState() => _AppAdaptiveShellState();
 }
@@ -36,6 +42,11 @@ class _AppAdaptiveShellState extends State<AppAdaptiveShell> {
   late int _selectedIndex = widget.destinations.isEmpty
       ? 0
       : widget.initialIndex.clamp(0, widget.destinations.length - 1);
+
+  void _handleDestinationSelected(int index) {
+    setState(() => _selectedIndex = index);
+    widget.onDestinationSelected?.call(index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +60,7 @@ class _AppAdaptiveShellState extends State<AppAdaptiveShell> {
           body: widget.body ?? const SizedBox.shrink(),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _selectedIndex,
-            onDestinationSelected: (index) {
-              setState(() => _selectedIndex = index);
-            },
+            onDestinationSelected: _handleDestinationSelected,
             destinations: widget.destinations,
           ),
         );
@@ -64,9 +73,7 @@ class _AppAdaptiveShellState extends State<AppAdaptiveShell> {
               NavigationRail(
                 selectedIndex: _selectedIndex,
                 extended: extended,
-                onDestinationSelected: (index) {
-                  setState(() => _selectedIndex = index);
-                },
+                onDestinationSelected: _handleDestinationSelected,
                 destinations: [
                   for (final destination in widget.destinations)
                     NavigationRailDestination(

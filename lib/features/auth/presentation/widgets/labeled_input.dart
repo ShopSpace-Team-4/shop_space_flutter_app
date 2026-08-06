@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
-import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 
 /// Labeled form field (T013): a `TextFormField` with an external label, an
-/// inline localized error, a ≥44dp touch target, and an a11y label.
+/// inline localized error, a ≥44dp touch target, and an a11y label. Matches
+/// the Figma borderless `#F1F5F9` field: radius 8, ~44dp height.
 class LabeledInput extends StatelessWidget {
   const LabeledInput({
     super.key,
@@ -55,9 +56,14 @@ class LabeledInput extends StatelessWidget {
         children: [
           Text(
             label,
-            style: AppTypography.caption.copyWith(color: AppColors.textSecondary),
+            style: AppTypography.caption.copyWith(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textMuted,
+              letterSpacing: 0.4,
+            ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: 6.h),
           TextFormField(
             controller: controller,
             validator: validator,
@@ -72,34 +78,38 @@ class LabeledInput extends StatelessWidget {
             onTap: onTap,
             onChanged: onChanged,
             onFieldSubmitted: onFieldSubmitted,
+            style: AppTypography.bodyMedium.copyWith(
+              fontSize: 14.sp,
+              color: AppColors.textPrimary,
+            ),
             decoration: InputDecoration(
               prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
               suffixIcon: suffixIcon,
               filled: true,
-              fillColor: AppColors.surface,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
+              fillColor: AppColors.surfaceVariant,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 14.w,
+                vertical: 12.h,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppRadius.medium),
-                borderSide: const BorderSide(color: AppColors.outline),
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppRadius.medium),
-                borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppRadius.medium),
+                borderRadius: BorderRadius.circular(AppRadius.field),
                 borderSide: const BorderSide(color: AppColors.error),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppRadius.medium),
-                borderSide: const BorderSide(color: AppColors.error, width: 2),
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: const BorderSide(color: AppColors.error, width: 1.5),
               ),
               disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppRadius.medium),
-                borderSide: const BorderSide(color: AppColors.outline),
+                borderRadius: BorderRadius.circular(AppRadius.field),
+                borderSide: BorderSide.none,
               ),
               errorStyle: AppTypography.caption.copyWith(color: AppColors.error),
             ),

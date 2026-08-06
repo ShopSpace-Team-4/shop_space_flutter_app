@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
-import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/auth_screen.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/otp_screen.dart';
-import '../../features/auth/presentation/screens/signup_screen.dart';
+import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/user/presentation/screens/change_password_screen.dart';
+import '../../features/user/presentation/screens/profile_screen.dart';
 import '../localization/app_localizations.dart';
 import '../responsive/app_adaptive_shell.dart';
 import '../widgets/placeholder_screen.dart';
@@ -49,18 +52,28 @@ class AppRouter {
         GoRoute(
           path: '/',
           redirect: guard?.call,
-          builder: (context, state) => AppAdaptiveShell(
-            body: const HomeScreen(),
-            destinations: _shellDestinations(context),
-          ),
+          builder: (context, state) {
+            final AppLocalizations l10n = AppLocalizations.of(context);
+            final List<NavigationDestination> destinations =
+                _shellDestinations(l10n);
+            return AppAdaptiveShell(
+              body: const HomeScreen(),
+              destinations: destinations,
+              onDestinationSelected: (index) {
+                if (index == _profileDestinationIndex(destinations, l10n)) {
+                  context.go('/profile');
+                }
+              },
+            );
+          },
         ),
         GoRoute(
           path: '/login',
-          builder: (context, state) => const LoginScreen(),
+          builder: (context, state) => const AuthScreen(initialIndex: 0),
         ),
         GoRoute(
           path: '/signup',
-          builder: (context, state) => const SignupScreen(),
+          builder: (context, state) => const AuthScreen(initialIndex: 1),
         ),
         GoRoute(
           path: '/otp',
@@ -68,8 +81,26 @@ class AppRouter {
             email: state.uri.queryParameters['email'],
           ),
         ),
-        _placeholderRoute('/reset-password', (l10n) => l10n.authResetPassword),
-        _protectedPlaceholderRoute('/profile', (l10n) => l10n.navProfile, guard),
+        GoRoute(
+          path: '/forgot-password',
+          builder: (context, state) => const ForgotPasswordScreen(),
+        ),
+        GoRoute(
+          path: '/reset-password',
+          builder: (context, state) => ResetPasswordScreen(
+            email: state.uri.queryParameters['email'],
+          ),
+        ),
+        GoRoute(
+          path: '/profile',
+          redirect: guard?.call,
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: '/change-password',
+          redirect: guard?.call,
+          builder: (context, state) => const ChangePasswordScreen(),
+        ),
         _placeholderRoute('/listings', (l10n) => l10n.navListings),
         _placeholderRoute('/search', (l10n) => l10n.navSearch),
         _placeholderRoute('/advisor', (l10n) => l10n.navAdvisor),
@@ -99,23 +130,16 @@ class AppRouter {
     );
   }
 
-  GoRoute _protectedPlaceholderRoute(
-    String path,
-    String Function(AppLocalizations l10n) title,
-    AuthGuard? guard,
+  /// Index of the Profile destination, so the shell's Profile tap navigates
+  /// to `/profile` while other destinations stay index-only for later phases.
+  int _profileDestinationIndex(
+    List<NavigationDestination> destinations,
+    AppLocalizations l10n,
   ) {
-    return GoRoute(
-      path: path,
-      redirect: guard?.call,
-      builder: (context, state) {
-        final AppLocalizations l10n = AppLocalizations.of(context);
-        return AppPlaceholderScreen(title: title(l10n));
-      },
-    );
+    return destinations.indexWhere((d) => d.label == l10n.navProfile);
   }
 
-  List<NavigationDestination> _shellDestinations(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context);
+  List<NavigationDestination> _shellDestinations(AppLocalizations l10n) {
     return [
       NavigationDestination(
         icon: const Icon(Icons.home_outlined),
