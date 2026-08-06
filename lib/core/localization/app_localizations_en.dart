@@ -237,7 +237,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authPasswordStrength =>
-      'Use 8-20 characters with a capital letter, a number and one of @ \$ ! % * ? &';
+      'Use characters with a capital letter, a number and one of @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'Enter your current password';

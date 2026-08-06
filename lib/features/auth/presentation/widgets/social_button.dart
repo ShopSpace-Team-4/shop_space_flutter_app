@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -46,7 +47,11 @@ class SocialButton extends StatelessWidget {
                 height: 22,
                 child: CircularProgressIndicator(strokeWidth: 2),
               )
-            : const Icon(Icons.g_mobiledata_outlined),
+            : SvgPicture.asset(
+                'assets/svgs/google_icon.svg',
+                width: 20,
+                height: 20,
+              ),
         label: Text(
           l10n.authGoogleButton,
           style: AppTypography.bodyMedium.copyWith(

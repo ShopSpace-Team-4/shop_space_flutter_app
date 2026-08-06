@@ -239,7 +239,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authPasswordStrength =>
-      'استخدم 8-20 حرفاً مع حرف كبير ورقم وأحد الرموز @ \$ ! % * ? &';
+      'استخدم حرف كبير ورقم وأحد الرموز @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'أدخل كلمة المرور الحالية';

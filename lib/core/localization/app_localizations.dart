@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @authPasswordStrength.
   ///
   /// In en, this message translates to:
-  /// **'Use 8-20 characters with a capital letter, a number and one of @ \$ ! % * ? &'**
+  /// **'Use characters with a capital letter, a number and one of @ \$ ! % * ? &'**
   String get authPasswordStrength;
 
   /// No description provided for @authCurrentPasswordRequired.
