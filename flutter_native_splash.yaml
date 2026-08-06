@@ -1,0 +1,32 @@
+# Native splash screen configuration for flutter_native_splash.
+# Regenerate after edits with: dart run flutter_native_splash:create
+#
+# Source art: assets/pngs/splash.png (1125x2436 full-bleed gradient, brand blue #2563EB -> navy #0F172A)
+# Fallback color = image's dominant center tone for a seamless edge-to-edge blend.
+flutter_native_splash:
+  # General background color (shown behind the image while the splash renders).
+  color: "#1E3A8A"
+
+  # Full-bleed splash artwork.
+  image: assets/pngs/splash.png
+
+  # Android (< 12) image placement: stretch to cover the entire screen.
+  android_gravity: fill
+
+  # iOS image placement: cover the full launch screen.
+  ios_content_mode: scaleAspectFill
+
+  # Hide the status/notification bar so the full-bleed art renders edge-to-edge.
+  fullscreen: true
+
+  # Android 12+ uses the system SplashScreen API (centered icon + solid color; a
+  # full background image is not supported by the platform), so we match the
+  # color here for a consistent handoff into the app.
+  android_12:
+    color: "#1E3A8A"
+    image: assets/pngs/splash_android_12.png
+
+  # Only generate for platforms present in this project.
+  android: true
+  ios: true
+  web: false
