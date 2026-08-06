@@ -1,14 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
-
-/// Role identifiers, mirroring the backend `POST /users/me/roles` contract
-/// (`UserRepository.addRole`). Every account defaults to [tenant]; [landlord]
-/// is added on demand. Phase 1 +.
-abstract final class UserRole {
-  static const String tenant = 'tenant';
-  static const String landlord = 'landlord';
-}
 
 /// Reads the current session and full role set for redirect guards.
 ///
@@ -17,26 +8,13 @@ abstract interface class SessionReader {
   /// Whether a valid session exists.
   bool get isAuthenticated;
 
+  /// True while a stored session is still being resolved on startup. Guards
+  /// must not redirect during bootstrap (production awaits `initialize()`
+  /// before `runApp`, so this is only observable pre-init).
+  bool get isBootstrapping;
+
   /// The full set of roles on the account.
   Set<String> get roles;
-}
-
-/// Phase 0 default [SessionReader]: no session exists yet and every account
-/// is treated as an unauthenticated tenant.
-///
-/// Registered through the standard DI path (`@singleton` + build_runner) so
-/// guards and future features resolve the same interface. Phase 1 replaces
-/// this concrete type with a reader backed by the real session store once
-/// sign-in exists — no consumers need to change.
-@Singleton(as: SessionReader)
-class DefaultSessionReader implements SessionReader {
-  const DefaultSessionReader();
-
-  @override
-  bool get isAuthenticated => false;
-
-  @override
-  Set<String> get roles => const {UserRole.tenant};
 }
 
 /// Redirects unauthenticated users to [signInPath].
@@ -50,6 +28,9 @@ class AuthGuard {
   final String signInPath;
 
   String? call(BuildContext context, GoRouterState state) {
+    if (session.isBootstrapping) {
+      return null;
+    }
     if (!session.isAuthenticated) {
       return signInPath;
     }

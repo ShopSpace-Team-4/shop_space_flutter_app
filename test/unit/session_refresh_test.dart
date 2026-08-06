@@ -199,5 +199,18 @@ void main() {
       verifyNever(() => refresher.refresh());
       verifyNever(() => session.onSessionExpired());
     });
+
+    test('a 401 on the refresh endpoint never triggers another refresh',
+        () async {
+      final dio = buildDio(FakeAdapter((options) async => _unauthorized()));
+
+      await expectLater(
+        dio.get<dynamic>('/auth/refresh-token').timeout(timeout),
+        throwsA(isA<DioException>()),
+      );
+
+      verifyNever(() => refresher.refresh());
+      verifyNever(() => session.onSessionExpired());
+    });
   });
 }

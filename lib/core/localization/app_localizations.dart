@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'ShopSpace'**
   String get appTitle;
 
+  /// No description provided for @commonBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get commonBack;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
@@ -223,6 +229,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Some of the details you entered look incorrect. Please check and try again.'**
   String get errorValidation;
+
+  /// No description provided for @errorEmailAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists. Try signing in instead.'**
+  String get errorEmailAlreadyRegistered;
+
+  /// No description provided for @errorInvalidOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'The code you entered is incorrect or has expired. Try again.'**
+  String get errorInvalidOtp;
+
+  /// No description provided for @errorOtpAttemptsExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many incorrect attempts. Request a new code to try again.'**
+  String get errorOtpAttemptsExceeded;
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'The email or password is incorrect.'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorEmailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'This account isn\'t verified yet. Enter the code we sent to your email to activate it.'**
+  String get errorEmailNotVerified;
+
+  /// No description provided for @errorGoogleSignInCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in with Google was cancelled.'**
+  String get errorGoogleSignInCancelled;
+
+  /// No description provided for @errorRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re trying too often. Please wait a moment and try again.'**
+  String get errorRateLimited;
+
+  /// No description provided for @authEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get authEmailLabel;
+
+  /// No description provided for @authPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPasswordLabel;
+
+  /// No description provided for @authFirstNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get authFirstNameLabel;
+
+  /// No description provided for @authLastNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get authLastNameLabel;
+
+  /// No description provided for @authPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get authPhoneLabel;
+
+  /// No description provided for @authCurrentPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get authCurrentPasswordLabel;
+
+  /// No description provided for @authNewPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get authNewPasswordLabel;
+
+  /// No description provided for @authLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back 👋'**
+  String get authLoginTitle;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your ShopSpace account'**
+  String get authLoginSubtitle;
+
+  /// No description provided for @authLoginSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get authLoginSubmit;
+
+  /// No description provided for @authLoginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get authLoginForgotPassword;
+
+  /// No description provided for @authSignupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get authSignupTitle;
+
+  /// No description provided for @authSignupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One account for listing and renting'**
+  String get authSignupSubtitle;
+
+  /// No description provided for @authSignupSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get authSignupSubmit;
+
+  /// No description provided for @authOr.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get authOr;
+
+  /// No description provided for @authOtpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get authOtpTitle;
+
+  /// No description provided for @authOtpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {email}'**
+  String authOtpSubtitle(String email);
+
+  /// No description provided for @authOtpFieldSemanticLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit verification code'**
+  String get authOtpFieldSemanticLabel;
+
+  /// No description provided for @authOtpVerifySubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get authOtpVerifySubmit;
+
+  /// No description provided for @authOtpSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is verified. You can now sign in.'**
+  String get authOtpSuccess;
+
+  /// No description provided for @authOtpResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get authOtpResend;
+
+  /// No description provided for @authOtpResendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in {seconds}s'**
+  String authOtpResendIn(int seconds);
+
+  /// No description provided for @authOtpAttemptsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} attempts remaining'**
+  String authOtpAttemptsRemaining(int count);
+
+  /// No description provided for @authOtpLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many incorrect attempts. Request a new code to try again.'**
+  String get authOtpLocked;
+
+  /// No description provided for @authOtpRequestNewCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Request a new code'**
+  String get authOtpRequestNewCode;
+
+  /// No description provided for @authOtpCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code'**
+  String get authOtpCodeRequired;
+
+  /// No description provided for @authOtpCodeLength.
+  ///
+  /// In en, this message translates to:
+  /// **'The code must be 6 digits'**
+  String get authOtpCodeLength;
+
+  /// No description provided for @authForgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get authForgotPasswordTitle;
+
+  /// No description provided for @authForgotPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reset code'**
+  String get authForgotPasswordSubmit;
+
+  /// No description provided for @authForgotPasswordCheckEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a reset code to {email}'**
+  String authForgotPasswordCheckEmail(String email);
+
+  /// No description provided for @authResetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get authResetPasswordTitle;
+
+  /// No description provided for @authResetPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get authResetPasswordSubmit;
+
+  /// No description provided for @authResetPasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been reset. Sign in with your new password.'**
+  String get authResetPasswordSuccess;
+
+  /// No description provided for @authGoogleButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get authGoogleButton;
+
+  /// No description provided for @authNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get authNameRequired;
+
+  /// No description provided for @authInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get authInvalidEmail;
+
+  /// No description provided for @authInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be 11 digits'**
+  String get authInvalidPhone;
+
+  /// No description provided for @authPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get authPasswordRequired;
+
+  /// No description provided for @authPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get authPasswordTooShort;
+
+  /// No description provided for @authPasswordTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at most 20 characters'**
+  String get authPasswordTooLong;
+
+  /// No description provided for @authPasswordStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Use characters with a capital letter, a number and one of @ \$ ! % * ? &'**
+  String get authPasswordStrength;
+
+  /// No description provided for @authCurrentPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get authCurrentPasswordRequired;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get authBackToLogin;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @profileChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get profileChangePassword;
+
+  /// No description provided for @profileSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get profileSignOut;
+
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePasswordTitle;
+
+  /// No description provided for @changePasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Update password'**
+  String get changePasswordSubmit;
+
+  /// No description provided for @changePasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed. Please sign in again.'**
+  String get changePasswordSuccess;
+
+  /// No description provided for @activeRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Active role'**
+  String get activeRoleLabel;
+
+  /// No description provided for @roleTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant'**
+  String get roleTenant;
+
+  /// No description provided for @roleLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord'**
+  String get roleLandlord;
 
   /// No description provided for @loading.
   ///

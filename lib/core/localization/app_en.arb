@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "appTitle": "ShopSpace",
+  "commonBack": "Back",
   "navHome": "Home",
   "navProfile": "Profile",
   "navListings": "Listings",
@@ -21,6 +22,93 @@
   "errorServer": "Something went wrong on our side. Please try again later.",
   "errorUnauthorized": "Your session has expired. Please sign in again.",
   "errorValidation": "Some of the details you entered look incorrect. Please check and try again.",
+  "errorEmailAlreadyRegistered": "An account with this email already exists. Try signing in instead.",
+  "errorInvalidOtp": "The code you entered is incorrect or has expired. Try again.",
+  "errorOtpAttemptsExceeded": "Too many incorrect attempts. Request a new code to try again.",
+  "errorInvalidCredentials": "The email or password is incorrect.",
+  "errorEmailNotVerified": "This account isn't verified yet. Enter the code we sent to your email to activate it.",
+  "errorGoogleSignInCancelled": "Sign-in with Google was cancelled.",
+  "errorRateLimited": "You're trying too often. Please wait a moment and try again.",
+  "authEmailLabel": "Email",
+  "authPasswordLabel": "Password",
+  "authFirstNameLabel": "First name",
+  "authLastNameLabel": "Last name",
+  "authPhoneLabel": "Phone number",
+  "authCurrentPasswordLabel": "Current password",
+  "authNewPasswordLabel": "New password",
+  "authLoginTitle": "Welcome back 👋",
+  "authLoginSubtitle": "Sign in to your ShopSpace account",
+  "authLoginSubmit": "Sign in",
+  "authLoginForgotPassword": "Forgot your password?",
+  "authSignupTitle": "Create account",
+  "authSignupSubtitle": "One account for listing and renting",
+  "authSignupSubmit": "Create account",
+  "authOr": "or",
+  "authOtpTitle": "Verify your email",
+  "authOtpSubtitle": "We sent a 6-digit code to {email}",
+  "@authOtpSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authOtpFieldSemanticLabel": "6-digit verification code",
+  "authOtpVerifySubmit": "Verify",
+  "authOtpSuccess": "Your email is verified. You can now sign in.",
+  "authOtpResend": "Resend code",
+  "authOtpResendIn": "Resend in {seconds}s",
+  "@authOtpResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "authOtpAttemptsRemaining": "{count} attempts remaining",
+  "@authOtpAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "authOtpLocked": "Too many incorrect attempts. Request a new code to try again.",
+  "authOtpRequestNewCode": "Request a new code",
+  "authOtpCodeRequired": "Enter the verification code",
+  "authOtpCodeLength": "The code must be 6 digits",
+  "authForgotPasswordTitle": "Forgot your password?",
+  "authForgotPasswordSubmit": "Send reset code",
+  "authForgotPasswordCheckEmail": "We sent a reset code to {email}",
+  "@authForgotPasswordCheckEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authResetPasswordTitle": "Reset your password",
+  "authResetPasswordSubmit": "Reset password",
+  "authResetPasswordSuccess": "Your password has been reset. Sign in with your new password.",
+  "authGoogleButton": "Continue with Google",
+  "authNameRequired": "Enter your name",
+  "authInvalidEmail": "Enter a valid email address",
+  "authInvalidPhone": "Phone number must be 11 digits",
+  "authPasswordRequired": "Enter your password",
+  "authPasswordTooShort": "Password must be at least 8 characters",
+  "authPasswordTooLong": "Password must be at most 20 characters",
+  "authPasswordStrength": "Use characters with a capital letter, a number and one of @ $ ! % * ? &",
+  "authCurrentPasswordRequired": "Enter your current password",
+  "authBackToLogin": "Back to sign in",
+  "profileTitle": "Profile",
+  "profileChangePassword": "Change password",
+  "profileSignOut": "Sign out",
+  "changePasswordTitle": "Change password",
+  "changePasswordSubmit": "Update password",
+  "changePasswordSuccess": "Password changed. Please sign in again.",
+  "activeRoleLabel": "Active role",
+  "roleTenant": "Tenant",
+  "roleLandlord": "Landlord",
   "loading": "Loading...",
   "emptyState": "Nothing here yet"
 }

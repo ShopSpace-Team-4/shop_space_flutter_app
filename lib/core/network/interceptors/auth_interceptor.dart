@@ -11,8 +11,8 @@ class AuthInterceptor extends Interceptor {
   static const List<String> _denylist = [
     'auth/login',
     'auth/signup',
-    'auth/refresh',
-    'auth/verify-otp',
+    'auth/refresh-token',
+    'auth/verify',
     'auth/resend-otp',
     'auth/forgot-password',
     'auth/reset-password',

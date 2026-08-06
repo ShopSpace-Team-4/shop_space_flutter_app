@@ -113,8 +113,11 @@
 
 ## Testing & quality gates (a feature is not done until)
 
-- Every Cubit has `bloc_test` coverage for its core state transitions.
-- Critical cross-feature flows get an `integration_test`.
+- **New work ships WITHOUT new tests (approved 2026-08-06).** Do not write new
+  unit/cubit/widget/integration tests; ship features without test files.
+- Existing tests are never deleted and MUST stay green — fix failures caused by
+  refactors or API drift. `flutter test` / `dart run tool/quality.dart` still
+  gate every task.
 - Checked at all three breakpoints AND in both English and Arabic (RTL).
 - `flutter analyze` is clean.
 
