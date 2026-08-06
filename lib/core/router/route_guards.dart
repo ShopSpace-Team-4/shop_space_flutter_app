@@ -2,13 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
-/// Role identifiers, mirroring the backend `POST /users/me/roles` contract
-/// (`UserRepository.addRole`). Every account defaults to [tenant]; [landlord]
-/// is added on demand. Phase 1 +.
-abstract final class UserRole {
-  static const String tenant = 'tenant';
-  static const String landlord = 'landlord';
-}
+import '../../features/user/data/models/user_role.dart';
 
 /// Reads the current session and full role set for redirect guards.
 ///
@@ -36,7 +30,7 @@ class DefaultSessionReader implements SessionReader {
   bool get isAuthenticated => false;
 
   @override
-  Set<String> get roles => const {UserRole.tenant};
+  Set<String> get roles => {UserRole.tenant.name};
 }
 
 /// Redirects unauthenticated users to [signInPath].

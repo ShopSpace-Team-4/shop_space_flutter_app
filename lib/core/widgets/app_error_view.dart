@@ -35,6 +35,13 @@ class AppErrorView extends StatelessWidget {
         UnauthorizedFailure() => l10n.errorUnauthorized,
         ValidationFailure() => l10n.errorValidation,
         NetworkFailure() => l10n.errorNetwork,
+        EmailAlreadyRegistered() => l10n.errorEmailAlreadyRegistered,
+        InvalidOtp() => l10n.errorInvalidOtp,
+        OtpAttemptsExceeded() => l10n.errorOtpAttemptsExceeded,
+        InvalidCredentials() => l10n.errorInvalidCredentials,
+        EmailNotVerified() => l10n.errorEmailNotVerified,
+        GoogleSignInCancelled() => l10n.errorGoogleSignInCancelled,
+        RateLimited() => l10n.errorRateLimited,
       };
 
   @override

@@ -38,6 +38,21 @@ Removed sections: none
 Deferred TODOs: none
 -->
 
+<!--
+CONSTITUTION SYNC IMPACT REPORT
+Version change: 1.2.0 -> 2.0.0 (MAJOR)
+Modified principles:
+  - 7. Testing & Quality: removed the mandatory per-Cubit `bloc_test`,
+    per-screen widget-test, and cross-feature `integration_test`
+    requirements (approved amendment, 2026-08-06). New work ships without
+    new tests; the existing test suite must remain green and
+    `flutter analyze` must stay clean. The manual breakpoint/RTL check is
+    unchanged.
+Added sections: none
+Removed sections: none
+Deferred TODOs: none
+-->
+
 # ShopSpace Constitution
 
 ## 1. Tech Stack (Locked — No Substitutions)
@@ -171,10 +186,13 @@ Hard rules:
 
 ## 7. Testing & Quality
 
-- Every Cubit has `bloc_test` coverage for its core state transitions
-  before its feature is considered done.
-- Critical cross-feature user flows get an `integration_test` once the
-  phases they span are complete.
+- **New work ships WITHOUT new tests (approved amendment, 2026-08-06).**
+  Do not write unit/cubit/widget/integration tests for new features.
+- The existing test suite stays in place and MUST remain green: fix
+  failures caused by refactors or API drift; never delete existing
+  coverage.
+- Critical cross-feature flows are verified by manual smoke testing, not
+  by new automated `integration_test`s.
 - A feature is not done until it has been checked at all three
   breakpoints (compact/medium/expanded) and in both English and Arabic
   (RTL layout).
@@ -205,4 +223,4 @@ documentation, approval, and a migration plan.
 - Compliance: every spec, plan, and code review MUST verify adherence to
   this document; any deviation MUST be flagged and approved before merge.
 
-**Version**: 1.2.0 | **Ratified**: 2026-08-05 | **Last Amended**: 2026-08-05
+**Version**: 2.0.0 | **Ratified**: 2026-08-05 | **Last Amended**: 2026-08-06

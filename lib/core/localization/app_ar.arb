@@ -21,6 +21,85 @@
   "errorServer": "حدث خطأ من طرفنا. يرجى المحاولة لاحقاً.",
   "errorUnauthorized": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
   "errorValidation": "بعض البيانات المدخلة غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.",
+  "errorEmailAlreadyRegistered": "يوجد حساب مسجل بهذا البريد الإلكتروني بالفعل. جرّب تسجيل الدخول بدلاً من ذلك.",
+  "errorInvalidOtp": "الرمز الذي أدخلته غير صحيح أو منتهي الصلاحية. حاول مرة أخرى.",
+  "errorOtpAttemptsExceeded": "عدد كبير جداً من المحاولات الخاطئة. اطلب رمزاً جديداً للمحاولة مرة أخرى.",
+  "errorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  "errorEmailNotVerified": "لم يتم التحقق من هذا الحساب بعد. أدخل الرمز الذي أرسلناه إلى بريدك الإلكتروني لتفعيله.",
+  "errorGoogleSignInCancelled": "تم إلغاء تسجيل الدخول عبر Google.",
+  "errorRateLimited": "تحاول كثيراً. يرجى الانتظار قليلاً ثم المحاولة مرة أخرى.",
+  "authEmailLabel": "البريد الإلكتروني",
+  "authPasswordLabel": "كلمة المرور",
+  "authFirstNameLabel": "الاسم الأول",
+  "authLastNameLabel": "اسم العائلة",
+  "authPhoneLabel": "رقم الهاتف",
+  "authCurrentPasswordLabel": "كلمة المرور الحالية",
+  "authNewPasswordLabel": "كلمة المرور الجديدة",
+  "authLoginTitle": "مرحباً بعودتك",
+  "authLoginSubmit": "تسجيل الدخول",
+  "authLoginForgotPassword": "هل نسيت كلمة المرور؟",
+  "authLoginNoAccount": "ليس لديك حساب؟",
+  "authLoginCreateAccount": "إنشاء حساب",
+  "authSignupTitle": "أنشئ حسابك",
+  "authSignupSubmit": "إنشاء حساب",
+  "authSignupHaveAccount": "لديك حساب بالفعل؟",
+  "authSignupSignIn": "تسجيل الدخول",
+  "authOtpTitle": "تحقق من بريدك الإلكتروني",
+  "authOtpSubtitle": "أرسلنا رمزاً من 6 أرقام إلى {email}",
+  "@authOtpSubtitle": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "authOtpFieldSemanticLabel": "رمز التحقق من 6 أرقام",
+  "authOtpVerifySubmit": "تحقق",
+  "authOtpResend": "إعادة إرسال الرمز",
+  "authOtpResendIn": "أعد الإرسال خلال {seconds} ث",
+  "@authOtpResendIn": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "authOtpAttemptsRemaining": "متبقي {count} محاولات",
+  "@authOtpAttemptsRemaining": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "authOtpLocked": "عدد كبير جداً من المحاولات الخاطئة. اطلب رمزاً جديداً للمحاولة مرة أخرى.",
+  "authOtpRequestNewCode": "اطلب رمزاً جديداً",
+  "authOtpCodeRequired": "أدخل رمز التحقق",
+  "authOtpCodeLength": "يجب أن يتكون الرمز من 6 أرقام",
+  "authForgotPasswordTitle": "هل نسيت كلمة المرور؟",
+  "authForgotPasswordSubmit": "إرسال رمز إعادة التعيين",
+  "authForgotPasswordCheckEmail": "أرسلنا رمز إعادة التعيين إلى {email}",
+  "@authForgotPasswordCheckEmail": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "authResetPasswordTitle": "إعادة تعيين كلمة المرور",
+  "authResetPasswordSubmit": "إعادة تعيين كلمة المرور",
+  "authResetPasswordSuccess": "تمت إعادة تعيين كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.",
+  "authGoogleButton": "المتابعة عبر Google",
+  "authNameRequired": "أدخل اسمك",
+  "authInvalidEmail": "أدخل بريداً إلكترونياً صحيحاً",
+  "authInvalidPhone": "أدخل رقم هاتف صحيحاً",
+  "authPasswordRequired": "أدخل كلمة المرور",
+  "authPasswordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "authPasswordRequiresLetter": "يجب أن تحتوي كلمة المرور على حرف",
+  "authPasswordRequiresDigit": "يجب أن تحتوي كلمة المرور على رقم",
+  "authCurrentPasswordRequired": "أدخل كلمة المرور الحالية",
+  "authBackToLogin": "العودة إلى تسجيل الدخول",
+  "profileTitle": "الملف الشخصي",
+  "profileChangePassword": "تغيير كلمة المرور",
+  "profileSignOut": "تسجيل الخروج",
+  "changePasswordTitle": "تغيير كلمة المرور",
+  "changePasswordSubmit": "تحديث كلمة المرور",
+  "changePasswordSuccess": "تم تغيير كلمة المرور. يرجى تسجيل الدخول مرة أخرى.",
+  "activeRoleLabel": "الدور النشط",
+  "roleTenant": "مستأجر",
+  "roleLandlord": "مالك",
   "loading": "جارٍ التحميل...",
   "emptyState": "لا يوجد شيء هنا بعد"
 }

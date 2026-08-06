@@ -77,6 +77,198 @@ class AppLocalizationsEn extends AppLocalizations {
       'Some of the details you entered look incorrect. Please check and try again.';
 
   @override
+  String get errorEmailAlreadyRegistered =>
+      'An account with this email already exists. Try signing in instead.';
+
+  @override
+  String get errorInvalidOtp =>
+      'The code you entered is incorrect or has expired. Try again.';
+
+  @override
+  String get errorOtpAttemptsExceeded =>
+      'Too many incorrect attempts. Request a new code to try again.';
+
+  @override
+  String get errorInvalidCredentials => 'The email or password is incorrect.';
+
+  @override
+  String get errorEmailNotVerified =>
+      'This account isn\'t verified yet. Enter the code we sent to your email to activate it.';
+
+  @override
+  String get errorGoogleSignInCancelled => 'Sign-in with Google was cancelled.';
+
+  @override
+  String get errorRateLimited =>
+      'You\'re trying too often. Please wait a moment and try again.';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authPasswordLabel => 'Password';
+
+  @override
+  String get authFirstNameLabel => 'First name';
+
+  @override
+  String get authLastNameLabel => 'Last name';
+
+  @override
+  String get authPhoneLabel => 'Phone number';
+
+  @override
+  String get authCurrentPasswordLabel => 'Current password';
+
+  @override
+  String get authNewPasswordLabel => 'New password';
+
+  @override
+  String get authLoginTitle => 'Welcome back';
+
+  @override
+  String get authLoginSubmit => 'Sign in';
+
+  @override
+  String get authLoginForgotPassword => 'Forgot your password?';
+
+  @override
+  String get authLoginNoAccount => 'Don\'t have an account?';
+
+  @override
+  String get authLoginCreateAccount => 'Create account';
+
+  @override
+  String get authSignupTitle => 'Create your account';
+
+  @override
+  String get authSignupSubmit => 'Create account';
+
+  @override
+  String get authSignupHaveAccount => 'Already have an account?';
+
+  @override
+  String get authSignupSignIn => 'Sign in';
+
+  @override
+  String get authOtpTitle => 'Verify your email';
+
+  @override
+  String authOtpSubtitle(String email) {
+    return 'We sent a 6-digit code to $email';
+  }
+
+  @override
+  String get authOtpFieldSemanticLabel => '6-digit verification code';
+
+  @override
+  String get authOtpVerifySubmit => 'Verify';
+
+  @override
+  String get authOtpResend => 'Resend code';
+
+  @override
+  String authOtpResendIn(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
+
+  @override
+  String authOtpAttemptsRemaining(int count) {
+    return '$count attempts remaining';
+  }
+
+  @override
+  String get authOtpLocked =>
+      'Too many incorrect attempts. Request a new code to try again.';
+
+  @override
+  String get authOtpRequestNewCode => 'Request a new code';
+
+  @override
+  String get authOtpCodeRequired => 'Enter the verification code';
+
+  @override
+  String get authOtpCodeLength => 'The code must be 6 digits';
+
+  @override
+  String get authForgotPasswordTitle => 'Forgot your password?';
+
+  @override
+  String get authForgotPasswordSubmit => 'Send reset code';
+
+  @override
+  String authForgotPasswordCheckEmail(String email) {
+    return 'We sent a reset code to $email';
+  }
+
+  @override
+  String get authResetPasswordTitle => 'Reset your password';
+
+  @override
+  String get authResetPasswordSubmit => 'Reset password';
+
+  @override
+  String get authResetPasswordSuccess =>
+      'Your password has been reset. Sign in with your new password.';
+
+  @override
+  String get authGoogleButton => 'Continue with Google';
+
+  @override
+  String get authNameRequired => 'Enter your name';
+
+  @override
+  String get authInvalidEmail => 'Enter a valid email address';
+
+  @override
+  String get authInvalidPhone => 'Enter a valid phone number';
+
+  @override
+  String get authPasswordRequired => 'Enter your password';
+
+  @override
+  String get authPasswordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get authPasswordRequiresLetter => 'Password must include a letter';
+
+  @override
+  String get authPasswordRequiresDigit => 'Password must include a number';
+
+  @override
+  String get authCurrentPasswordRequired => 'Enter your current password';
+
+  @override
+  String get authBackToLogin => 'Back to sign in';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profileChangePassword => 'Change password';
+
+  @override
+  String get profileSignOut => 'Sign out';
+
+  @override
+  String get changePasswordTitle => 'Change password';
+
+  @override
+  String get changePasswordSubmit => 'Update password';
+
+  @override
+  String get changePasswordSuccess => 'Password changed. Please sign in again.';
+
+  @override
+  String get activeRoleLabel => 'Active role';
+
+  @override
+  String get roleTenant => 'Tenant';
+
+  @override
+  String get roleLandlord => 'Landlord';
+
+  @override
   String get loading => 'Loading...';
 
   @override

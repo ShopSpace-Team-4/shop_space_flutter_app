@@ -60,7 +60,8 @@ class SessionInterceptor extends Interceptor {
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode != 401 ||
-        err.requestOptions.extra[_retriedKey] == true) {
+        err.requestOptions.extra[_retriedKey] == true ||
+        _isRefreshRequest(err.requestOptions.path)) {
       handler.next(err);
       return;
     }
@@ -83,5 +84,13 @@ class SessionInterceptor extends Interceptor {
     } catch (_) {
       handler.next(err);
     }
+  }
+
+  /// The refresh call itself must never trigger another refresh when it 401s
+  /// (expired refresh token) — that 401 is the force-logout signal (FR-006).
+  bool _isRefreshRequest(String path) {
+    final String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    return normalized == 'auth/refresh-token' ||
+        normalized.endsWith('auth/refresh-token');
   }
 }
