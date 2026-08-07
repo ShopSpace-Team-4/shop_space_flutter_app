@@ -76,12 +76,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session has expired. Please sign in again.';
 
   @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
   String get errorValidation =>
       'Some of the details you entered look incorrect. Please check and try again.';
 
   @override
   String get errorEmailAlreadyRegistered =>
       'An account with this email already exists. Try signing in instead.';
+
+  @override
+  String get errorPhoneAlreadyRegistered =>
+      'An account with this phone already exists. Try signing in instead.';
 
   @override
   String get errorInvalidOtp =>
@@ -162,7 +169,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authOtpFieldSemanticLabel => '6-digit verification code';
 
   @override
-  String get authOtpVerifySubmit => 'Verify';
+  String get authOtpVerifySubmit => 'Verify code';
 
   @override
   String get authOtpSuccess => 'Your email is verified. You can now sign in.';
@@ -192,6 +199,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authOtpCodeLength => 'The code must be 6 digits';
+
+  @override
+  String get authOtpEmailHint =>
+      'Check your email to find your code. It\'s valid for 10 minutes.';
+
+  @override
+  String get authOtpEnterCode => 'Enter verification code';
 
   @override
   String get authForgotPasswordTitle => 'Forgot your password?';
@@ -237,7 +251,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authPasswordStrength =>
-      'Use characters with a capital letter, a number and one of @ \$ ! % * ? &';
+      'Needs a capital letter, a number, and one of @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'Enter your current password';

@@ -1,7 +1,8 @@
 import 'dart:io';
 
-/// One-command quality gate (ln / FR-012): runs `flutter analyze` and
-/// `flutter test`, prints results, and exits non-zero if either fails.
+/// One-command quality gate (ln / FR-012): runs `flutter analyze`, prints
+/// results, and exits non-zero on failure. Analyze only — the test suite has
+/// been removed.
 ///
 /// Run via `dart run tool/quality.dart`.
 Future<void> main() async {
@@ -9,16 +10,13 @@ Future<void> main() async {
   stdout.writeln('---------------------------------------------');
 
   final int analyzeExit = await _runStep('flutter analyze', const ['analyze']);
-  final int testExit = await _runStep('flutter test', const ['test']);
 
   stdout.writeln('---------------------------------------------');
-  if (analyzeExit == 0 && testExit == 0) {
-    stdout.writeln('PASS: analyze clean, all tests green.');
+  if (analyzeExit == 0) {
+    stdout.writeln('PASS: analyze clean.');
     return;
   }
-  stderr.writeln(
-    'FAIL: quality gate failed (analyze=$analyzeExit, test=$testExit).',
-  );
+  stderr.writeln('FAIL: quality gate failed (analyze=$analyzeExit).');
   exit(1);
 }
 

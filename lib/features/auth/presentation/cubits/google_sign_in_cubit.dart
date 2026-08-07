@@ -28,10 +28,10 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
     required AuthGoogleService googleAuth,
     required AuthSessionCubit session,
     required AppLocalizations l10n,
-  })  : _googleAuth = googleAuth,
-        _session = session,
-        _l10n = l10n,
-        super(const GoogleSignInState());
+  }) : _googleAuth = googleAuth,
+       _session = session,
+       _l10n = l10n,
+       super(const GoogleSignInState());
 
   final AuthGoogleService _googleAuth;
   final AuthSessionCubit _session;
@@ -54,12 +54,16 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
       // (contract `contracts/google-signin-flow.md`).
       emit(state.copyWith(isSubmitting: false));
     } on Failure catch (failure) {
-      emit(state.copyWith(
-        isSubmitting: false,
-        errorMessage: failureMessage(_l10n, failure),
-      ));
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          errorMessage: failureMessage(_l10n, failure),
+        ),
+      );
     } catch (_) {
-      emit(state.copyWith(isSubmitting: false, errorMessage: _l10n.errorServer));
+      emit(
+        state.copyWith(isSubmitting: false, errorMessage: _l10n.errorServer),
+      );
     }
   }
 }

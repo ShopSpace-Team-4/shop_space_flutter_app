@@ -20,6 +20,13 @@ class ServerFailure extends Failure {
   const ServerFailure(super.messageKey);
 }
 
+/// Fallback for a non-2xx response the pipeline couldn't attribute to a known
+/// business code (any unrecognized 4xx). Surfaces a neutral, localized message
+/// instead of a misleading validation prompt.
+class GenericFailure extends Failure {
+  const GenericFailure(super.messageKey);
+}
+
 class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure(super.messageKey);
 }
@@ -30,6 +37,10 @@ class ValidationFailure extends Failure {
 
 class EmailAlreadyRegistered extends Failure {
   const EmailAlreadyRegistered(super.messageKey);
+}
+
+class PhoneAlreadyRegistered extends Failure {
+  const PhoneAlreadyRegistered(super.messageKey);
 }
 
 class InvalidOtp extends Failure {

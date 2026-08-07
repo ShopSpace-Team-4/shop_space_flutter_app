@@ -49,7 +49,7 @@ description: "Task list for Phase 1 — Authentication, Verification & Roles (sp
 - **Flutter is at `C:\flutter` (3.35.7 / Dart 3.9.2).** Bare `C:\dart-sdk` on PATH is a DIFFERENT SDK (opencode's LSP) — never use it for tooling; always `flutter …` / `dart run …` from `C:\flutter`.
 - After dep edits: `flutter pub get`. After freezed/injectable/json edits: `dart run build_runner build -d`. After ARB edits: `flutter gen-l10n` (l10n auto-generates on build; import `package:flutter_gen/gen_l10n/app_localizations.dart`).
 - QA gate: `dart run tool/quality.dart` = `flutter analyze` + the existing test suite; exits non-zero on any failure.
-- Dev run: `flutter run --dart-define=ENV=dev`; API base `http://localhost:3000`, path prefix `/api/v1`, envelope `{ message, status, data }` unwrapped exactly once in the dio layer.
+- Dev run: `flutter run` (default env) or `flutter run --dart-define=APP_ENV=prod`; API base `https://shopspace-backend-production.up.railway.app`, path prefix `/api/v1`, envelope `{ message, status, data }` unwrapped exactly once in the dio layer.
 - Token storage keys: `auth.accessToken` / `auth.refreshToken` (`flutter_secure_storage`); active-role pref key: `activeRole` (`shared_preferences`).
 - Version pins (do NOT bump — newer majors need Flutter ≥3.38 / Dart ≥3.10): `go_router` 17.2.3, `injectable_generator` 3.0.2, `build_runner` 2.15.1, `image_picker` 1.2.2.
 - Figma `shop-space-ui` is the design source; pull tokens from `core/theme/`; scale values with `flutter_screenutil` (`.sp/.w/.h/.r`) and pick layout with Material 3 breakpoints (compact <600dp, medium 600–839dp, expanded ≥840dp) via `AppAdaptiveShell`.

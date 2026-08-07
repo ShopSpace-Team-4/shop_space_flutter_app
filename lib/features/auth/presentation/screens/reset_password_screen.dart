@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -31,10 +32,9 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _otpController = TextEditingController();
+  final PinInputController _otpController = PinInputController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FocusNode _otpFocusNode = FocusNode();
 
   late final String _email;
   ResetPasswordCubit? _cubit;
@@ -75,7 +75,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _otpController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _otpFocusNode.dispose();
     _cubit?.close();
     super.dispose();
   }
@@ -248,7 +247,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           const SizedBox(height: AppSpacing.lg),
           OtpInput(
             controller: _otpController,
-            focusNode: _otpFocusNode,
             semanticsLabel: l10n.authOtpFieldSemanticLabel,
             enabled: !locked && !state.isSubmitting,
             onChanged: (_) => setState(() {}),

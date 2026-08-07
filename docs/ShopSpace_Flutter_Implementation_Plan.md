@@ -115,7 +115,7 @@ Target range: **phones + tablets**, portrait and landscape, with genuinely diffe
 
 ### 3.1 Auth & User API — FINALIZED (drives Phase 1)
 
-Base URL: `http://localhost:3000` (dev), prefix `/api/v1`. All responses: `{ message, status, data }`.
+Base URL: `https://shopspace-backend-production.up.railway.app` (dev/staging/prod), prefix `/api/v1`. All responses: `{ message, status, data }`.
 
 **Auth (`/auth`)**
 | Endpoint | Method | Purpose |
@@ -171,7 +171,7 @@ Each phase is scoped to be an independent spec: goal, screens (Figma frame names
 - Localization scaffolding: EN + AR files, locale switching, RTL verified on a sample screen at all three breakpoints.
 - Secure token storage wrapper.
 - Global error/loading/empty-state widgets (breakpoint-aware).
-- Environment config (dev/staging/prod via `--dart-define`, matching `http://localhost:3000/api/v1` for dev).
+- Environment config (dev/staging/prod via `--dart-define=APP_ENV`, base `https://shopspace-backend-production.up.railway.app`).
 - Lint rules, basic CI (`flutter analyze` / `flutter test`).
 
 **Depends on:** Nothing (first phase).

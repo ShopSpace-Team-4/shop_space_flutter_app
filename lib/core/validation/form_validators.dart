@@ -38,7 +38,9 @@ class FormValidators {
 
   /// Full strength rule: 8-20 chars, ≥1 uppercase, ≥1 lowercase, ≥1 digit,
   /// ≥1 special char from `@$!%*?&` only (Q2/D4). Matches the backend zod
-  /// rule exactly. Used on signup and change-password.
+  /// rule exactly. Used on login, signup and change-password; a password
+  /// failing the rule would be rejected by the backend anyway, so no legit
+  /// user is blocked.
   String? password(String? value) {
     if (value == null || value.isEmpty) {
       return l10n.authPasswordRequired;
@@ -51,15 +53,6 @@ class FormValidators {
     }
     if (!_passwordPattern.hasMatch(value)) {
       return l10n.authPasswordStrength;
-    }
-    return null;
-  }
-
-  /// Non-empty only (login and reset-password use the strength rule on the
-  /// newly chosen password, never on the existing one).
-  String? passwordRequired(String? value) {
-    if (value == null || value.isEmpty) {
-      return l10n.authPasswordRequired;
     }
     return null;
   }

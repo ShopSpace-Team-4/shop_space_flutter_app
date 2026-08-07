@@ -8,7 +8,7 @@ Local run + validation for the Phase 0 foundation (theme, adaptive shell, l10n, 
 
 - Flutter stable 3.35.7 at `C:\flutter`. **Use `flutter` for all Dart tooling** — bare `C:\dart-sdk` is a different SDK (AGENTS.md).
 - An Android emulator or physical device / iOS simulator (target platforms: iOS + Android; expanded layout verified on 10"+ tablets).
-- Local backend for network-path checks: dev base is `http://localhost:3000` (SC-006). Not required to boot the app — offline states are part of the foundation.
+- Backend for network-path checks: `https://shopspace-backend-production.up.railway.app` (SC-006); network-pipeline unit tests stub the base URL locally. Not required to boot the app — offline states are part of the foundation.
 - Figma `shop-space-ui` connection via Composio (only needed when re-pulling tokens; not needed for run).
 
 ## Environment selection (SC-006)

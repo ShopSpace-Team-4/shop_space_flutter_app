@@ -75,6 +75,7 @@ abstract final class AppTypography {
     fontWeight: FontWeight.w500,
     height: 15.4 / 11,
     letterSpacing: 0.5,
+    
   );
 
   static const TextStyle mono = TextStyle(

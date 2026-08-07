@@ -3,20 +3,18 @@
 ## Repository status
 
 - **Flutter scaffold exists.** Phase 0 (project foundation) is complete:
-  `pubspec.yaml`, `lib/` (feature-first layout + `core/`), and tests
-  (unit/cubit/widget/integration) are in place. `flutter analyze` /
-  `flutter test` are allowed and must stay green. See
+  `pubspec.yaml`, `lib/` (feature-first layout + `core/`). The `test/` tree
+  has been removed; the quality gate is `flutter analyze` only. See
   `specs/001-phase0-project-foundation/tasks.md` for Phase 0 status.
-- Quality gate: `dart run tool/quality.dart` runs `flutter analyze` + the
-  full `flutter test` suite (incl. `test/integration_test/`) and exits
-  non-zero on any failure.
+- Quality gate: `dart run tool/quality.dart` runs `flutter analyze` (analyze
+  only — the test suite has been removed) and exits non-zero on any failure.
 - Two files govern all work — read them before implementing anything:
   - `.specify/memory/constitution.md` — non-negotiable engineering rules
     (HOW things are built; versioned v1.2.0).
   - `ShopSpace_Flutter_Implementation_Plan.md` — the phased plan (WHAT is
     built; Phase 0–6, in order). Contains the finalized Auth & User API
-    (`/api/v1`, envelope `{ message, status, data }`, dev base
-    `http://localhost:3000`).
+    (`/api/v1`, envelope `{ message, status, data }`, base
+    `https://shopspace-backend-production.up.railway.app` for dev/staging/prod).
 
 ## Process
 
@@ -39,8 +37,6 @@
   `cached_network_image`. Links: `url_launcher`. Sign-in: `google_sign_in`
   (ID token for `/auth/google`). Forms: manual `Form` + custom validators —
   NO external form-validation package.
-- Tests: `bloc_test` + `mocktail` for Cubits, `integration_test` for
-  cross-feature flows.
 - `flutter_screenutil` scales individual values (`.sp`/`.w`/`.h`/`.r`) against
   the Figma reference frame; Material 3 window size classes decide layout
   structure (compact <600dp, medium 600–839dp, expanded ≥840dp). They have
@@ -111,15 +107,14 @@
 - Advisor chat is request → full response, no streaming.
 - Signup always routes to OTP verification, never straight to login.
 
-## Testing & quality gates (a feature is not done until)
+## Quality gate (analyze only)
 
-- **New work ships WITHOUT new tests (approved 2026-08-06).** Do not write new
-  unit/cubit/widget/integration tests; ship features without test files.
-- Existing tests are never deleted and MUST stay green — fix failures caused by
-  refactors or API drift. `flutter test` / `dart run tool/quality.dart` still
-  gate every task.
+- **The test suite has been removed (approved 2026-08-06).** Do not write new
+  unit/cubit/widget/integration tests; ship features without test files. This
+  is the permanent default.
+- The gate is `dart run tool/quality.dart` → `flutter analyze` only; it must
+  stay clean on every task.
 - Checked at all three breakpoints AND in both English and Arabic (RTL).
-- `flutter analyze` is clean.
 
 ## Toolchain gotchas
 

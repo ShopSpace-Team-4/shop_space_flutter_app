@@ -75,12 +75,19 @@ class AppLocalizationsAr extends AppLocalizations {
       'انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.';
 
   @override
+  String get errorGeneric => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get errorValidation =>
       'بعض البيانات المدخلة غير صحيحة. يرجى التحقق والمحاولة مرة أخرى.';
 
   @override
   String get errorEmailAlreadyRegistered =>
       'يوجد حساب مسجل بهذا البريد الإلكتروني بالفعل. جرّب تسجيل الدخول بدلاً من ذلك.';
+
+  @override
+  String get errorPhoneAlreadyRegistered =>
+      'يوجد حساب مسجل بهذا الرقم بالفعل. جرّب تسجيل الدخول بدلاً من ذلك.';
 
   @override
   String get errorInvalidOtp =>
@@ -162,7 +169,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authOtpFieldSemanticLabel => 'رمز التحقق من 6 أرقام';
 
   @override
-  String get authOtpVerifySubmit => 'تحقق';
+  String get authOtpVerifySubmit => 'تحقق من الرمز';
 
   @override
   String get authOtpSuccess =>
@@ -193,6 +200,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authOtpCodeLength => 'يجب أن يتكون الرمز من 6 أرقام';
+
+  @override
+  String get authOtpEmailHint =>
+      'تحقق من بريدك الإلكتروني للعثور على رمزك. الرمز صالح لمدة 10 دقائق.';
+
+  @override
+  String get authOtpEnterCode => 'أدخل رمز التحقق';
 
   @override
   String get authForgotPasswordTitle => 'هل نسيت كلمة المرور؟';
@@ -239,7 +253,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get authPasswordStrength =>
-      'استخدم حرف كبير ورقم وأحد الرموز @ \$ ! % * ? &';
+      'يلزم حرف كبير ورقم وأحد الرموز @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'أدخل كلمة المرور الحالية';

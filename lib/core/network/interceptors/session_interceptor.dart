@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../storage/token_storage.dart';
 import '../session_controller.dart';
 import '../token_refresher.dart';
+import '../unauthenticated_endpoints.dart';
 
 /// Single-flight 401 handling (contract `contracts/network-pipeline.md`):
 ///
@@ -61,6 +62,7 @@ class SessionInterceptor extends Interceptor {
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode != 401 ||
         err.requestOptions.extra[_retriedKey] == true ||
+        UnauthenticatedEndpoints.contains(err.requestOptions.path) ||
         _isRefreshRequest(err.requestOptions.path)) {
       handler.next(err);
       return;

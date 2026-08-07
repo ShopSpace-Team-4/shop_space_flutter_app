@@ -13,9 +13,12 @@ class AppEnv {
   final bool isLoggingEnabled;
   final bool isRelease;
 
-  static const String _devBaseUrl = 'http://localhost:3000';
-  static const String _stagingBaseUrl = 'https://staging.shopspace.app';
-  static const String _prodBaseUrl = 'https://api.shopspace.app';
+  static const String _devBaseUrl =
+      'https://shopspace-backend-production.up.railway.app';
+  static const String _stagingBaseUrl =
+      'https://shopspace-backend-production.up.railway.app';
+  static const String _prodBaseUrl =
+      'https://shopspace-backend-production.up.railway.app';
 
   static const AppEnv dev = AppEnv(
     name: AppEnvironment.dev,

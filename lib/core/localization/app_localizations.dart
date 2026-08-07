@@ -224,6 +224,12 @@ abstract class AppLocalizations {
   /// **'Your session has expired. Please sign in again.'**
   String get errorUnauthorized;
 
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorGeneric;
+
   /// No description provided for @errorValidation.
   ///
   /// In en, this message translates to:
@@ -235,6 +241,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An account with this email already exists. Try signing in instead.'**
   String get errorEmailAlreadyRegistered;
+
+  /// No description provided for @errorPhoneAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this phone already exists. Try signing in instead.'**
+  String get errorPhoneAlreadyRegistered;
 
   /// No description provided for @errorInvalidOtp.
   ///
@@ -383,7 +395,7 @@ abstract class AppLocalizations {
   /// No description provided for @authOtpVerifySubmit.
   ///
   /// In en, this message translates to:
-  /// **'Verify'**
+  /// **'Verify code'**
   String get authOtpVerifySubmit;
 
   /// No description provided for @authOtpSuccess.
@@ -433,6 +445,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The code must be 6 digits'**
   String get authOtpCodeLength;
+
+  /// No description provided for @authOtpEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email to find your code. It\'s valid for 10 minutes.'**
+  String get authOtpEmailHint;
+
+  /// No description provided for @authOtpEnterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter verification code'**
+  String get authOtpEnterCode;
 
   /// No description provided for @authForgotPasswordTitle.
   ///
@@ -515,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @authPasswordStrength.
   ///
   /// In en, this message translates to:
-  /// **'Use characters with a capital letter, a number and one of @ \$ ! % * ? &'**
+  /// **'Needs a capital letter, a number, and one of @ \$ ! % * ? &'**
   String get authPasswordStrength;
 
   /// No description provided for @authCurrentPasswordRequired.

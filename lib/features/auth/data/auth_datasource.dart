@@ -24,7 +24,7 @@ abstract class AuthDataSource {
 
   Future<void> verifyOtp(OtpVerificationRequest request);
 
-  Future<bool> resendOtp(ResendOtpRequest request);
+  Future<void> resendOtp(ResendOtpRequest request);
 
   Future<void> logout();
 
@@ -68,12 +68,9 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
 
   @override
-  Future<bool> resendOtp(ResendOtpRequest request) async {
-    final Response<dynamic> response = await _request<Response<dynamic>>(
-      () => _dio.post<dynamic>('/auth/resend-otp', data: request.toJson()),
-    );
-    return (response.data as Map<String, dynamic>)['otpDelivered'] as bool;
-  }
+  Future<void> resendOtp(ResendOtpRequest request) => _request<void>(
+        () => _dio.post<dynamic>('/auth/resend-otp', data: request.toJson()),
+      );
 
   @override
   Future<void> logout() async {

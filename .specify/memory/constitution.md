@@ -24,8 +24,8 @@ Modified principles:
     config, and ARB/JSON localization files under core/localization/
   - 2. Architecture: added core/env/ and core/utils/ to the cross-cutting
     list; documented the auth/ vs user/ session-boundary feature split
-  - 3. API Conventions: pinned the /api/v1 prefix and dev base URL
-    (http://localhost:3000)
+  - 3. API Conventions: pinned the /api/v1 prefix and base URL
+    (https://shopspace-backend-production.up.railway.app for all envs)
   - 5. Roles & Sessions (renumbered to 6): clarified the dual-role model,
     activeRole persistence, fresh-token replacement after addRole, and
     session clearing after password change
@@ -129,8 +129,8 @@ Hard rules:
 
 ## 3. API Conventions
 
-- All endpoints live under `/api/v1` (dev base URL:
-  `http://localhost:3000`).
+- All endpoints live under `/api/v1` (base URL:
+  `https://shopspace-backend-production.up.railway.app` for dev/staging/prod).
 - All backend responses follow the envelope `{ message, status, data }`.
   This is unwrapped once, centrally in the dio layer. No feature
   re-implements envelope parsing.

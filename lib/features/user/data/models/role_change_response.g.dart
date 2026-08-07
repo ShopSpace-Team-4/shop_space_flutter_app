@@ -9,8 +9,8 @@ part of 'role_change_response.dart';
 _RoleChangeResponse _$RoleChangeResponseFromJson(Map<String, dynamic> json) =>
     _RoleChangeResponse(
       tokens: AuthTokens.fromJson(json['tokens'] as Map<String, dynamic>),
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      profile: User.fromJson(json['profile'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RoleChangeResponseToJson(_RoleChangeResponse instance) =>
-    <String, dynamic>{'tokens': instance.tokens, 'user': instance.user};
+    <String, dynamic>{'tokens': instance.tokens, 'profile': instance.profile};
