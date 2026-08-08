@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RoleChangeResponse {
 
- AuthTokens get tokens; User get user;
+ AuthTokens get tokens; User get profile;
 /// Create a copy of RoleChangeResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $RoleChangeResponseCopyWith<RoleChangeResponse> get copyWith => _$RoleChangeResp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoleChangeResponse&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoleChangeResponse&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tokens,user);
+int get hashCode => Object.hash(runtimeType,tokens,profile);
 
 @override
 String toString() {
-  return 'RoleChangeResponse(tokens: $tokens, user: $user)';
+  return 'RoleChangeResponse(tokens: $tokens, profile: $profile)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $RoleChangeResponseCopyWith<$Res>  {
   factory $RoleChangeResponseCopyWith(RoleChangeResponse value, $Res Function(RoleChangeResponse) _then) = _$RoleChangeResponseCopyWithImpl;
 @useResult
 $Res call({
- AuthTokens tokens, User user
+ AuthTokens tokens, User profile
 });
 
 
-$AuthTokensCopyWith<$Res> get tokens;$UserCopyWith<$Res> get user;
+$AuthTokensCopyWith<$Res> get tokens;$UserCopyWith<$Res> get profile;
 
 }
 /// @nodoc
@@ -65,10 +65,10 @@ class _$RoleChangeResponseCopyWithImpl<$Res>
 
 /// Create a copy of RoleChangeResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tokens = null,Object? user = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tokens = null,Object? profile = null,}) {
   return _then(_self.copyWith(
 tokens: null == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
-as AuthTokens,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as AuthTokens,profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as User,
   ));
 }
@@ -85,10 +85,10 @@ $AuthTokensCopyWith<$Res> get tokens {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserCopyWith<$Res> get user {
+$UserCopyWith<$Res> get profile {
   
-  return $UserCopyWith<$Res>(_self.user, (value) {
-    return _then(_self.copyWith(user: value));
+  return $UserCopyWith<$Res>(_self.profile, (value) {
+    return _then(_self.copyWith(profile: value));
   });
 }
 }
@@ -172,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AuthTokens tokens,  User user)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AuthTokens tokens,  User profile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RoleChangeResponse() when $default != null:
-return $default(_that.tokens,_that.user);case _:
+return $default(_that.tokens,_that.profile);case _:
   return orElse();
 
 }
@@ -193,10 +193,10 @@ return $default(_that.tokens,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AuthTokens tokens,  User user)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AuthTokens tokens,  User profile)  $default,) {final _that = this;
 switch (_that) {
 case _RoleChangeResponse():
-return $default(_that.tokens,_that.user);case _:
+return $default(_that.tokens,_that.profile);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -213,10 +213,10 @@ return $default(_that.tokens,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AuthTokens tokens,  User user)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AuthTokens tokens,  User profile)?  $default,) {final _that = this;
 switch (_that) {
 case _RoleChangeResponse() when $default != null:
-return $default(_that.tokens,_that.user);case _:
+return $default(_that.tokens,_that.profile);case _:
   return null;
 
 }
@@ -228,11 +228,11 @@ return $default(_that.tokens,_that.user);case _:
 @JsonSerializable()
 
 class _RoleChangeResponse implements RoleChangeResponse {
-  const _RoleChangeResponse({required this.tokens, required this.user});
+  const _RoleChangeResponse({required this.tokens, required this.profile});
   factory _RoleChangeResponse.fromJson(Map<String, dynamic> json) => _$RoleChangeResponseFromJson(json);
 
 @override final  AuthTokens tokens;
-@override final  User user;
+@override final  User profile;
 
 /// Create a copy of RoleChangeResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoleChangeResponse&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoleChangeResponse&&(identical(other.tokens, tokens) || other.tokens == tokens)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tokens,user);
+int get hashCode => Object.hash(runtimeType,tokens,profile);
 
 @override
 String toString() {
-  return 'RoleChangeResponse(tokens: $tokens, user: $user)';
+  return 'RoleChangeResponse(tokens: $tokens, profile: $profile)';
 }
 
 
@@ -267,11 +267,11 @@ abstract mixin class _$RoleChangeResponseCopyWith<$Res> implements $RoleChangeRe
   factory _$RoleChangeResponseCopyWith(_RoleChangeResponse value, $Res Function(_RoleChangeResponse) _then) = __$RoleChangeResponseCopyWithImpl;
 @override @useResult
 $Res call({
- AuthTokens tokens, User user
+ AuthTokens tokens, User profile
 });
 
 
-@override $AuthTokensCopyWith<$Res> get tokens;@override $UserCopyWith<$Res> get user;
+@override $AuthTokensCopyWith<$Res> get tokens;@override $UserCopyWith<$Res> get profile;
 
 }
 /// @nodoc
@@ -284,10 +284,10 @@ class __$RoleChangeResponseCopyWithImpl<$Res>
 
 /// Create a copy of RoleChangeResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tokens = null,Object? user = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tokens = null,Object? profile = null,}) {
   return _then(_RoleChangeResponse(
 tokens: null == tokens ? _self.tokens : tokens // ignore: cast_nullable_to_non_nullable
-as AuthTokens,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as AuthTokens,profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as User,
   ));
 }
@@ -305,10 +305,10 @@ $AuthTokensCopyWith<$Res> get tokens {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserCopyWith<$Res> get user {
+$UserCopyWith<$Res> get profile {
   
-  return $UserCopyWith<$Res>(_self.user, (value) {
-    return _then(_self.copyWith(user: value));
+  return $UserCopyWith<$Res>(_self.profile, (value) {
+    return _then(_self.copyWith(profile: value));
   });
 }
 }

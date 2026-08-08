@@ -77,7 +77,7 @@ Named config per target environment, selected at build time via `--dart-define` 
 enum AppEnvironment { dev, staging, prod }
 class AppEnv {
   final AppEnvironment name;
-  final String apiBaseUrl;   // dev → http://localhost:3000
+  final String apiBaseUrl;   // all envs → https://shopspace-backend-production.up.railway.app
   final bool isLoggingEnabled; // dev/staging true, prod false
   final bool isRelease;
   const AppEnv({...});

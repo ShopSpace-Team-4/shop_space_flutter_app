@@ -4,11 +4,24 @@ This document is meant for the frontend team. It summarizes the Phase 1 backend 
 
 ## 1) Base URL
 
-- Development: http://localhost:3000
-- API prefix: /api/v1
+- Production: https://shopspace-backend-production.up.railway.app/api/v1
+- Development: https://shopspace-backend-production.up.railway.app/api/v1 (the Flutter app uses this Railway base for dev/staging/prod)
 
 Example:
-- http://localhost:3000/api/v1/auth/login
+- https://shopspace-backend-production.up.railway.app/api/v1/auth/login
+
+Frontend environment variable:
+
+```env
+VITE_API_URL=https://shopspace-backend-production.up.railway.app/api/v1
+```
+
+Quick endpoint reference:
+- `POST /auth/signup`
+- `POST /auth/login`
+- `POST /auth/verify`
+- `GET /users/me`
+- `PATCH /users/me/roles`
 
 ## 2) Response Format
 
@@ -295,7 +308,7 @@ Success response:
 }
 ```
 
-## 5) User Endpoints
+## 5 User Endpoints
 
 ### 5.1 Get Current User Profile
 

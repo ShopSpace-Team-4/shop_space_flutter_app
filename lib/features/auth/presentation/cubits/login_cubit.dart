@@ -18,6 +18,9 @@ abstract class LoginState with _$LoginState {
     @Default(false) bool isSubmitting,
     @Default(false) bool isSuccess,
     String? errorMessage,
+    /// Populated when login is rejected because the account isn't verified;
+    /// the form redirects to OTP verification for this email.
+    String? verificationEmail,
   }) = _LoginState;
 }
 
@@ -39,7 +42,11 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> submit({required String email, required String password}) async {
     if (state.isSubmitting) return;
-    emit(state.copyWith(isSubmitting: true, errorMessage: null));
+    emit(state.copyWith(
+      isSubmitting: true,
+      errorMessage: null,
+      verificationEmail: null,
+    ));
     try {
       final feature.AuthTokens tokens = await _repository.login(
         LoginRequest(email: email.trim(), password: password),
@@ -51,6 +58,11 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
       emit(state.copyWith(isSubmitting: false, isSuccess: true));
+    } on EmailNotVerified {
+      emit(state.copyWith(
+        isSubmitting: false,
+        verificationEmail: email.trim(),
+      ));
     } on Failure catch (failure) {
       emit(state.copyWith(
         isSubmitting: false,

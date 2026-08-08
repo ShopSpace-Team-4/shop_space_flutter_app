@@ -24,8 +24,8 @@ Modified principles:
     config, and ARB/JSON localization files under core/localization/
   - 2. Architecture: added core/env/ and core/utils/ to the cross-cutting
     list; documented the auth/ vs user/ session-boundary feature split
-  - 3. API Conventions: pinned the /api/v1 prefix and dev base URL
-    (http://localhost:3000)
+  - 3. API Conventions: pinned the /api/v1 prefix and base URL
+    (https://shopspace-backend-production.up.railway.app for all envs)
   - 5. Roles & Sessions (renumbered to 6): clarified the dual-role model,
     activeRole persistence, fresh-token replacement after addRole, and
     session clearing after password change
@@ -34,6 +34,25 @@ Modified principles:
 Added sections:
   - 5. Product Rules & Integrations (WhatsApp deep-link contact, no in-app
     chat, inquiries as logged records, advisor request -> full response)
+Removed sections: none
+Deferred TODOs: none
+-->
+
+<!--
+CONSTITUTION SYNC IMPACT REPORT
+Version change: 2.0.0 -> 2.1.0 (MINOR)
+Modified principles:
+  - 1. Tech Stack: clarified that the locked responsive stack is
+    MANDATORY for every UI component, not advisory — flutter_screenutil
+    scales every size/spacing/radius/icon/font and Material 3 size
+    classes pick layout structure.
+Added sections:
+  - 5. Responsive UI (renumbered 6): hard rule that every UI component
+    scales with screenutil (.h/.w/.sp/.r) AND lays out with flex widgets
+    (Expanded/Flexible/Spacer/Row/Column/Wrap). Theme tokens converted
+    from const values to scaling getters so typography/spacing/radius
+    auto-scale; raw pixel literals in build are banned. Layout structure
+    stays the exclusive job of breakpoints; screenutil never picks layout.
 Removed sections: none
 Deferred TODOs: none
 -->
@@ -83,7 +102,9 @@ following packages are locked in and MUST NOT be substituted:
   medium 600–839dp, expanded ≥840dp) for layout/structure switching
   (single vs two pane, bottom nav vs nav rail). These are two different
   jobs, not redundant tools: screenutil never decides layout structure,
-  and breakpoints never scale individual values. Use the hand-rolled
+  and breakpoints never scale individual values. Responsiveness is a
+  MANDATORY property of every UI component, not an afterthought — see §5.
+  Use the hand-rolled
   `AppAdaptiveShell` (Material `NavigationBar`/`NavigationRail`) for the
   nav-rail/bottom-nav shell pattern — `flutter_adaptive_scaffold` is NOT
   used: it is discontinued upstream (deprecated Feb 2025, archived
@@ -95,7 +116,7 @@ following packages are locked in and MUST NOT be substituted:
   `easy_localization` or `intl`/`flutter_localizations`, with ARB/JSON
   files under `core/localization/`. No hardcoded user-facing strings
   anywhere, from the first line of code — not retrofitted later.
-- Testing: `bloc_test`, `mocktail`, and `integration_test` (see §7).
+- Testing: `bloc_test`, `mocktail`, and `integration_test` (see §8).
 
 ## 2. Architecture (Two Layers Only — No Domain Layer)
 
@@ -129,8 +150,8 @@ Hard rules:
 
 ## 3. API Conventions
 
-- All endpoints live under `/api/v1` (dev base URL:
-  `http://localhost:3000`).
+- All endpoints live under `/api/v1` (base URL:
+  `https://shopspace-backend-production.up.railway.app` for dev/staging/prod).
 - All backend responses follow the envelope `{ message, status, data }`.
   This is unwrapped once, centrally in the dio layer. No feature
   re-implements envelope parsing.
@@ -157,7 +178,35 @@ Hard rules:
   frame, infer something visually consistent with the existing token set
   and flag the gap — never invent an unrelated style.
 
-## 5. Product Rules & Integrations
+## 5. Responsive UI (Mandatory)
+
+- Every UI component MUST be responsive. There is no such thing as a fixed,
+  unscaled UI widget; responsiveness is a property of each widget, not a
+  per-screen afterthought.
+- Every size, spacing, radius, icon, and font MUST scale with
+  `flutter_screenutil` against the Figma reference frame (375×812): `.h`
+  (height), `.w` (width), `.sp` (font size, text-aware), `.r` (uniform/
+  radius scale).
+- Use `.sp` for fonts — scale text via the theme (`AppTypography` getters
+  already apply `.sp`), never via raw `fontSize` literals.
+- Layout structure MUST be built with flex widgets (`Expanded`, `Flexible`,
+  `Spacer`, `Row`, `Column`, `Wrap`) so content flows and never overflows.
+  screenutil scales values; flex widgets pick layout inside the available
+  space. Never assume a fixed available width/height.
+- Raw pixel literals in `build` (e.g. `SizedBox(height: 48)`, `Icon(size: 20)`,
+  bare `EdgeInsets`, bare `fontSize`) are a lint failure equivalent — use
+  `48.h`, `20.w`, `16.sp`, `10.r`, or a theme token scaled with the same
+  suffix.
+- The only allowed exceptions are constants that cannot scale
+  (`BorderSide(width: 1)`, pill/circular radii like `9999`, `strokeWidth`,
+  shadow blur/elevation) and they MUST be deliberate.
+- Breakpoints choose layout structure ONLY; screenutil scales values ONLY.
+  The two never trade jobs.
+- Compliance: the quality gate checks that any new or edited widget scales
+  every value with screenutil and uses flex widgets. A widget with raw
+  pixel literals in `build` fails the gate.
+
+## 6. Product Rules & Integrations
 
 - Landlord–tenant contact is a WhatsApp deep link only
   (`https://wa.me/<phone>` with a prefilled message, opened via
@@ -167,7 +216,7 @@ Hard rules:
 - Advisor chat is strictly request → full response; no token streaming.
 - Signup always routes to OTP verification, never straight to login.
 
-## 6. Roles & Sessions
+## 7. Roles & Sessions
 
 - Every account defaults to the tenant role; the landlord role is added
   on demand through ONE shared repository method
@@ -184,7 +233,7 @@ Hard rules:
 - After a successful password change, clear the local session and route
   to login right away; do not wait for a 401.
 
-## 7. Testing & Quality
+## 8. Testing & Quality
 
 - **New work ships WITHOUT new tests (approved amendment, 2026-08-06).**
   Do not write unit/cubit/widget/integration tests for new features.
@@ -196,10 +245,13 @@ Hard rules:
 - A feature is not done until it has been checked at all three
   breakpoints (compact/medium/expanded) and in both English and Arabic
   (RTL layout).
+- Responsiveness is part of the quality gate (see §5): every new or edited
+  widget must scale all values with screenutil and use flex widgets for
+  layout. Raw pixel literals in `build` are a lint failure equivalent.
 - `flutter analyze` MUST be clean before any feature is considered
   complete.
 
-## 8. Process
+## 9. Process
 
 - Work proceeds one phase/spec at a time, in plan order (Phase 0 → 6),
   through the spec-kit cycle with its review gates
@@ -223,4 +275,4 @@ documentation, approval, and a migration plan.
 - Compliance: every spec, plan, and code review MUST verify adherence to
   this document; any deviation MUST be flagged and approved before merge.
 
-**Version**: 2.0.0 | **Ratified**: 2026-08-05 | **Last Amended**: 2026-08-06
+**Version**: 2.1.0 | **Ratified**: 2026-08-05 | **Last Amended**: 2026-08-08

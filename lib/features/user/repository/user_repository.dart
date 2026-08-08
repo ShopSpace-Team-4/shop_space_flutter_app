@@ -56,7 +56,7 @@ class UserRepositoryImpl implements UserRepository {
         refreshToken: response.tokens.refreshToken,
       ),
     );
-    return response.user;
+    return response.profile;
   }
 
   @override

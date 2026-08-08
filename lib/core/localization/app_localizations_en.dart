@@ -33,10 +33,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navInquiries => 'Inquiries';
 
   @override
+  String get navSaved => 'Saved';
+
+  @override
+  String get navAdd => 'Add listing';
+
+  @override
+  String get savedTitle => 'Saved';
+
+  @override
   String get comingSoon => 'Coming soon';
 
   @override
   String get routeNotFound => 'Page not found';
+
+  @override
+  String homeGreeting(String name) {
+    return 'Hello, $name 👋';
+  }
+
+  @override
+  String get homeGreetingFallback => 'Hello 👋';
+
+  @override
+  String get homeSearchHint => 'Search shops, categories, or cities';
+
+  @override
+  String get homeAdvisorTitle => 'AI Space Advisor';
+
+  @override
+  String get homeAdvisorSubtitle => 'Find your ideal space';
+
+  @override
+  String get homeCategoriesTitle => 'Categories';
+
+  @override
+  String get homeRecommendedTitle => 'Spaces';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeNearbyTitle => 'Nearby Listings';
+
+  @override
+  String get homeEmptyRecommended => 'No recommendations yet';
+
+  @override
+  String get homeEmptyNearby => 'No nearby listings yet';
+
+  @override
+  String get homeEmptyCategories => 'No categories available';
+
+  @override
+  String homeRentPerYear(String amount) {
+    return '$amount/yr';
+  }
 
   @override
   String get authLogin => 'Sign in';
@@ -76,12 +128,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session has expired. Please sign in again.';
 
   @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
   String get errorValidation =>
       'Some of the details you entered look incorrect. Please check and try again.';
 
   @override
   String get errorEmailAlreadyRegistered =>
       'An account with this email already exists. Try signing in instead.';
+
+  @override
+  String get errorPhoneAlreadyRegistered =>
+      'An account with this phone already exists. Try signing in instead.';
 
   @override
   String get errorInvalidOtp =>
@@ -104,6 +163,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorRateLimited =>
       'You\'re trying too often. Please wait a moment and try again.';
+
+  @override
+  String get errorListingMetaUnavailable =>
+      'Couldn\'t load the listing options. Please try again.';
+
+  @override
+  String get errorListingCreateFailed =>
+      'Couldn\'t create the listing. Please try again.';
+
+  @override
+  String get errorListingUpdateFailed =>
+      'Couldn\'t save your changes. Please try again.';
+
+  @override
+  String get errorListingStatusFailed =>
+      'Couldn\'t change the listing status. The current status was restored.';
+
+  @override
+  String get errorListingDeleteFailed =>
+      'Couldn\'t delete the listing. Please try again.';
+
+  @override
+  String get errorListingNotFound => 'This listing no longer exists.';
+
+  @override
+  String get errorMediaUploadFailed =>
+      'Couldn\'t upload the photos. Please try again.';
+
+  @override
+  String get errorMediaReorderFailed =>
+      'Couldn\'t reorder the photos. Please try again.';
+
+  @override
+  String get errorMediaDeleteFailed =>
+      'Couldn\'t remove this photo. Please try again.';
+
+  @override
+  String get errorListingNotOwned =>
+      'You don\'t have permission to manage this listing.';
+
+  @override
+  String get errorInvalidMediaFile =>
+      'Only PNG or JPG photos up to 20 MB are supported.';
+
+  @override
+  String get errorPhotoLimitReached => 'You can add up to 10 photos.';
 
   @override
   String get authEmailLabel => 'Email';
@@ -162,7 +267,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authOtpFieldSemanticLabel => '6-digit verification code';
 
   @override
-  String get authOtpVerifySubmit => 'Verify';
+  String get authOtpVerifySubmit => 'Verify code';
 
   @override
   String get authOtpSuccess => 'Your email is verified. You can now sign in.';
@@ -192,6 +297,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authOtpCodeLength => 'The code must be 6 digits';
+
+  @override
+  String get authOtpEmailHint =>
+      'Check your email to find your code. It\'s valid for 10 minutes.';
+
+  @override
+  String get authOtpEnterCode => 'Enter verification code';
 
   @override
   String get authForgotPasswordTitle => 'Forgot your password?';
@@ -237,7 +349,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authPasswordStrength =>
-      'Use characters with a capital letter, a number and one of @ \$ ! % * ? &';
+      'Needs a capital letter, a number, and one of @ \$ ! % * ? &';
 
   @override
   String get authCurrentPasswordRequired => 'Enter your current password';
@@ -277,4 +389,363 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyState => 'Nothing here yet';
+
+  @override
+  String get myListingsTitle => 'My Listings';
+
+  @override
+  String get myListingsEmptyTitle => 'No listings yet';
+
+  @override
+  String get myListingsEmptyMessage =>
+      'When you list a shop, it will appear here. Start by listing your first shop.';
+
+  @override
+  String get myListingsListAShop => 'List a shop';
+
+  @override
+  String get myListingsError =>
+      'Couldn\'t load your listings. Please try again.';
+
+  @override
+  String get myListingsNotPublic => 'Not public yet';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusAvailable => 'Available';
+
+  @override
+  String get statusRented => 'Rented';
+
+  @override
+  String get statusExpired => 'Expired';
+
+  @override
+  String get statusChangeTitle => 'Change status';
+
+  @override
+  String get statusChangeSubmit => 'Save';
+
+  @override
+  String get statusChangeSuccess => 'Status updated';
+
+  @override
+  String get detailNotAvailable => 'Not available';
+
+  @override
+  String get detailFloor => 'Floor';
+
+  @override
+  String get detailGround => 'Ground';
+
+  @override
+  String get detailArea => 'Area';
+
+  @override
+  String detailAreaValue(String area) {
+    return '$area m²';
+  }
+
+  @override
+  String get detailAnnualRent => 'Annual rent';
+
+  @override
+  String get detailAnnualRentWithVat => 'Annual rent incl. VAT';
+
+  @override
+  String get detailAmenities => 'Amenities';
+
+  @override
+  String get detailAvailableFrom => 'Available from';
+
+  @override
+  String get detailMinimumLease => 'Minimum lease';
+
+  @override
+  String get detailSecurityDeposit => 'Security deposit';
+
+  @override
+  String get detailMonths => 'months';
+
+  @override
+  String get detailFloors => 'Floors';
+
+  @override
+  String get detailDescription => 'Description';
+
+  @override
+  String get detailAddress => 'Address';
+
+  @override
+  String get detailCategory => 'Category';
+
+  @override
+  String get detailCity => 'City';
+
+  @override
+  String get detailDistrict => 'District';
+
+  @override
+  String get detailEdit => 'Edit';
+
+  @override
+  String get detailDelete => 'Delete';
+
+  @override
+  String get detailBackToMyListings => 'My Listings';
+
+  @override
+  String get commonCancel => 'Cancel';
+
+  @override
+  String get deleteConfirmTitle => 'Delete listing';
+
+  @override
+  String get deleteConfirmMessage =>
+      'This will permanently delete this listing and all of its photos. This can\'t be undone.';
+
+  @override
+  String get deleteConfirmAction => 'Delete';
+
+  @override
+  String get deleteSuccess => 'Listing deleted';
+
+  @override
+  String currencyPlaceholder(Object currency) {
+    return '$currency';
+  }
+
+  @override
+  String get vatSuffix => 'incl. VAT';
+
+  @override
+  String get becomeLandlordTitle => 'Become a Landlord';
+
+  @override
+  String get becomeLandlordBody =>
+      'As a landlord you can list your shops, manage photos, and control pricing. Tenants will be able to contact you about your spaces.';
+
+  @override
+  String get becomeLandlordConfirm => 'Become a Landlord';
+
+  @override
+  String get becomeLandlordDismissHint =>
+      'You can do this later from My Listings.';
+
+  @override
+  String get formTitleCreate => 'List a shop';
+
+  @override
+  String get formStepDetails => 'Details';
+
+  @override
+  String get formStepPhotos => 'Photos';
+
+  @override
+  String get formStepPrice => 'Price & lease';
+
+  @override
+  String get formStepReview => 'Review';
+
+  @override
+  String formStepOf(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get formNext => 'Next';
+
+  @override
+  String get formBack => 'Back';
+
+  @override
+  String get formSubmit => 'Submit';
+
+  @override
+  String get formSubmitCreate => 'Create listing';
+
+  @override
+  String get formFieldTitle => 'Title';
+
+  @override
+  String get formFieldTitleHint => 'e.g. Retail shop in Zamalek';
+
+  @override
+  String get formTitleRequired => 'Enter a title';
+
+  @override
+  String formTitleTooLong(int max) {
+    return 'Title must be at most $max characters';
+  }
+
+  @override
+  String get formFieldCategory => 'Category';
+
+  @override
+  String get formCategoryRequired => 'Select a category';
+
+  @override
+  String get formCategoryHint => 'Select a category';
+
+  @override
+  String get formFieldArea => 'Area (sqm)';
+
+  @override
+  String get formAreaRequired => 'Enter the area';
+
+  @override
+  String get formAreaPositive => 'Area must be greater than zero';
+
+  @override
+  String get formFieldCity => 'City';
+
+  @override
+  String get formCityRequired => 'Select a city';
+
+  @override
+  String get formCityHint => 'Select a city';
+
+  @override
+  String get formFieldDistrict => 'District';
+
+  @override
+  String get formDistrictRequired => 'Select a district';
+
+  @override
+  String get formDistrictHint => 'Select a district';
+
+  @override
+  String get formFieldAddress => 'Address (optional)';
+
+  @override
+  String get formFieldDescription => 'Description (optional)';
+
+  @override
+  String get formFieldAmenities => 'Amenities';
+
+  @override
+  String get formAmenitiesHint => 'Select any that apply';
+
+  @override
+  String get formFieldFloors => 'Number of floors (optional)';
+
+  @override
+  String get formFieldFloorNumber => 'Floor number';
+
+  @override
+  String get formFloorRequired => 'Enter the floor number';
+
+  @override
+  String get formFieldAvailableFrom => 'Available from';
+
+  @override
+  String get formAvailableFromRequired => 'Choose a date';
+
+  @override
+  String get formFieldMinimumLease => 'Minimum lease term';
+
+  @override
+  String get formFieldAnnualRent => 'Annual rent (EGP)';
+
+  @override
+  String get formRentRequired => 'Enter the annual rent';
+
+  @override
+  String get formRentPositive => 'Annual rent must be greater than zero';
+
+  @override
+  String get formVatPreview => 'Annual rent incl. VAT';
+
+  @override
+  String get formCurrencyLabel => 'Currency';
+
+  @override
+  String get formFieldSecurityDeposit => 'Security deposit (months)';
+
+  @override
+  String get formPhotoAdd => 'Add photos';
+
+  @override
+  String get formPhotoMaxHint => 'Up to 10 photos';
+
+  @override
+  String get formPhotoPickGallery => 'Choose from gallery';
+
+  @override
+  String get formPhotoPickCamera => 'Take a photo';
+
+  @override
+  String get formPhotoRemove => 'Remove';
+
+  @override
+  String get formPhotoRecommendation =>
+      'Adding at least 3 photos helps tenants understand your shop. This is a recommendation, not a requirement.';
+
+  @override
+  String get formPhotoProgress => 'Uploading photos…';
+
+  @override
+  String formPhotoCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos',
+      one: '1 photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get formCreatedTitle => 'Listing created';
+
+  @override
+  String get formCreatedMessage =>
+      'Your listing was created but is not public yet. Publish it from My Listings when you\'re ready.';
+
+  @override
+  String get formMetaRetryTitle => 'Couldn\'t load listing options';
+
+  @override
+  String get formMetaRetryMessage =>
+      'You need the options to continue. Check your connection and try again.';
+
+  @override
+  String get formTitleEdit => 'Edit listing';
+
+  @override
+  String get formSubmitSave => 'Save changes';
+
+  @override
+  String get formNothingSaved => 'Nothing was saved';
+
+  @override
+  String get formNothingSavedMessage =>
+      'None of your changes were published. Fix the issue and try saving again.';
+
+  @override
+  String get formPhotoNew => 'New';
+
+  @override
+  String get formPhotoRemoved => 'Removed';
+
+  @override
+  String get formPhotoReorderHint => 'Press and hold to reorder';
+
+  @override
+  String get formPreloadErrorTitle => 'Couldn\'t load this listing';
+
+  @override
+  String get formPreloadErrorMessage =>
+      'You need the listing data to continue. Check your connection and try again.';
+
+  @override
+  String get amenityParking => 'Parking';
+
+  @override
+  String get amenitySecurity => 'Security';
+
+  @override
+  String get amenityAc => 'Air conditioning';
 }

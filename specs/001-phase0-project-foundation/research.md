@@ -55,7 +55,7 @@ Single shared `Dio` client. **Interceptor order matters:**
 
 **Error mapping (FR-005):** non-2xx / `DioException` → typed `Failure` classes in `core/errors/` (`NetworkFailure`, `ServerFailure`, `UnauthorizedFailure`, `ValidationFailure`, `OfflineFailure`, …) mapped ONCE in the dio layer; features render only localized friendly messages (spec clarification: no dedicated logging).
 
-**Env/base:** dev base URL `http://localhost:3000`; all endpoints `/api/v1` (constitution §3).
+**Env/base:** base URL `https://shopspace-backend-production.up.railway.app` for dev/staging/prod; all endpoints `/api/v1` (constitution §3).
 
 ## 5. Responsive strategy (FR-003/013)
 

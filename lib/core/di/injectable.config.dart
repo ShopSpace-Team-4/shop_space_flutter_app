@@ -32,6 +32,12 @@ import 'package:shop_space/features/auth/presentation/cubits/auth_session_cubit.
     as _i824;
 import 'package:shop_space/features/auth/repository/auth_repository.dart'
     as _i951;
+import 'package:shop_space/features/listing/data/listing_datasource.dart'
+    as _i535;
+import 'package:shop_space/features/listing/repository/listing_repository.dart'
+    as _i732;
+import 'package:shop_space/features/listing/repository/listing_repository_impl.dart'
+    as _i150;
 import 'package:shop_space/features/user/data/user_datasource.dart' as _i983;
 import 'package:shop_space/features/user/repository/user_repository.dart'
     as _i251;
@@ -69,6 +75,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.ErrorMapper>(),
       ),
     );
+    gh.factory<_i535.ListingDataSource>(
+      () => _i535.ListingDataSourceImpl(gh<_i361.Dio>()),
+    );
     gh.factory<_i287.AuthDataSource>(
       () => _i287.AuthDataSourceImpl(gh<_i361.Dio>()),
     );
@@ -95,6 +104,9 @@ extension GetItInjectableX on _i174.GetIt {
         authRepository: gh<_i951.AuthRepository>(),
         googleAuth: gh<_i826.AuthGoogleService>(),
       ),
+    );
+    gh.factory<_i732.ListingRepository>(
+      () => _i150.ListingRepositoryImpl(gh<_i535.ListingDataSource>()),
     );
     gh.singleton<_i824.AuthSessionCubit>(
       () => coreModule.provideAuthSessionCubit(gh<_i645.SessionReader>()),

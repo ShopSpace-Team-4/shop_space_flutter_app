@@ -10,7 +10,7 @@ part 'role_change_response.g.dart';
 abstract class RoleChangeResponse with _$RoleChangeResponse {
   const factory RoleChangeResponse({
     required AuthTokens tokens,
-    required User user,
+    required User profile,
   }) = _RoleChangeResponse;
 
   factory RoleChangeResponse.fromJson(Map<String, dynamic> json) =>

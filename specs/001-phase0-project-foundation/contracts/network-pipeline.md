@@ -8,7 +8,7 @@ Defines the single standardized way every feature talks to the ShopSpace API (FR
 
 ## Endpoints (Phase 0 reference)
 
-- Base URL: dev `http://localhost:3000` (SC-006; env-selected via `--dart-define`, `core/env/`).
+- Base URL: `https://shopspace-backend-production.up.railway.app` (SC-006; env-selected via `--dart-define=APP_ENV`, `core/env/`).
 - API prefix: `/api/v1` (Auth & User API, implementation plan).
 - Response envelope: `{ message, status, data }`.
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injectable.dart';
@@ -14,7 +15,7 @@ import '../widgets/labeled_input.dart';
 
 /// Forgot-password screen (T029). Submitting a valid email requests a reset
 /// code; success shows the confirmation copy and routes to
-/// `/reset-password?email=<email>`.
+/// `/reset-password?email=<email>`. Fully responsive (screenutil + flex).
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -78,9 +79,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.w),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
+              constraints: BoxConstraints(maxWidth: 480.w),
               child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
                 bloc: _cubit,
                 listener: _onState,
@@ -102,23 +103,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.mark_email_read_outlined,
-            size: 48, color: AppColors.success),
-        const SizedBox(height: AppSpacing.lg),
+        Icon(Icons.mark_email_read_outlined,
+            size: 48.sp, color: AppColors.success),
+        SizedBox(height: AppSpacing.lg.h),
         Text(
           l10n.authForgotPasswordCheckEmail(_email.text.trim()),
           textAlign: TextAlign.center,
           style: AppTypography.heading4,
         ),
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         SizedBox(
-          height: 48,
+          height: 48.h,
           child: FilledButton(
             onPressed: _goToReset,
             child: Text(l10n.authResetPassword),
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         TextButton(
           onPressed: () => context.go('/login'),
           child: Text(l10n.authBackToLogin),
@@ -136,7 +137,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(l10n.authForgotPasswordTitle, style: AppTypography.heading2),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl.h),
           LabeledInput(
             label: l10n.authEmailLabel,
             controller: _email,
@@ -148,28 +149,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             onFieldSubmitted: (_) => _submit(),
           ),
           if (state.errorMessage != null) ...[
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md.h),
             Text(
               state.errorMessage!,
               style:
                   AppTypography.bodyMedium.copyWith(color: AppColors.error),
             ),
           ],
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl.h),
           SizedBox(
-            height: 48,
+            height: 48.h,
             child: FilledButton(
               onPressed: state.isSubmitting ? null : _submit,
               child: state.isSubmitting
-                  ? const SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  ? SizedBox(
+                      width: 22.w,
+                      height: 22.h,
+                      child: const CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Text(l10n.authForgotPasswordSubmit),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg.h),
           Center(
             child: TextButton(
               onPressed: () => context.go('/login'),

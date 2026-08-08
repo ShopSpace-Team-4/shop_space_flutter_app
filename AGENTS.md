@@ -3,20 +3,18 @@
 ## Repository status
 
 - **Flutter scaffold exists.** Phase 0 (project foundation) is complete:
-  `pubspec.yaml`, `lib/` (feature-first layout + `core/`), and tests
-  (unit/cubit/widget/integration) are in place. `flutter analyze` /
-  `flutter test` are allowed and must stay green. See
+  `pubspec.yaml`, `lib/` (feature-first layout + `core/`). The `test/` tree
+  has been removed; the quality gate is `flutter analyze` only. See
   `specs/001-phase0-project-foundation/tasks.md` for Phase 0 status.
-- Quality gate: `dart run tool/quality.dart` runs `flutter analyze` + the
-  full `flutter test` suite (incl. `test/integration_test/`) and exits
-  non-zero on any failure.
+- Quality gate: `dart run tool/quality.dart` runs `flutter analyze` (analyze
+  only — the test suite has been removed) and exits non-zero on any failure.
 - Two files govern all work — read them before implementing anything:
   - `.specify/memory/constitution.md` — non-negotiable engineering rules
-    (HOW things are built; versioned v1.2.0).
+    (HOW things are built; versioned v2.1.0).
   - `ShopSpace_Flutter_Implementation_Plan.md` — the phased plan (WHAT is
     built; Phase 0–6, in order). Contains the finalized Auth & User API
-    (`/api/v1`, envelope `{ message, status, data }`, dev base
-    `http://localhost:3000`).
+    (`/api/v1`, envelope `{ message, status, data }`, base
+    `https://shopspace-backend-production.up.railway.app` for dev/staging/prod).
 
 ## Process
 
@@ -39,8 +37,6 @@
   `cached_network_image`. Links: `url_launcher`. Sign-in: `google_sign_in`
   (ID token for `/auth/google`). Forms: manual `Form` + custom validators —
   NO external form-validation package.
-- Tests: `bloc_test` + `mocktail` for Cubits, `integration_test` for
-  cross-feature flows.
 - `flutter_screenutil` scales individual values (`.sp`/`.w`/`.h`/`.r`) against
   the Figma reference frame; Material 3 window size classes decide layout
   structure (compact <600dp, medium 600–839dp, expanded ≥840dp). They have
@@ -48,8 +44,34 @@
   values. App shell uses the hand-rolled `AppAdaptiveShell` (bottom nav on
   compact, nav rail on medium/expanded) — `flutter_adaptive_scaffold` is
   discontinued upstream and is NOT used (approved decision D1).
+- **Every UI component MUST be responsive.** See "Responsive UI" below.
 - Localization: English + Arabic, full RTL. No hardcoded user-facing strings,
   ever — externalize from the first line of code.
+
+## Responsive UI
+
+- **Every UI component must be responsive** — this is a hard rule, not a
+  recommendation. There is no such thing as a fixed, unscaled UI widget.
+- Scale every size, spacing, radius, icon, and font with `flutter_screenutil`
+  against the Figma reference frame (375×812): `.h` (height), `.w` (width),
+  `.sp` (font size, text-aware), `.r` (uniform/radius scale).
+- **Use `.sp` for fonts** — prefer scaling text via the theme (`AppTypography`
+  getters already apply `.sp`) over ad-hoc `fontSize` literals.
+- **Use flex layout widgets** (`Expanded`, `Flexible`, `Spacer`, `Row`,
+  `Column`, `Wrap`) for structure so content flows and never overflows —
+  screenutil scales values, flex widgets pick layout within the available
+  space. Never hard-code `double.infinity`-free assumptions about available
+  width/height.
+- **Never use raw pixel literals in `build`** (e.g. `SizedBox(height: 48)`).
+  Use `48.h`, `24.w`, `16.sp`, `10.r` (or a theme token scaled with the same
+  suffix). Bare numbers inside `Icon(size:)`, `EdgeInsets`, `SizedBox`,
+  `Container` dimensions, `BorderRadius`, and `TextStyle(fontSize:)` are a
+  code smell — flag and fix them.
+- Constants that cannot scale (e.g. `BorderSide(width: 1)`, pill radii like
+  `9999`, `strokeWidth`, shadow blur/elevation) are the only allowed exception
+  and MUST be deliberate.
+- Breakpoints (`window_size.dart`) still choose layout structure only —
+  they never scale values, and screenutil never chooses structure.
 
 ## Architecture
 
@@ -111,15 +133,18 @@
 - Advisor chat is request → full response, no streaming.
 - Signup always routes to OTP verification, never straight to login.
 
-## Testing & quality gates (a feature is not done until)
+## Quality gate (analyze only)
 
-- **New work ships WITHOUT new tests (approved 2026-08-06).** Do not write new
-  unit/cubit/widget/integration tests; ship features without test files.
-- Existing tests are never deleted and MUST stay green — fix failures caused by
-  refactors or API drift. `flutter test` / `dart run tool/quality.dart` still
-  gate every task.
+- **The test suite has been removed (approved 2026-08-06).** Do not write new
+  unit/cubit/widget/integration tests; ship features without test files. This
+  is the permanent default.
+- The gate is `dart run tool/quality.dart` → `flutter analyze` only; it must
+  stay clean on every task.
 - Checked at all three breakpoints AND in both English and Arabic (RTL).
-- `flutter analyze` is clean.
+- Responsiveness is part of the quality gate: any new or edited widget must
+  scale every value with screenutil and use flex layout widgets (see
+  "Responsive UI"). A widget with raw pixel literals in `build` is a lint
+  failure equivalent.
 
 ## Toolchain gotchas
 

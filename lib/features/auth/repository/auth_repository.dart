@@ -24,7 +24,7 @@ abstract class AuthRepository {
 
   Future<void> verifyOtp(OtpVerificationRequest request);
 
-  Future<bool> resendOtp(ResendOtpRequest request);
+  Future<void> resendOtp(ResendOtpRequest request);
 
   Future<void> logout();
 
@@ -56,7 +56,7 @@ class AuthRepositoryImpl implements AuthRepository {
       _dataSource.verifyOtp(request);
 
   @override
-  Future<bool> resendOtp(ResendOtpRequest request) =>
+  Future<void> resendOtp(ResendOtpRequest request) =>
       _dataSource.resendOtp(request);
 
   @override

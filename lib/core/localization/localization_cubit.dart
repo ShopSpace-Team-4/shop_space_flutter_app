@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -20,6 +20,13 @@ class LocalizationCubit extends Cubit<Locale> {
     final String? saved = await _preferences.getString(localeKey);
     if (saved != null && saved.isNotEmpty) {
       emit(Locale(saved));
+    } else if (state == const Locale('en')) {
+      final Locale systemLocale = PlatformDispatcher.instance.locale;
+      String systemLanguage = systemLocale.languageCode;
+      if (systemLocale.countryCode == 'EG') {
+        systemLanguage = 'ar';
+      }
+      emit(Locale(systemLanguage));
     }
   }
 

@@ -36,7 +36,7 @@ Phase 0 builds the ShopSpace app foundation every later phase renders inside: a 
 |---|------------------------|--------|
 | 1 | Tech stack lock (no substitutions) | ✅ **APPROVED D1 (2026-08-05)**: `flutter_adaptive_scaffold` (locked) is discontinued upstream → replaced with hand-rolled `AppAdaptiveShell`; user-approved. No new package added (see Complexity Tracking). All other packages locked per plan. |
 | 2 | Architecture: two layers, no `domain/`; feature-first; `core/` cross-cutting only; `auth/` vs `user/` split | Complies |
-| 3 | API conventions: `/api/v1`, dev base `http://localhost:3000`, envelope unwrapped once in dio, typed `Failure`s in `core/errors/`, Bearer via interceptor, exactly one silent 401 refresh then force logout | Complies |
+| 3 | API conventions: `/api/v1`, base `https://shopspace-backend-production.up.railway.app` (all envs), envelope unwrapped once in dio, typed `Failure`s in `core/errors/`, Bearer via interceptor, exactly one silent 401 refresh then force logout | Complies |
 | 4 | Design source: Figma `shop-space-ui` is single source of truth; tokens pulled once into `core/theme/`; missing states → consistent inference + flag, never invented | Complies — connection verified; extraction is node/style-based (D7) |
 | 5 | Product rules (WhatsApp contact, Inquiry records, advisor request→full response, signup→OTP) | Noted; enforced in later phases. No conflict. |
 | 6 | Roles & sessions: dual-role, `activeRole` persisted, fresh token pair on `addRole`, clear session after password change | Complies (foundation laid in `core/storage/`; behavior consumed in Phase 1) |
@@ -77,7 +77,7 @@ lib/
 ├── main.dart                      # entrypoint; runs bootstrap
 ├── bootstrap.dart                 # env select (--dart-define) + get_it init + runApp
 ├── core/
-│   ├── env/                       # AppEnv: dev/staging/prod base URLs (dev: http://localhost:3000)
+│   ├── env/                       # AppEnv: dev/staging/prod base URLs (https://shopspace-backend-production.up.railway.app)
 │   ├── di/                        # injectable setup (injectable_init.dart, module registration)
 │   ├── router/                    # AppRouter (go_router), route names, auth/role redirect guards
 │   ├── network/                   # dio client, interceptors (auth → envelope → retry → logging),

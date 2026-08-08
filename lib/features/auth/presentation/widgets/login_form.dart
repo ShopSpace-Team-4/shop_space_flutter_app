@@ -78,6 +78,11 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onState(BuildContext context, LoginState state) {
+    final String? email = state.verificationEmail;
+    if (email != null) {
+      context.go('/otp?email=${Uri.encodeQueryComponent(email)}');
+      return;
+    }
     if (!state.isSuccess) return;
     context.go('/');
   }
@@ -135,7 +140,7 @@ class _LoginFormState extends State<LoginForm> {
                   LabeledInput(
                     label: l10n.authPasswordLabel,
                     controller: _password,
-                    validator: _validators.passwordRequired,
+                    validator: _validators.password,
                     obscureText: _obscurePassword,
                     textInputAction: TextInputAction.done,
                     suffixIcon: IconButton(

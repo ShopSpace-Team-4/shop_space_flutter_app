@@ -12,7 +12,7 @@ router, network pipeline).
 # Flutter at C:\flutter (bare C:\dart-sdk on PATH is a DIFFERENT SDK — prefer `flutter`)
 flutter pub get
 dart run build_runner build -d          # after adding/editing freezed / injectable / json_serializable
-flutter run --dart-define=ENV=dev        # dev base: http://localhost:3000
+flutter run --dart-define=APP_ENV=prod   # base: https://shopspace-backend-production.up.railway.app
 ```
 
 Quality gate (must stay green; exits non-zero on failure):

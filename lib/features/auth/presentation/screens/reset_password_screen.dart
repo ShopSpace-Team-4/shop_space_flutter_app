@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -19,7 +21,7 @@ import '../widgets/otp_input.dart';
 /// Reset-password screen (T030). Reads the email from the route query param
 /// (graceful if missing), shows a prefilled read-only email, an [OtpInput]
 /// with cooldown/resend driven by the reused [OtpCubit], and a new-password
-/// field (Q2); success goes to `/login`.
+/// field (Q2); success goes to `/login`. Fully responsive (screenutil + flex).
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key, this.email});
 
@@ -31,10 +33,9 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _otpController = TextEditingController();
+  final PinInputController _otpController = PinInputController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FocusNode _otpFocusNode = FocusNode();
 
   late final String _email;
   ResetPasswordCubit? _cubit;
@@ -75,7 +76,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _otpController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _otpFocusNode.dispose();
     _cubit?.close();
     super.dispose();
   }
@@ -150,19 +150,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       appBar: AppBar(title: Text(l10n.authResetPassword)),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
+          padding: EdgeInsets.all(AppSpacing.xl.w),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: AppColors.error),
-              const SizedBox(height: AppSpacing.lg),
+              Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
+              SizedBox(height: AppSpacing.lg.h),
               Text(
                 l10n.errorValidation,
                 textAlign: TextAlign.center,
                 style: AppTypography.bodyMedium
                     .copyWith(color: AppColors.textSecondary),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl.h),
               FilledButton(
                 onPressed: () => context.go('/login'),
                 child: Text(l10n.authBackToLogin),
@@ -180,9 +180,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.w),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
+              constraints: BoxConstraints(maxWidth: 480.w),
               child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
                 bloc: _cubit,
                 listener: _onState,
@@ -204,15 +204,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.check_circle_outline,
-            size: 48, color: AppColors.success),
-        const SizedBox(height: AppSpacing.lg),
+        Icon(Icons.check_circle_outline,
+            size: 48.sp, color: AppColors.success),
+        SizedBox(height: AppSpacing.lg.h),
         Text(
           l10n.authResetPasswordSuccess,
           textAlign: TextAlign.center,
           style: AppTypography.heading4,
         ),
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         FilledButton(
           onPressed: () => context.go('/login'),
           child: Text(l10n.authLoginSubmit),
@@ -237,7 +237,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(l10n.authResetPasswordTitle, style: AppTypography.heading2),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl.h),
           LabeledInput(
             label: l10n.authEmailLabel,
             controller: _emailController,
@@ -245,10 +245,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             prefixIcon: Icons.alternate_email_outlined,
             onTap: () {},
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg.h),
           OtpInput(
             controller: _otpController,
-            focusNode: _otpFocusNode,
             semanticsLabel: l10n.authOtpFieldSemanticLabel,
             enabled: !locked && !state.isSubmitting,
             onChanged: (_) => setState(() {}),
@@ -256,7 +255,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               if (canSubmit) _submit();
             },
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md.h),
           if (locked)
             Text(
               l10n.authOtpLocked,
@@ -270,7 +269,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               style:
                   AppTypography.caption.copyWith(color: AppColors.textSecondary),
             ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg.h),
           LabeledInput(
             label: l10n.authNewPasswordLabel,
             controller: _passwordController,
@@ -294,34 +293,34 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             },
           ),
           if (state.errorMessage != null) ...[
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md.h),
             Text(
               state.errorMessage!,
               textAlign: TextAlign.center,
               style: AppTypography.bodyMedium.copyWith(color: AppColors.error),
             ),
           ],
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl.h),
           SizedBox(
-            height: 48,
+            height: 48.h,
             child: FilledButton(
               onPressed: canSubmit ? _submit : null,
               child: state.isSubmitting
-                  ? const SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  ? SizedBox(
+                      width: 22.w,
+                      height: 22.h,
+                      child: const CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Text(l10n.authResetPasswordSubmit),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg.h),
           if (state.isResending)
-            const Center(
+            Center(
               child: SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                width: 22.w,
+                height: 22.h,
+                child: const CircularProgressIndicator(strokeWidth: 2),
               ),
             )
           else if (coolingDown && !locked)

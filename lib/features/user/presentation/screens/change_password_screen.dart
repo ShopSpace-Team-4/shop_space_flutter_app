@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injectable.dart';
@@ -14,8 +15,8 @@ import '../cubits/change_password_cubit.dart';
 import '../../../auth/presentation/widgets/labeled_input.dart';
 
 /// Change-password screen (T037, US6). On success the cubit clears the session
-/// (constitution §6 — never wait for a 401) and this screen returns to
-/// `/login`.
+/// (constitution §7 — never wait for a 401) and this screen returns to
+/// `/login`. Fully responsive (screenutil + flex).
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
@@ -87,9 +88,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.w),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
+              constraints: BoxConstraints(maxWidth: 480.w),
               child: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
                 bloc: _cubit,
                 listener: _onState,
@@ -120,7 +121,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           ),
                           autofillHints: const [AutofillHints.password],
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                         LabeledInput(
                           label: l10n.authNewPasswordLabel,
                           controller: _newPassword,
@@ -142,7 +143,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           onFieldSubmitted: (_) => _submit(),
                         ),
                         if (state.errorMessage != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm.h),
                           Text(
                             state.errorMessage!,
                             textAlign: TextAlign.center,
@@ -150,16 +151,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 .copyWith(color: AppColors.error),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                         SizedBox(
-                          height: 48,
+                          height: 48.h,
                           child: FilledButton(
                             onPressed: state.isSubmitting ? null : _submit,
                             child: state.isSubmitting
-                                ? const SizedBox(
-                                    width: 22,
-                                    height: 22,
-                                    child: CircularProgressIndicator(
+                                ? SizedBox(
+                                    width: 22.w,
+                                    height: 22.h,
+                                    child: const CircularProgressIndicator(
                                       strokeWidth: 2,
                                     ),
                                   )

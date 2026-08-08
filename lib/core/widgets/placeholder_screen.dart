@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../localization/app_localizations.dart';
 import '../theme/app_colors.dart';
@@ -8,7 +9,8 @@ import '../theme/app_typography.dart';
 /// Shared placeholder for not-yet-implemented feature routes (Phase 0).
 ///
 /// Rendered by [AppRouter] for every planned feature route until its phase
-/// ships real UI. Token-styled and fully localized.
+/// ships real UI. Token-styled, localized, and fully responsive (all values
+/// scale with screenutil; flex layout never overflows).
 class AppPlaceholderScreen extends StatelessWidget {
   const AppPlaceholderScreen({super.key, required this.title});
 
@@ -24,30 +26,30 @@ class AppPlaceholderScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.construction_outlined,
-              size: 48,
-              color: AppColors.textTertiary,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(
-              l10n.comingSoon,
-              textAlign: TextAlign.center,
-              style: AppTypography.heading3,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-              child: Text(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.construction_outlined,
+                size: 48.sp,
+                color: AppColors.textTertiary,
+              ),
+              SizedBox(height: AppSpacing.lg.h),
+              Text(
+                l10n.comingSoon,
+                textAlign: TextAlign.center,
+                style: AppTypography.heading3,
+              ),
+              SizedBox(height: AppSpacing.md.h),
+              Text(
                 l10n.placeholderBody,
                 textAlign: TextAlign.center,
                 style: AppTypography.bodyMedium,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -53,7 +53,7 @@ description: "Task list for Phase 0 — Project Foundation, Design Tokens & Adap
 
 **⚠i�? CRITICAL**: No user story work can begin until this phase is complete.
 
-- [x] T007 [P] Implement `lib/core/env/app_env.dart`: `enum AppEnvironment { dev, staging, prod }` and `class AppEnv` (`AppEnvironment name`, `String apiBaseUrl`, `bool isLoggingEnabled`, `bool isRelease`) + `AppEnv.fromDartDefine()` reading `String.fromEnvironment('APP_ENV')`, defaulting to `dev`. Base URLs: dev → `http://localhost:3000`, staging/prod → placeholder HTTPS URLs (final values flagged for later phases). Logging: dev/staging `true`, prod `false` (data-model.md §3.1).
+- [x] T007 [P] Implement `lib/core/env/app_env.dart`: `enum AppEnvironment { dev, staging, prod }` and `class AppEnv` (`AppEnvironment name`, `String apiBaseUrl`, `bool isLoggingEnabled`, `bool isRelease`) + `AppEnv.fromDartDefine()` reading `String.fromEnvironment('APP_ENV')`, defaulting to `dev`. Base URLs: dev/staging/prod → `https://shopspace-backend-production.up.railway.app` (final value confirmed via live verification). Logging: dev/staging `true`, prod `false` (data-model.md §3.1).
 - [x] T008 [P] Implement `lib/core/errors/failures.dart`: `sealed class Failure { final String messageKey; }` with subclasses `NetworkFailure`, `TimeoutFailure`, `OfflineFailure`, `ServerFailure`, `UnauthorizedFailure`, `ValidationFailure` (data-model.md §4.2). All fields are localized message keys — never raw server text.
 - [x] T009 [P] Implement `lib/core/responsive/window_size.dart`: `enum AppBreakpoint { compact, medium, expanded }` (`<600`, `600–839`, `>=840` dp) + `AppBreakpoint breakpointOf(BuildContext)` from `MediaQuery.sizeOf(context).width` (decision D4). Structure only — never scales values.
 - [x] T010 [P] Implement `lib/core/storage/token_storage.dart`: plain `class AuthTokens { final String accessToken; final String refreshToken; }`, abstract `TokenStorage` interface (`Future<AuthTokens?> read()`, `write(AuthTokens)`, `clear()`) and `SecureTokenStorage` over `FlutterSecureStorage` (v10 — verify the `AndroidOptions` API, use `storageNamespace` for app isolation, Keychain on iOS; keys `auth.accessToken`, `auth.refreshToken`; decision D5). Used by `TokenProvider` (US2) and `addRole`/password-change flows in Phase 1 (constitution §6).
@@ -105,7 +105,7 @@ description: "Task list for Phase 0 — Project Foundation, Design Tokens & Adap
 
 **Goal**: A single standardized dio pipeline: auto-attach Bearer credentials, unwrap the `{ message, status, data }` envelope exactly once, map every failure to typed `Failure`s with localized messages, and perform exactly one silent 401 refresh + one retry, then a clean sign-out redirect (FR-005/006; constitution §3).
 
-**Independent Test**: Against a stubbed/local backend (`http://localhost:3000`): (1) a valid-session request attaches credentials automatically; (2) a business error surfaces a friendly localized message; (3) an expired session triggers ONE silent refresh + retry, and a second consecutive 401 clears the session and routes to sign-in. No raw `DioException`/technical error reaches the UI (spec US2).
+**Independent Test**: Against a stubbed backend (unit tests stub the dio base URL locally; the app itself targets `https://shopspace-backend-production.up.railway.app`): (1) a valid-session request attaches credentials automatically; (2) a business error surfaces a friendly localized message; (3) an expired session triggers ONE silent refresh + retry, and a second consecutive 401 clears the session and routes to sign-in. No raw `DioException`/technical error reaches the UI (spec US2).
 
 ### Tests for User Story 2
 
@@ -140,7 +140,7 @@ description: "Task list for Phase 0 — Project Foundation, Design Tokens & Adap
 
 ### Tests for User Story 3
 
-- [ ] T053 [P] [US3] Unit test `test/unit/env_config_test.dart`: `AppEnv.fromDartDefine` maps `dev`/`staging`/`prod`; dev defaults to `http://localhost:3000`; `isLoggingEnabled` true for dev/staging, false for prod.
+- [ ] T053 [P] [US3] Unit test `test/unit/env_config_test.dart`: `AppEnv.fromDartDefine` maps `dev`/`staging`/`prod`; all three default to `https://shopspace-backend-production.up.railway.app`; `isLoggingEnabled` true for dev/staging, false for prod.
 - [ ] T054 [P] [US3] Widget test `test/widget/unknown_route_test.dart`: navigating to an unknown route shows the graceful fallback (`errorBuilder`) — no crash (spec edge case).
 
 ### Implementation for User Story 3

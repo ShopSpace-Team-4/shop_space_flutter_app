@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injectable.dart';
@@ -16,7 +17,7 @@ import '../cubits/profile_cubit.dart';
 /// Minimal account screen (T036, US6): shows the signed-in user's name and
 /// email from [ProfileCubit], links to Change Password, and signs the user
 /// out. The router's [AuthGuard] redirects to `/login` once the session is
-/// cleared by [AuthSessionCubit.signOut].
+/// cleared by [AuthSessionCubit.signOut]. Fully responsive (screenutil + flex).
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -112,32 +113,32 @@ class _ProfileContent extends StatelessWidget {
     final AppLocalizations l10n = AppLocalizations.of(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl.w),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
+          constraints: BoxConstraints(maxWidth: 480.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: AppSpacing.sm),
-              const Center(
+              SizedBox(height: AppSpacing.sm.h),
+              Center(
                 child: CircleAvatar(
-                  radius: 40,
+                  radius: 40.r,
                   backgroundColor: AppColors.primaryContainer,
                   child: Icon(
                     Icons.person_outline,
-                    size: 40,
+                    size: 40.sp,
                     color: AppColors.primary,
                   ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg.h),
               Text(
                 fullName,
                 textAlign: TextAlign.center,
                 style: AppTypography.heading2,
               ),
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs.h),
               Text(
                 email,
                 textAlign: TextAlign.center,
@@ -146,7 +147,7 @@ class _ProfileContent extends StatelessWidget {
                 ),
               ),
               if (phone != null && phone!.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs.h),
                 Text(
                   phone!,
                   textAlign: TextAlign.center,
@@ -155,11 +156,29 @@ class _ProfileContent extends StatelessWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl.h),
               Card(
                 margin: EdgeInsets.zero,
                 child: Column(
                   children: [
+                    ListTile(
+                      leading: const Icon(Icons.storefront_outlined),
+                      title: Text(l10n.myListingsTitle),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.go('/my-listings'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.support_agent_outlined),
+                      title: Text(l10n.navAdvisor),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.go('/advisor'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.chat_bubble_outline),
+                      title: Text(l10n.navInquiries),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.go('/inquiries'),
+                    ),
                     ListTile(
                       leading: const Icon(Icons.lock_outline),
                       title: Text(l10n.profileChangePassword),
@@ -169,16 +188,16 @@ class _ProfileContent extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl.h),
               SizedBox(
-                height: 48,
+                height: 48.h,
                 child: OutlinedButton.icon(
                   onPressed: signingOut ? null : onSignOut,
                   icon: signingOut
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                      ? SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: const CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.logout),
                   label: Text(l10n.profileSignOut),
@@ -207,18 +226,18 @@ class _ProfileError extends StatelessWidget {
     final AppLocalizations l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: AppColors.error),
-            const SizedBox(height: AppSpacing.lg),
+            Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
+            SizedBox(height: AppSpacing.lg.h),
             Text(
               message,
               textAlign: TextAlign.center,
               style: AppTypography.bodyLarge,
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl.h),
             FilledButton(
               onPressed: onRetry,
               child: Text(l10n.retry),

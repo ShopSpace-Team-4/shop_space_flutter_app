@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../network/unauthenticated_endpoints.dart';
 import 'failures.dart';
 
 /// Maps [DioException]s / non-2xx responses to typed [Failure]s carrying a
@@ -14,21 +15,39 @@ class ErrorMapper {
   static const String serverMessageKey = 'errorServer';
   static const String unauthorizedMessageKey = 'errorUnauthorized';
   static const String validationMessageKey = 'errorValidation';
+  static const String genericMessageKey = 'errorGeneric';
   static const String emailAlreadyRegisteredMessageKey = 'errorEmailAlreadyRegistered';
+  static const String phoneAlreadyRegisteredMessageKey = 'errorPhoneAlreadyRegistered';
   static const String invalidOtpMessageKey = 'errorInvalidOtp';
   static const String otpAttemptsExceededMessageKey = 'errorOtpAttemptsExceeded';
   static const String invalidCredentialsMessageKey = 'errorInvalidCredentials';
   static const String emailNotVerifiedMessageKey = 'errorEmailNotVerified';
   static const String googleSignInCancelledMessageKey = 'errorGoogleSignInCancelled';
   static const String rateLimitedMessageKey = 'errorRateLimited';
+  static const String listingMetaUnavailableMessageKey = 'errorListingMetaUnavailable';
+  static const String listingCreateFailedMessageKey = 'errorListingCreateFailed';
+  static const String listingUpdateFailedMessageKey = 'errorListingUpdateFailed';
+  static const String listingStatusFailedMessageKey = 'errorListingStatusFailed';
+  static const String listingDeleteFailedMessageKey = 'errorListingDeleteFailed';
+  static const String listingNotFoundMessageKey = 'errorListingNotFound';
+  static const String mediaUploadFailedMessageKey = 'errorMediaUploadFailed';
+  static const String mediaReorderFailedMessageKey = 'errorMediaReorderFailed';
+  static const String mediaDeleteFailedMessageKey = 'errorMediaDeleteFailed';
+  static const String listingNotOwnedMessageKey = 'errorListingNotOwned';
+  static const String invalidMediaFileMessageKey = 'errorInvalidMediaFile';
 
   static const String codeEmailAlreadyRegistered = 'email_already_registered';
+  static const String codePhoneAlreadyRegistered = 'phone_already_registered';
   static const String codeInvalidOtp = 'invalid_otp';
   static const String codeOtpAttemptsExceeded = 'otp_attempts_exceeded';
   static const String codeInvalidCredentials = 'invalid_credentials';
   static const String codeEmailNotVerified = 'email_not_verified';
   static const String codeGoogleSignInCancelled = 'google_signin_cancelled';
   static const String codeRateLimited = 'rate_limited';
+
+  /// Exception name carried by the backend error body (`error.name`) when a
+  /// resource already exists (signup email, Google-account collision).
+  static const String codeDuplicateResource = 'DuplicateResourceException';
 
   Failure map(DioException error) {
     return switch (error.type) {
@@ -47,6 +66,10 @@ class ErrorMapper {
   }
 
   Failure _mapBadResponse(DioException error) {
+    final Failure? listingFailure = _mapListingBadResponse(error);
+    if (listingFailure != null) {
+      return listingFailure;
+    }
     final int? statusCode = error.response?.statusCode;
     if (statusCode != null && statusCode >= 400 && statusCode < 500) {
       final Failure? businessFailure = _mapBusinessCode(error);
@@ -55,26 +78,100 @@ class ErrorMapper {
       }
     }
     if (statusCode == 401) {
+      // Unauthenticated endpoints never signal an expired session — their 401
+      // is a business rejection (bad login, unverified email, bad OTP, ...).
+      if (UnauthenticatedEndpoints.contains(error.requestOptions.path)) {
+        return _mapUnauthenticated401(error);
+      }
       return const UnauthorizedFailure(unauthorizedMessageKey);
     }
     if (statusCode != null && statusCode >= 400 && statusCode < 500) {
-      return const ValidationFailure(validationMessageKey);
+      return const GenericFailure(genericMessageKey);
     }
     return const ServerFailure(serverMessageKey);
   }
 
-  /// Maps a recognized business code carried by the envelope `status` field
-  /// (snake_case, contract `contracts/auth-api.md`) to its typed [Failure].
-  /// Returns `null` for unknown/absent codes so the status-code fallback applies.
+  /// Maps a 401 on an unauthenticated endpoint. The backend rejects with
+  /// `error.name: UnauthorizedException` and a human `message`; an unverified
+  /// account mentions verification, everything else is a credentials problem.
+  Failure _mapUnauthenticated401(DioException error) {
+    final dynamic data = error.response?.data;
+    if (data is Map) {
+      final dynamic message = data['message'];
+      if (message is String && message.toLowerCase().contains('verif')) {
+        return const EmailNotVerified(emailNotVerifiedMessageKey);
+      }
+    }
+    return const InvalidCredentials(invalidCredentialsMessageKey);
+  }
+
+  /// Maps `/listings*` non-2xx responses to their typed listing [Failure]
+  /// (contract `contracts/listings-api.md`). Returns `null` for anything that
+  /// isn't a listing endpoint (or that must fall through to the shared
+  /// pipeline, e.g. `GET /listings/my-listings` and `GET /listings/:id`).
+  Failure? _mapListingBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _ListingPaths.normalized(options.path);
+    if (!_ListingPaths.isListingPath(path)) {
+      return null;
+    }
+    final int? statusCode = error.response?.statusCode;
+    final String method = options.method;
+
+    // GET /listings/meta: any failure means the form's options couldn't load.
+    if (method == 'GET' && path == 'listings/meta') {
+      return const ListingMetaUnavailable(listingMetaUnavailableMessageKey);
+    }
+
+    // GET /listings/my-listings uses the shared pipeline (bare collection).
+    if (method == 'GET' && path == 'listings/my-listings') {
+      return null;
+    }
+
+    // Owned-listing endpoints share the 404 and 403 semantics.
+    if (statusCode == 404) {
+      return const ListingNotFound(listingNotFoundMessageKey);
+    }
+    if (statusCode == 403) {
+      return const ListingNotOwned(listingNotOwnedMessageKey);
+    }
+
+    return switch (method) {
+      'POST' when path == 'listings' =>
+        const ListingCreateFailed(listingCreateFailedMessageKey),
+      'POST' when path.contains('/media') =>
+        const MediaUploadFailed(mediaUploadFailedMessageKey),
+      'PUT' when path.endsWith('/media/reorder') =>
+        const MediaReorderFailed(mediaReorderFailedMessageKey),
+      'PUT' => const ListingUpdateFailed(listingUpdateFailedMessageKey),
+      'PATCH' when path.endsWith('/status') =>
+        const ListingStatusFailed(listingStatusFailedMessageKey),
+      'DELETE' when path.contains('/media') =>
+        const MediaDeleteFailed(mediaDeleteFailedMessageKey),
+      'DELETE' => const ListingDeleteFailed(listingDeleteFailedMessageKey),
+      _ => null,
+    };
+  }
+
+  /// Maps a recognized business code to its typed [Failure]. The code can be
+  /// carried either by the envelope `status` field (snake_case, contract
+  /// `contracts/auth-api.md`) or by the backend error body `error.name`
+  /// (exception class, e.g. `DuplicateResourceException`). Returns `null` for
+  /// unknown/absent codes so the status-code fallback applies.
   Failure? _mapBusinessCode(DioException error) {
     final dynamic data = error.response?.data;
     if (data is! Map) {
       return null;
     }
-    final String code = data['status'] as String? ?? '';
+    final String? code = _businessCode(data);
+    if (code == codeDuplicateResource) {
+      return _mapDuplicateResource(data);
+    }
     return switch (code) {
       codeEmailAlreadyRegistered =>
         const EmailAlreadyRegistered(emailAlreadyRegisteredMessageKey),
+      codePhoneAlreadyRegistered =>
+        const PhoneAlreadyRegistered(phoneAlreadyRegisteredMessageKey),
       codeInvalidOtp => const InvalidOtp(invalidOtpMessageKey),
       codeOtpAttemptsExceeded =>
         const OtpAttemptsExceeded(otpAttemptsExceededMessageKey),
@@ -86,5 +183,51 @@ class ErrorMapper {
       codeRateLimited => const RateLimited(rateLimitedMessageKey),
       _ => null,
     };
+  }
+
+  /// `DuplicateResourceException` is used by the backend for any uniqueness
+  /// violation (email or phone). The payload's `message` names the colliding
+  /// field, so route to the matching typed [Failure] — defaulting to email when
+  /// the message is absent.
+  Failure _mapDuplicateResource(dynamic data) {
+    final dynamic message = data['message'];
+    if (message is String && message.toLowerCase().contains('phone')) {
+      return const PhoneAlreadyRegistered(phoneAlreadyRegisteredMessageKey);
+    }
+    return const EmailAlreadyRegistered(emailAlreadyRegisteredMessageKey);
+  }
+
+  /// Resolves the business code from the response body — the envelope `status`
+  /// field when present, otherwise the backend `error.name` exception name.
+  String? _businessCode(dynamic data) {
+    final dynamic status = data['status'];
+    if (status is String && status.isNotEmpty) {
+      return status;
+    }
+    final dynamic error = data['error'];
+    if (error is Map) {
+      final dynamic name = error['name'];
+      if (name is String && name.isNotEmpty) {
+        return name;
+      }
+    }
+    return null;
+  }
+}
+
+/// Matcher for the `/listings*` endpoint family used by [ErrorMapper].
+/// Tolerates a leading slash and the `/api/v1` prefix (the base URL already
+/// carries it, but retried/redirected requests may surface the full path).
+abstract final class _ListingPaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isListingPath(String path) =>
+      path == 'listings' || path.startsWith('listings/');
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
   }
 }
