@@ -10,7 +10,7 @@
   only — the test suite has been removed) and exits non-zero on any failure.
 - Two files govern all work — read them before implementing anything:
   - `.specify/memory/constitution.md` — non-negotiable engineering rules
-    (HOW things are built; versioned v1.2.0).
+    (HOW things are built; versioned v2.1.0).
   - `ShopSpace_Flutter_Implementation_Plan.md` — the phased plan (WHAT is
     built; Phase 0–6, in order). Contains the finalized Auth & User API
     (`/api/v1`, envelope `{ message, status, data }`, base
@@ -44,8 +44,34 @@
   values. App shell uses the hand-rolled `AppAdaptiveShell` (bottom nav on
   compact, nav rail on medium/expanded) — `flutter_adaptive_scaffold` is
   discontinued upstream and is NOT used (approved decision D1).
+- **Every UI component MUST be responsive.** See "Responsive UI" below.
 - Localization: English + Arabic, full RTL. No hardcoded user-facing strings,
   ever — externalize from the first line of code.
+
+## Responsive UI
+
+- **Every UI component must be responsive** — this is a hard rule, not a
+  recommendation. There is no such thing as a fixed, unscaled UI widget.
+- Scale every size, spacing, radius, icon, and font with `flutter_screenutil`
+  against the Figma reference frame (375×812): `.h` (height), `.w` (width),
+  `.sp` (font size, text-aware), `.r` (uniform/radius scale).
+- **Use `.sp` for fonts** — prefer scaling text via the theme (`AppTypography`
+  getters already apply `.sp`) over ad-hoc `fontSize` literals.
+- **Use flex layout widgets** (`Expanded`, `Flexible`, `Spacer`, `Row`,
+  `Column`, `Wrap`) for structure so content flows and never overflows —
+  screenutil scales values, flex widgets pick layout within the available
+  space. Never hard-code `double.infinity`-free assumptions about available
+  width/height.
+- **Never use raw pixel literals in `build`** (e.g. `SizedBox(height: 48)`).
+  Use `48.h`, `24.w`, `16.sp`, `10.r` (or a theme token scaled with the same
+  suffix). Bare numbers inside `Icon(size:)`, `EdgeInsets`, `SizedBox`,
+  `Container` dimensions, `BorderRadius`, and `TextStyle(fontSize:)` are a
+  code smell — flag and fix them.
+- Constants that cannot scale (e.g. `BorderSide(width: 1)`, pill radii like
+  `9999`, `strokeWidth`, shadow blur/elevation) are the only allowed exception
+  and MUST be deliberate.
+- Breakpoints (`window_size.dart`) still choose layout structure only —
+  they never scale values, and screenutil never chooses structure.
 
 ## Architecture
 
@@ -115,6 +141,10 @@
 - The gate is `dart run tool/quality.dart` → `flutter analyze` only; it must
   stay clean on every task.
 - Checked at all three breakpoints AND in both English and Arabic (RTL).
+- Responsiveness is part of the quality gate: any new or edited widget must
+  scale every value with screenutil and use flex layout widgets (see
+  "Responsive UI"). A widget with raw pixel literals in `build` is a lint
+  failure equivalent.
 
 ## Toolchain gotchas
 

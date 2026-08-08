@@ -66,3 +66,54 @@ class GoogleSignInCancelled extends Failure {
 class RateLimited extends Failure {
   const RateLimited(super.messageKey);
 }
+
+class ListingMetaUnavailable extends Failure {
+  const ListingMetaUnavailable(super.messageKey);
+}
+
+class ListingCreateFailed extends Failure {
+  const ListingCreateFailed(super.messageKey);
+}
+
+class ListingUpdateFailed extends Failure {
+  const ListingUpdateFailed(super.messageKey);
+}
+
+class ListingStatusFailed extends Failure {
+  const ListingStatusFailed(super.messageKey);
+}
+
+class ListingDeleteFailed extends Failure {
+  const ListingDeleteFailed(super.messageKey);
+}
+
+class ListingNotFound extends Failure {
+  const ListingNotFound(super.messageKey);
+}
+
+class MediaUploadFailed extends Failure {
+  const MediaUploadFailed(super.messageKey);
+}
+
+class MediaReorderFailed extends Failure {
+  const MediaReorderFailed(super.messageKey);
+}
+
+class MediaDeleteFailed extends Failure {
+  const MediaDeleteFailed(super.messageKey);
+}
+
+class ListingNotOwned extends Failure {
+  const ListingNotOwned(super.messageKey);
+}
+
+class InvalidMediaFile extends Failure {
+  const InvalidMediaFile(super.messageKey);
+}
+
+/// The landlord tried to stage more than the allowed photo count (Figma
+/// `242:1713`: "Up to 10 photos"). Surfaces inline in the Photos step; the
+/// file is never staged.
+class PhotoLimitReached extends Failure {
+  const PhotoLimitReached(super.messageKey);
+}

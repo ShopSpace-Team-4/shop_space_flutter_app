@@ -13,7 +13,7 @@ abstract final class AppColors {
   static const Color accentSubtle = Color(0xFFF0FDFA);
 
   static const Color background = Color(0xFFF8FAFC);
-  static const Color surface = Color(0xFFFFFFFF);
+  static  const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFF1F5F9);
   static const Color surfaceInverse = Color(0xFF0F172A);
 
@@ -41,4 +41,14 @@ abstract final class AppColors {
   static const Color outlineVariant = Color(0xFFCBD5E1);
   static const Color outlineSubtle = Color(0xFFF1F5F9);
   static const Color outlineFocus = Color(0xFF93C5FD);
+
+  /// Home hero header gradient (Figma `95:4028`): `#0F172A` → `#3A1E8B`.
+  /// Start equals [AppColors.surfaceInverse].
+  static const Color heroGradientStart = Color(0xff0F172A);
+  static const Color heroGradientEnd = Color(0xFF1E3A8A);
+
+  /// AI Space Advisor promo card gradient (Figma `95:4028`): `#3A1E8B` →
+  /// `#4F8EE6`.
+  static const Color promoGradientStart = Color(0xFF1E3A8A);
+  static const Color promoGradientEnd = Color(0xFF4F46E5);
 }

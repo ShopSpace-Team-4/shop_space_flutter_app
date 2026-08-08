@@ -40,9 +40,10 @@ dart run tool/quality.dart               # flutter analyze + full flutter test (
 ### 1. List a shop (create) — role gate first
 
 1. "List a shop" reads `roles[]` (never `activeRole`). No `landlord` → Become-a-Landlord bottom
-   sheet (contract `become-landlord-flow.md`) → `UserRepository.addRole('landlord')` →
-   `SessionController.onTokensUpdated(freshTokens)` BEFORE proceeding → `switchActiveRole(landlord)`.
-   Switch failure ≠ blocker (permissions come from `roles[]`).
+   sheet (contract `become-landlord-flow.md`) → `UserRepository.addRole(UserRole.landlord)` →
+   `switchActiveRole(UserRole.landlord)`. `addRole` already writes the fresh token pair via
+   `SessionController.onTokensUpdated` — no manual token write. Switch failure ≠ blocker (permissions
+   come from `roles[]`).
 2. `ListingFormCubit` opens step 1; `GET /listings/meta` loads categories/amenities/statuses once
    (retryable `ListingMetaUnavailable`).
 3. Steps: details → photos → price/lease → review. Manual `Form` validators; no form package.

@@ -24,6 +24,17 @@ class ErrorMapper {
   static const String emailNotVerifiedMessageKey = 'errorEmailNotVerified';
   static const String googleSignInCancelledMessageKey = 'errorGoogleSignInCancelled';
   static const String rateLimitedMessageKey = 'errorRateLimited';
+  static const String listingMetaUnavailableMessageKey = 'errorListingMetaUnavailable';
+  static const String listingCreateFailedMessageKey = 'errorListingCreateFailed';
+  static const String listingUpdateFailedMessageKey = 'errorListingUpdateFailed';
+  static const String listingStatusFailedMessageKey = 'errorListingStatusFailed';
+  static const String listingDeleteFailedMessageKey = 'errorListingDeleteFailed';
+  static const String listingNotFoundMessageKey = 'errorListingNotFound';
+  static const String mediaUploadFailedMessageKey = 'errorMediaUploadFailed';
+  static const String mediaReorderFailedMessageKey = 'errorMediaReorderFailed';
+  static const String mediaDeleteFailedMessageKey = 'errorMediaDeleteFailed';
+  static const String listingNotOwnedMessageKey = 'errorListingNotOwned';
+  static const String invalidMediaFileMessageKey = 'errorInvalidMediaFile';
 
   static const String codeEmailAlreadyRegistered = 'email_already_registered';
   static const String codePhoneAlreadyRegistered = 'phone_already_registered';
@@ -55,6 +66,10 @@ class ErrorMapper {
   }
 
   Failure _mapBadResponse(DioException error) {
+    final Failure? listingFailure = _mapListingBadResponse(error);
+    if (listingFailure != null) {
+      return listingFailure;
+    }
     final int? statusCode = error.response?.statusCode;
     if (statusCode != null && statusCode >= 400 && statusCode < 500) {
       final Failure? businessFailure = _mapBusinessCode(error);
@@ -88,6 +103,54 @@ class ErrorMapper {
       }
     }
     return const InvalidCredentials(invalidCredentialsMessageKey);
+  }
+
+  /// Maps `/listings*` non-2xx responses to their typed listing [Failure]
+  /// (contract `contracts/listings-api.md`). Returns `null` for anything that
+  /// isn't a listing endpoint (or that must fall through to the shared
+  /// pipeline, e.g. `GET /listings/my-listings` and `GET /listings/:id`).
+  Failure? _mapListingBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _ListingPaths.normalized(options.path);
+    if (!_ListingPaths.isListingPath(path)) {
+      return null;
+    }
+    final int? statusCode = error.response?.statusCode;
+    final String method = options.method;
+
+    // GET /listings/meta: any failure means the form's options couldn't load.
+    if (method == 'GET' && path == 'listings/meta') {
+      return const ListingMetaUnavailable(listingMetaUnavailableMessageKey);
+    }
+
+    // GET /listings/my-listings uses the shared pipeline (bare collection).
+    if (method == 'GET' && path == 'listings/my-listings') {
+      return null;
+    }
+
+    // Owned-listing endpoints share the 404 and 403 semantics.
+    if (statusCode == 404) {
+      return const ListingNotFound(listingNotFoundMessageKey);
+    }
+    if (statusCode == 403) {
+      return const ListingNotOwned(listingNotOwnedMessageKey);
+    }
+
+    return switch (method) {
+      'POST' when path == 'listings' =>
+        const ListingCreateFailed(listingCreateFailedMessageKey),
+      'POST' when path.contains('/media') =>
+        const MediaUploadFailed(mediaUploadFailedMessageKey),
+      'PUT' when path.endsWith('/media/reorder') =>
+        const MediaReorderFailed(mediaReorderFailedMessageKey),
+      'PUT' => const ListingUpdateFailed(listingUpdateFailedMessageKey),
+      'PATCH' when path.endsWith('/status') =>
+        const ListingStatusFailed(listingStatusFailedMessageKey),
+      'DELETE' when path.contains('/media') =>
+        const MediaDeleteFailed(mediaDeleteFailedMessageKey),
+      'DELETE' => const ListingDeleteFailed(listingDeleteFailedMessageKey),
+      _ => null,
+    };
   }
 
   /// Maps a recognized business code to its typed [Failure]. The code can be
@@ -149,5 +212,22 @@ class ErrorMapper {
       }
     }
     return null;
+  }
+}
+
+/// Matcher for the `/listings*` endpoint family used by [ErrorMapper].
+/// Tolerates a leading slash and the `/api/v1` prefix (the base URL already
+/// carries it, but retried/redirected requests may surface the full path).
+abstract final class _ListingPaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isListingPath(String path) =>
+      path == 'listings' || path.startsWith('listings/');
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
   }
 }

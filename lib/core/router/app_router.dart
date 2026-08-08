@@ -8,7 +8,12 @@ import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/otp_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
-import '../../features/home/presentation/home_screen.dart';
+import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/listing/presentation/list_a_shop_flow.dart';
+import '../../features/listing/presentation/screens/listing_detail_screen.dart';
+import '../../features/listing/presentation/screens/listing_form_screen.dart';
+import '../../features/listing/presentation/screens/my_listings_screen.dart';
+import '../../features/listing/presentation/screens/saved_screen.dart';
 import '../../features/user/presentation/screens/change_password_screen.dart';
 import '../../features/user/presentation/screens/profile_screen.dart';
 import '../localization/app_localizations.dart';
@@ -35,11 +40,14 @@ class _SessionRefresh extends ChangeNotifier {
 
 /// Route table (Phase 1).
 ///
-/// Auth routes (login/signup/otp/reset) are public. Everything behind a
-/// session (`/`, `/profile`, `/change-password`) is wrapped in an [AuthGuard];
-/// when no session is wired (widget tests, pre-bootstrap) the guard is absent
-/// and behavior matches Phase 0. Unknown routes fall back to a graceful,
-/// localized [errorBuilder] instead of crashing.
+/// The four main tabs (Home, Search, Saved, Profile) live inside a single
+/// [StatefulShellRoute.indexedStack] so the `AppAdaptiveShell` navigation bar
+/// stays visible on every tab. Auth routes (login/signup/otp/reset) are
+/// public and sit outside the shell (no nav bar, matching Figma `Frame 51`).
+/// Everything behind a session is wrapped in an [AuthGuard]; when no session
+/// is wired (pre-bootstrap) the guard is absent and behavior matches Phase 0.
+/// Unknown routes fall back to a graceful, localized [errorBuilder] instead
+/// of crashing.
 class AppRouter {
   AppRouter({AuthSessionCubit? session}) {
     final AuthGuard? guard = session == null
@@ -49,23 +57,50 @@ class AppRouter {
     _router = GoRouter(
       refreshListenable: session == null ? null : _SessionRefresh(session),
       routes: [
-        GoRoute(
-          path: '/',
+        StatefulShellRoute.indexedStack(
           redirect: guard?.call,
-          builder: (context, state) {
-            final AppLocalizations l10n = AppLocalizations.of(context);
-            final List<NavigationDestination> destinations =
-                _shellDestinations(l10n);
+          builder: (context, state, navigationShell) {
             return AppAdaptiveShell(
-              body: const HomeScreen(),
-              destinations: destinations,
-              onDestinationSelected: (index) {
-                if (index == _profileDestinationIndex(destinations, l10n)) {
-                  context.go('/profile');
-                }
-              },
+              navigationShell: navigationShell,
+              onAddPressed: () => openCreateListingFlow(context),
             );
           },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/',
+                  builder: (context, state) => const HomeScreen(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/search',
+                  builder: (context, state) => AppPlaceholderScreen(
+                    title: AppLocalizations.of(context).navSearch,
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/saved',
+                  builder: (context, state) => const SavedScreen(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/profile',
+                  builder: (context, state) => const ProfileScreen(),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           path: '/login',
@@ -92,17 +127,34 @@ class AppRouter {
           ),
         ),
         GoRoute(
-          path: '/profile',
-          redirect: guard?.call,
-          builder: (context, state) => const ProfileScreen(),
-        ),
-        GoRoute(
           path: '/change-password',
           redirect: guard?.call,
           builder: (context, state) => const ChangePasswordScreen(),
         ),
-        _placeholderRoute('/listings', (l10n) => l10n.navListings),
-        _placeholderRoute('/search', (l10n) => l10n.navSearch),
+        GoRoute(
+          path: '/my-listings',
+          redirect: guard?.call,
+          builder: (context, state) => const MyListingsScreen(),
+        ),
+        GoRoute(
+          path: '/my-listings/:listingId',
+          redirect: guard?.call,
+          builder: (context, state) => ListingDetailScreen(
+            listingId: state.pathParameters['listingId'] ?? '',
+          ),
+        ),
+        GoRoute(
+          path: '/listing-form',
+          redirect: guard?.call,
+          builder: (context, state) => const ListingFormScreen(),
+        ),
+        GoRoute(
+          path: '/listing-form/:listingId',
+          redirect: guard?.call,
+          builder: (context, state) => ListingFormScreen(
+            listingId: state.pathParameters['listingId'],
+          ),
+        ),
         _placeholderRoute('/advisor', (l10n) => l10n.navAdvisor),
         _placeholderRoute('/inquiries', (l10n) => l10n.navInquiries),
       ],
@@ -128,49 +180,5 @@ class AppRouter {
         return AppPlaceholderScreen(title: title(l10n));
       },
     );
-  }
-
-  /// Index of the Profile destination, so the shell's Profile tap navigates
-  /// to `/profile` while other destinations stay index-only for later phases.
-  int _profileDestinationIndex(
-    List<NavigationDestination> destinations,
-    AppLocalizations l10n,
-  ) {
-    return destinations.indexWhere((d) => d.label == l10n.navProfile);
-  }
-
-  List<NavigationDestination> _shellDestinations(AppLocalizations l10n) {
-    return [
-      NavigationDestination(
-        icon: const Icon(Icons.home_outlined),
-        selectedIcon: const Icon(Icons.home),
-        label: l10n.navHome,
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.search_outlined),
-        selectedIcon: const Icon(Icons.search),
-        label: l10n.navSearch,
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.list_alt_outlined),
-        selectedIcon: const Icon(Icons.list_alt),
-        label: l10n.navListings,
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.support_agent_outlined),
-        selectedIcon: const Icon(Icons.support_agent),
-        label: l10n.navAdvisor,
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.chat_bubble_outline),
-        selectedIcon: const Icon(Icons.chat_bubble),
-        label: l10n.navInquiries,
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.person_outline),
-        selectedIcon: const Icon(Icons.person),
-        label: l10n.navProfile,
-      ),
-    ];
   }
 }

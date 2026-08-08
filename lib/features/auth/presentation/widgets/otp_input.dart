@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -9,7 +10,8 @@ import '../../../../core/theme/app_typography.dart';
 ///
 /// The [controller] (a [PinInputController]) owns the underlying text field
 /// and focus; callers only watch [onChanged] (to drive button state) and
-/// [onSubmitted]. Cell styling maps the Figma OTP field onto existing tokens.
+/// [onSubmitted]. Cell styling maps the Figma OTP field onto existing tokens;
+/// cell size, spacing, radius and text all scale with screenutil.
 class OtpInput extends StatelessWidget {
   const OtpInput({
     super.key,
@@ -42,9 +44,9 @@ class OtpInput extends StatelessWidget {
       onSubmitted: onSubmitted,
       theme: MaterialPinTheme(
         shape: MaterialPinShape.outlined,
-        cellSize: const Size(48, 56),
-        spacing: AppSpacing.sm,
-        borderRadius: BorderRadius.circular(12),
+        cellSize: Size(48.w, 56.h),
+        spacing: AppSpacing.sm.w,
+        borderRadius: BorderRadius.circular(12.r),
         borderWidth: 1,
         focusedBorderWidth: 2,
         fillColor: AppColors.surface,

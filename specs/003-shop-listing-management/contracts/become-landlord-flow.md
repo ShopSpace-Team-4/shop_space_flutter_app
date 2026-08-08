@@ -5,7 +5,7 @@ Branch `003-shop-listing-management` · Spec `spec.md` (FR-001/FR-002/FR-013) ·
 ## Purpose
 
 Defines what happens when a tenant-only account taps "List a shop". It MUST NOT re-implement the
-Phase 1 `UserRepository.addRole('landlord')` + token rotation — it reuses the injected Phase 1 seam
+Phase 1 `UserRepository.addRole(UserRole.landlord)` + token rotation — it reuses the injected Phase 1 seam
 (D7). This contract only wires that seam into the listing flow and defines the UX.
 
 ## Trigger & gate
@@ -28,9 +28,9 @@ Phase 1 `UserRepository.addRole('landlord')` + token rotation — it reuses the 
 
 ```dart
 final userRepo = getIt<UserRepository>();
-final user = await userRepo.addRole('landlord');      // POST /users/me/roles
-await SessionController.instance.onTokensUpdated(user.tokens); // fresh token pair MUST replace stored ones
-await userRepo.switchActiveRole(Role.landlord);       // persisted activeRole for dashboard reopen
+final user = await userRepo.addRole(UserRole.landlord);   // POST /users/me/roles — Phase 1 impl already
+                                                          // writes the fresh token pair via onTokensUpdated
+await userRepo.switchActiveRole(UserRole.landlord);       // persisted activeRole for dashboard reopen
 ```
 
 **Order matters (constitution §Roles & sessions):** `addRole` returns a fresh token pair — the OLD
@@ -62,4 +62,4 @@ the user feature's public seam.
 
 - `lib/features/user/repository/user_repository.dart` — `addRole`, `switchActiveRole` (source of the seam)
 - `lib/features/auth/presentation/session/session_controller.dart` — `onTokensUpdated`
-- `lib/features/user/data/models/user_role.dart` — `Role.landlord`
+- `lib/features/user/data/models/user_role.dart` — `UserRole.landlord`

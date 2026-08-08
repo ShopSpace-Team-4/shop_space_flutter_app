@@ -19,7 +19,8 @@ abstract final class AppTheme {
       onError: AppColors.errorOnContainer,
     );
 
-    const textTheme = TextTheme(      displayLarge: AppTypography.displayXL,
+    final TextTheme textTheme = TextTheme(
+      displayLarge: AppTypography.displayXL,
       displayMedium: AppTypography.displayL,
       headlineLarge: AppTypography.heading1,
       headlineMedium: AppTypography.heading2,
@@ -63,10 +64,7 @@ abstract final class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.medium),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
-            width: 2,
-          ),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

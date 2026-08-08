@@ -32,8 +32,8 @@ enum ListingStatus {
 Source of truth: the backend enum, surfaced by `GET /listings/meta` (`statuses`) and used verbatim in
 `PATCH /listings/:id/status`. The enum is the model's single status representation; unknown values
 fall back to `pending` with a data-integrity log (never crash on forward-compatible statuses).
-Visibility rules (AVAILABLE offered, RENTED tagged, PENDING/EXPIRED hidden) are **backend-driven** and
-not encoded here (D4).
+Visibility rules (only AVAILABLE shows in the marketplace; PENDING/RENTED/EXPIRED hidden — resolved
+2026-08-08) are **backend-driven** and not encoded here (D4).
 
 ### 1.2 `ListingMedia` (response item, `POST/GET/DELETE media`, reorder responses)
 
@@ -87,8 +87,10 @@ abstract class ShopListing with _$ShopListing {
 ```
 
 **Rules**:
-- `annualRentWithVat` and `currency` are **never submitted** (FR-008, §8.4); the create/update request
-  models do not carry them.
+- `annualRentWithVat` is **never submitted** (FR-008, §8.4) — the create/update request models do not
+  carry it.
+- `currency` **IS submitted** as the fixed value `"EGP"` on create (API guide §5.1 create body); it is
+  never editable in the UI and is not re-submitted on update.
 - `availableFrom` is submitted as `YYYY-MM-DD` (date only) but returned as ISO-8601 datetime; the form
   parses the date part back out when editing (API guide §5.3 note).
 - `floorNumber: 0` means ground floor; keep the int, render `0` as ground floor in EN/AR.
@@ -217,7 +219,7 @@ form layer, not the model.
 - No envelope parsing, no DTO→entity mapping, no raw `DioException` (Phase 0 rules).
 - No `setState` business logic; Cubits own all state transitions.
 - No local photo persistence; `XFile`s live in the form state for the flow's duration (D3).
-- `annualRentWithVat` / `currency` never submitted; never stored locally as editable (FR-008).
+- `annualRentWithVat` never submitted (FR-008); `currency` submitted only as fixed `"EGP"` on create, never editable locally.
 - Status transitions never validated client-side (D4); the backend is the authority.
 - `activeRole` never gates listing permissions; `roles[]` (landlord) is the gate (FR-013).
 - Edit save never partial: no "saved fields but not photos" intermediate state surfaces (D6).

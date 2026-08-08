@@ -77,10 +77,7 @@ class ShopSpaceApp extends StatelessWidget {
               routerConfig: router,
             );
             if (sessionCubit != null) {
-              app = BlocProvider.value(
-                value: sessionCubit!,
-                child: app,
-              );
+              app = BlocProvider.value(value: sessionCubit!, child: app);
             }
             return app;
           },

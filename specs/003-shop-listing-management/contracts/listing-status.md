@@ -42,17 +42,17 @@ The status picker lives on the My Listings detail (FR-009). Submitting is a sing
 - Publishing = the user later choosing `AVAILABLE` in the status picker. While PENDING the listing is
   hidden from the marketplace (backend hides PENDING/EXPIRED; app trusts the server).
 
-## Display rules (spec session 2026-08-07 — app renders, backend decides visibility)
+## Display rules (spec sessions 2026-08-07/2026-08-08 — app renders, backend decides visibility)
 
 | Status | Tenant-facing visibility | Landlord My Listings rendering |
 |---|---|---|
 | `PENDING` | hidden (backend) | shown, labeled "Pending" + hint that it's not public yet |
 | `AVAILABLE` | offered to tenants | shown, normal |
-| `RENTED` | shown with a "Rented" tag | shown, tagged "Rented" |
+| `RENTED` | hidden (backend) | shown, tagged "Rented" |
 | `EXPIRED` | hidden (backend) | shown, labeled "Expired" |
 
-The app renders a tag/badge + localized label per status. It does not decide visibility — it displays
-whatever the backend returns.
+The app renders a tag/badge + localized label per status in My Listings. It does not decide
+marketplace visibility — it displays whatever the backend returns.
 
 ## Interaction with edit (FR-010)
 

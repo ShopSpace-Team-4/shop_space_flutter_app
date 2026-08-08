@@ -42,10 +42,10 @@ class AuthCtaButton extends StatelessWidget {
           ),
         ),
         child: loading
-            ? const SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(
+            ? SizedBox(
+                width: 22.w,
+                height: 22.h,
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   color: AppColors.onPrimary,
                 ),

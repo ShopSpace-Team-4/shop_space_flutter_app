@@ -146,6 +146,24 @@ abstract class AppLocalizations {
   /// **'Inquiries'**
   String get navInquiries;
 
+  /// No description provided for @navSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get navSaved;
+
+  /// No description provided for @navAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add listing'**
+  String get navAdd;
+
+  /// No description provided for @savedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedTitle;
+
   /// No description provided for @comingSoon.
   ///
   /// In en, this message translates to:
@@ -157,6 +175,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page not found'**
   String get routeNotFound;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, {name} 👋'**
+  String homeGreeting(String name);
+
+  /// No description provided for @homeGreetingFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello 👋'**
+  String get homeGreetingFallback;
+
+  /// No description provided for @homeSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search shops, categories, or cities'**
+  String get homeSearchHint;
+
+  /// No description provided for @homeAdvisorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Space Advisor'**
+  String get homeAdvisorTitle;
+
+  /// No description provided for @homeAdvisorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your ideal space'**
+  String get homeAdvisorSubtitle;
+
+  /// No description provided for @homeCategoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get homeCategoriesTitle;
+
+  /// No description provided for @homeRecommendedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spaces'**
+  String get homeRecommendedTitle;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeNearbyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Listings'**
+  String get homeNearbyTitle;
+
+  /// No description provided for @homeEmptyRecommended.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommendations yet'**
+  String get homeEmptyRecommended;
+
+  /// No description provided for @homeEmptyNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'No nearby listings yet'**
+  String get homeEmptyNearby;
+
+  /// No description provided for @homeEmptyCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available'**
+  String get homeEmptyCategories;
+
+  /// No description provided for @homeRentPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/yr'**
+  String homeRentPerYear(String amount);
 
   /// No description provided for @authLogin.
   ///
@@ -283,6 +379,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'re trying too often. Please wait a moment and try again.'**
   String get errorRateLimited;
+
+  /// No description provided for @errorListingMetaUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the listing options. Please try again.'**
+  String get errorListingMetaUnavailable;
+
+  /// No description provided for @errorListingCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the listing. Please try again.'**
+  String get errorListingCreateFailed;
+
+  /// No description provided for @errorListingUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your changes. Please try again.'**
+  String get errorListingUpdateFailed;
+
+  /// No description provided for @errorListingStatusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t change the listing status. The current status was restored.'**
+  String get errorListingStatusFailed;
+
+  /// No description provided for @errorListingDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete the listing. Please try again.'**
+  String get errorListingDeleteFailed;
+
+  /// No description provided for @errorListingNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This listing no longer exists.'**
+  String get errorListingNotFound;
+
+  /// No description provided for @errorMediaUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t upload the photos. Please try again.'**
+  String get errorMediaUploadFailed;
+
+  /// No description provided for @errorMediaReorderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reorder the photos. Please try again.'**
+  String get errorMediaReorderFailed;
+
+  /// No description provided for @errorMediaDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t remove this photo. Please try again.'**
+  String get errorMediaDeleteFailed;
+
+  /// No description provided for @errorListingNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to manage this listing.'**
+  String get errorListingNotOwned;
+
+  /// No description provided for @errorInvalidMediaFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Only PNG or JPG photos up to 20 MB are supported.'**
+  String get errorInvalidMediaFile;
+
+  /// No description provided for @errorPhotoLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add up to 10 photos.'**
+  String get errorPhotoLimitReached;
 
   /// No description provided for @authEmailLabel.
   ///
@@ -619,6 +787,672 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing here yet'**
   String get emptyState;
+
+  /// No description provided for @myListingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Listings'**
+  String get myListingsTitle;
+
+  /// No description provided for @myListingsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No listings yet'**
+  String get myListingsEmptyTitle;
+
+  /// No description provided for @myListingsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When you list a shop, it will appear here. Start by listing your first shop.'**
+  String get myListingsEmptyMessage;
+
+  /// No description provided for @myListingsListAShop.
+  ///
+  /// In en, this message translates to:
+  /// **'List a shop'**
+  String get myListingsListAShop;
+
+  /// No description provided for @myListingsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your listings. Please try again.'**
+  String get myListingsError;
+
+  /// No description provided for @myListingsNotPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Not public yet'**
+  String get myListingsNotPublic;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get statusAvailable;
+
+  /// No description provided for @statusRented.
+  ///
+  /// In en, this message translates to:
+  /// **'Rented'**
+  String get statusRented;
+
+  /// No description provided for @statusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get statusExpired;
+
+  /// No description provided for @statusChangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change status'**
+  String get statusChangeTitle;
+
+  /// No description provided for @statusChangeSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get statusChangeSubmit;
+
+  /// No description provided for @statusChangeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Status updated'**
+  String get statusChangeSuccess;
+
+  /// No description provided for @detailNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get detailNotAvailable;
+
+  /// No description provided for @detailFloor.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor'**
+  String get detailFloor;
+
+  /// No description provided for @detailGround.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground'**
+  String get detailGround;
+
+  /// No description provided for @detailArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get detailArea;
+
+  /// No description provided for @detailAreaValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{area} m²'**
+  String detailAreaValue(String area);
+
+  /// No description provided for @detailAnnualRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent'**
+  String get detailAnnualRent;
+
+  /// No description provided for @detailAnnualRentWithVat.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent incl. VAT'**
+  String get detailAnnualRentWithVat;
+
+  /// No description provided for @detailAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get detailAmenities;
+
+  /// No description provided for @detailAvailableFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Available from'**
+  String get detailAvailableFrom;
+
+  /// No description provided for @detailMinimumLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum lease'**
+  String get detailMinimumLease;
+
+  /// No description provided for @detailSecurityDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit'**
+  String get detailSecurityDeposit;
+
+  /// No description provided for @detailMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get detailMonths;
+
+  /// No description provided for @detailFloors.
+  ///
+  /// In en, this message translates to:
+  /// **'Floors'**
+  String get detailFloors;
+
+  /// No description provided for @detailDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get detailDescription;
+
+  /// No description provided for @detailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get detailAddress;
+
+  /// No description provided for @detailCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get detailCategory;
+
+  /// No description provided for @detailCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get detailCity;
+
+  /// No description provided for @detailDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get detailDistrict;
+
+  /// No description provided for @detailEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get detailEdit;
+
+  /// No description provided for @detailDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get detailDelete;
+
+  /// No description provided for @detailBackToMyListings.
+  ///
+  /// In en, this message translates to:
+  /// **'My Listings'**
+  String get detailBackToMyListings;
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get commonCancel;
+
+  /// No description provided for @deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete listing'**
+  String get deleteConfirmTitle;
+
+  /// No description provided for @deleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete this listing and all of its photos. This can\'t be undone.'**
+  String get deleteConfirmMessage;
+
+  /// No description provided for @deleteConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteConfirmAction;
+
+  /// No description provided for @deleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing deleted'**
+  String get deleteSuccess;
+
+  /// No description provided for @currencyPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'{currency}'**
+  String currencyPlaceholder(Object currency);
+
+  /// No description provided for @vatSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'incl. VAT'**
+  String get vatSuffix;
+
+  /// No description provided for @becomeLandlordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a Landlord'**
+  String get becomeLandlordTitle;
+
+  /// No description provided for @becomeLandlordBody.
+  ///
+  /// In en, this message translates to:
+  /// **'As a landlord you can list your shops, manage photos, and control pricing. Tenants will be able to contact you about your spaces.'**
+  String get becomeLandlordBody;
+
+  /// No description provided for @becomeLandlordConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a Landlord'**
+  String get becomeLandlordConfirm;
+
+  /// No description provided for @becomeLandlordDismissHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can do this later from My Listings.'**
+  String get becomeLandlordDismissHint;
+
+  /// No description provided for @formTitleCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'List a shop'**
+  String get formTitleCreate;
+
+  /// No description provided for @formStepDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get formStepDetails;
+
+  /// No description provided for @formStepPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get formStepPhotos;
+
+  /// No description provided for @formStepPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price & lease'**
+  String get formStepPrice;
+
+  /// No description provided for @formStepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get formStepReview;
+
+  /// No description provided for @formStepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String formStepOf(int current, int total);
+
+  /// No description provided for @formNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get formNext;
+
+  /// No description provided for @formBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get formBack;
+
+  /// No description provided for @formSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get formSubmit;
+
+  /// No description provided for @formSubmitCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create listing'**
+  String get formSubmitCreate;
+
+  /// No description provided for @formFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get formFieldTitle;
+
+  /// No description provided for @formFieldTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Retail shop in Zamalek'**
+  String get formFieldTitleHint;
+
+  /// No description provided for @formTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a title'**
+  String get formTitleRequired;
+
+  /// No description provided for @formTitleTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Title must be at most {max} characters'**
+  String formTitleTooLong(int max);
+
+  /// No description provided for @formFieldCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get formFieldCategory;
+
+  /// No description provided for @formCategoryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category'**
+  String get formCategoryRequired;
+
+  /// No description provided for @formCategoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category'**
+  String get formCategoryHint;
+
+  /// No description provided for @formFieldArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area (sqm)'**
+  String get formFieldArea;
+
+  /// No description provided for @formAreaRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the area'**
+  String get formAreaRequired;
+
+  /// No description provided for @formAreaPositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Area must be greater than zero'**
+  String get formAreaPositive;
+
+  /// No description provided for @formFieldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get formFieldCity;
+
+  /// No description provided for @formCityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a city'**
+  String get formCityRequired;
+
+  /// No description provided for @formCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a city'**
+  String get formCityHint;
+
+  /// No description provided for @formFieldDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get formFieldDistrict;
+
+  /// No description provided for @formDistrictRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a district'**
+  String get formDistrictRequired;
+
+  /// No description provided for @formDistrictHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a district'**
+  String get formDistrictHint;
+
+  /// No description provided for @formFieldAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (optional)'**
+  String get formFieldAddress;
+
+  /// No description provided for @formFieldDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get formFieldDescription;
+
+  /// No description provided for @formFieldAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get formFieldAmenities;
+
+  /// No description provided for @formAmenitiesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select any that apply'**
+  String get formAmenitiesHint;
+
+  /// No description provided for @formFieldFloors.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of floors (optional)'**
+  String get formFieldFloors;
+
+  /// No description provided for @formFieldFloorNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor number'**
+  String get formFieldFloorNumber;
+
+  /// No description provided for @formFloorRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the floor number'**
+  String get formFloorRequired;
+
+  /// No description provided for @formFieldAvailableFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Available from'**
+  String get formFieldAvailableFrom;
+
+  /// No description provided for @formAvailableFromRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get formAvailableFromRequired;
+
+  /// No description provided for @formFieldMinimumLease.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum lease term'**
+  String get formFieldMinimumLease;
+
+  /// No description provided for @formFieldAnnualRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent (EGP)'**
+  String get formFieldAnnualRent;
+
+  /// No description provided for @formRentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the annual rent'**
+  String get formRentRequired;
+
+  /// No description provided for @formRentPositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent must be greater than zero'**
+  String get formRentPositive;
+
+  /// No description provided for @formVatPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual rent incl. VAT'**
+  String get formVatPreview;
+
+  /// No description provided for @formCurrencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get formCurrencyLabel;
+
+  /// No description provided for @formFieldSecurityDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit (months)'**
+  String get formFieldSecurityDeposit;
+
+  /// No description provided for @formPhotoAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get formPhotoAdd;
+
+  /// No description provided for @formPhotoMaxHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 10 photos'**
+  String get formPhotoMaxHint;
+
+  /// No description provided for @formPhotoPickGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get formPhotoPickGallery;
+
+  /// No description provided for @formPhotoPickCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get formPhotoPickCamera;
+
+  /// No description provided for @formPhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get formPhotoRemove;
+
+  /// No description provided for @formPhotoRecommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding at least 3 photos helps tenants understand your shop. This is a recommendation, not a requirement.'**
+  String get formPhotoRecommendation;
+
+  /// No description provided for @formPhotoProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading photos…'**
+  String get formPhotoProgress;
+
+  /// No description provided for @formPhotoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 photo} other{{count} photos}}'**
+  String formPhotoCount(num count);
+
+  /// No description provided for @formCreatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing created'**
+  String get formCreatedTitle;
+
+  /// No description provided for @formCreatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your listing was created but is not public yet. Publish it from My Listings when you\'re ready.'**
+  String get formCreatedMessage;
+
+  /// No description provided for @formMetaRetryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load listing options'**
+  String get formMetaRetryTitle;
+
+  /// No description provided for @formMetaRetryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You need the options to continue. Check your connection and try again.'**
+  String get formMetaRetryMessage;
+
+  /// No description provided for @formTitleEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit listing'**
+  String get formTitleEdit;
+
+  /// No description provided for @formSubmitSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get formSubmitSave;
+
+  /// No description provided for @formNothingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was saved'**
+  String get formNothingSaved;
+
+  /// No description provided for @formNothingSavedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'None of your changes were published. Fix the issue and try saving again.'**
+  String get formNothingSavedMessage;
+
+  /// No description provided for @formPhotoNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get formPhotoNew;
+
+  /// No description provided for @formPhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get formPhotoRemoved;
+
+  /// No description provided for @formPhotoReorderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Press and hold to reorder'**
+  String get formPhotoReorderHint;
+
+  /// No description provided for @formPreloadErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load this listing'**
+  String get formPreloadErrorTitle;
+
+  /// No description provided for @formPreloadErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You need the listing data to continue. Check your connection and try again.'**
+  String get formPreloadErrorMessage;
+
+  /// No description provided for @amenityParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get amenityParking;
+
+  /// No description provided for @amenitySecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get amenitySecurity;
+
+  /// No description provided for @amenityAc.
+  ///
+  /// In en, this message translates to:
+  /// **'Air conditioning'**
+  String get amenityAc;
 }
 
 class _AppLocalizationsDelegate

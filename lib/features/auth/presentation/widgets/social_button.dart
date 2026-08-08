@@ -42,15 +42,15 @@ class SocialButton extends StatelessWidget {
           elevation: 0,
         ),
         icon: loading
-            ? const SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2),
+            ? SizedBox(
+                width: 22.w,
+                height: 22.h,
+                child: const CircularProgressIndicator(strokeWidth: 2),
               )
             : SvgPicture.asset(
                 'assets/svgs/google_icon.svg',
-                width: 20,
-                height: 20,
+                width: 20.w,
+                height: 20.h,
               ),
         label: Text(
           l10n.authGoogleButton,

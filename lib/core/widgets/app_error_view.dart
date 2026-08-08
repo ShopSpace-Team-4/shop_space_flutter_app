@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../errors/failure_messages.dart';
 import '../errors/failures.dart';
@@ -11,7 +12,8 @@ import '../theme/app_typography.dart';
 ///
 /// Recovery is user-triggered (FR-011). The offline variant renders a
 /// localized offline message; the unauthorized variant renders a sign-in
-/// surface that fires [onSignIn] to redirect the user.
+/// surface that fires [onSignIn] to redirect the user. All values scale with
+/// screenutil; flex layout adapts at every breakpoint.
 class AppErrorView extends StatelessWidget {
   const AppErrorView({
     super.key,
@@ -46,24 +48,24 @@ class AppErrorView extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: color),
-            const SizedBox(height: AppSpacing.lg),
+            Icon(icon, size: 48.sp, color: color),
+            SizedBox(height: AppSpacing.lg.h),
             Text(
               failureMessage(l10n, failure),
               textAlign: TextAlign.center,
               style: AppTypography.heading4,
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl.h),
             FilledButton(
               onPressed: onRetry,
               child: Text(l10n.retry),
             ),
             if (unauthorized && onSignIn != null) ...[
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm.h),
               TextButton(
                 onPressed: onSignIn,
                 child: Text(l10n.authLogin),

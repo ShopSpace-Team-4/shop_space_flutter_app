@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [x] No [NEEDS CLARIFICATION] markers remain (resolved 2026-08-07: Q1 PENDING=not-public status model, Q2 RENTED stays visible with badge, Q3 photos guidance-only with no minimum)
+- [x] No [NEEDS CLARIFICATION] markers remain (resolved 2026-08-07: Q1 PENDING=not-public status model, Q2 marketplace visibility, Q3 photos guidance-only with no minimum; Q2 revised 2026-08-08: only AVAILABLE listings show in the marketplace — RENTED is hidden)
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,6 +31,6 @@
 
 ## Notes
 
-- Three clarification items resolved 2026-08-07 (see spec Clarifications section): Q1 PENDING plays the not-public/draft role with no separate draft state; Q2 RENTED listings remain visible in the marketplace with a "Rented" tag while PENDING/EXPIRED are hidden; Q3 the app recommends 3+ photos but enforces no minimum.
+- Three clarification items resolved 2026-08-07 (see spec Clarifications section): Q1 PENDING plays the not-public/draft role with no separate draft state; Q2 marketplace visibility; Q3 the app recommends 3+ photos but enforces no minimum. Q2 was revised 2026-08-08 to treat RENTED as hidden — the API guide's browse endpoint filters `status=AVAILABLE` and documents no "Rented" tag.
 - Scope boundary confirmed against the implementation plan: Phase 2 builds landlord-side create/edit/view/status/delete for listings; tenant-side browsing, search, and Saved Listings land in Phase 3 even though their backend endpoints already exist.
 - Spec is finalized and ready for `/speckit.plan`.

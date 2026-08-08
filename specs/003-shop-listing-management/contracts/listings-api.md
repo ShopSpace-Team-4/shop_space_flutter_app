@@ -35,7 +35,7 @@ browse/search/saved endpoints (Phase 3) are listed only for scope boundaries.
 | Method & Path | Auth | Request | Success `data` | Error → `Failure` |
 |---|---|---|---|---|
 | `GET /listings/meta` | Public | — | `ListingMeta{categories, amenities, statuses}` | `ListingMetaUnavailable` |
-| `POST /listings` | Bearer + landlord | `CreateListingRequest` | `ShopListing` (id, status PENDING, media []) — created via `POST` | `ListingCreateFailed`, `ValidationFailure`, per pipeline |
+| `POST /listings` | Bearer + landlord | `CreateListingRequest` | minimal `data` (`id`, status PENDING, `annualRent`, `annualRentWithVat`, `currency`, `media`, `isSaved`) — NOT a full `ShopListing`; repo re-fetches `GET /listings/:id` for the detail model | `ListingCreateFailed`, `ValidationFailure`, per pipeline |
 | `GET /listings/my-listings` | Bearer + landlord | — | `List<ListingSummary>` (bare array, no pagination) | `ListingMetaUnavailable` N/A; `ListingNotOwned` N/A; `NetworkFailure`/`ServerFailure` etc. via pipeline |
 | `GET /listings/:id` | Optional | — | `ShopListing` (full detail, media ordered) | `ListingNotFound` (404), per pipeline |
 | `PUT /listings/:id` | Bearer + owner | `UpdateListingRequest` (fields only, NO status) | `ShopListing` (updated fields; `annualRentWithVat` recomputed) | `ListingNotFound` (404), `ListingNotOwned` (403), `ListingUpdateFailed`, per pipeline |
@@ -58,8 +58,10 @@ models but unused this phase.
   ISO-8601 datetime when editing (§5.3).
 - `floorNumber: 0` = ground floor; keep int.
 - `minimumLeaseTerm`: free text (assumption, §5.1).
-- `annualRentWithVat` / `currency`: backend-owned. Never submitted; display only (§8.4). `currency`
-  is `"EGP"` fixed read-only this phase (spec Session 2026-08-07).
+- `annualRentWithVat`: backend-owned, **never submitted**, display only (§8.4).
+- `currency`: fixed `"EGP"` this phase (spec Session 2026-08-07); it IS included in the
+  `POST /listings` body as `"EGP"` (API guide §5.1) but is never user-editable and is not
+  re-submitted on update.
 - City/district: required dropdowns (FR-005). `meta` does not publish options → local curated EN/AR
   list; gap flagged for backend.
 - Media URLs (`url`, `thumbnailUrl`): absolute Cloudinary CDN URLs — render as-is, never prepend a
@@ -71,5 +73,6 @@ models but unused this phase.
   `PATCH /listings/:id/status` with `AVAILABLE`.
 - **Edit**: `PUT /listings/:id` never changes status (FR-010); status is only changed via the
   status endpoint.
-- **Status**: backend validates transitions; the app never re-implements the transition graph (D4).
+- **Status**: backend is authoritative on transitions (it may reject an invalid one — surfaced as a
+  localized error, D4); the app never re-implements the transition graph.
 - **Delete**: removes listing and its photos; confirmed by the user first (FR-012).

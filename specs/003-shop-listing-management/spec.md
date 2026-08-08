@@ -11,7 +11,7 @@
 ## Clarifications
 
 - **Q1 — Status model**: New listings are created as PENDING and are not visible in the marketplace until explicitly published to AVAILABLE. There is no separate draft state. (Resolved 2026-08-07: adopt the finalized API's four statuses as-is.)
-- **Q2 — Marketplace visibility**: Only AVAILABLE listings are offered to tenants, but RENTED listings remain visible in the marketplace carrying a "Rented" tag; PENDING and EXPIRED listings are not shown at all. (Resolved 2026-08-07: keep the Rented badge.)
+- **Q2 — Marketplace visibility**: Only AVAILABLE listings are shown in the marketplace; PENDING, RENTED, and EXPIRED listings are not shown at all. (Resolved 2026-08-07: keep the Rented badge. Revised 2026-08-08: treat RENTED as hidden too — the API guide's browse endpoint filters `status=AVAILABLE` (§5.2) and documents no "Rented" tag.)
 - **Q3 — Minimum photos**: The app recommends at least 3 photos but enforces no minimum; the backend accepts any count. (Resolved 2026-08-07: guidance only, no hard rule.)
 
 ### Session 2026-08-07
@@ -19,6 +19,12 @@
 - Q: In the price and lease terms step, how should the landlord choose or enter the listing's currency? → A: Currency is a fixed, read-only EGP value in the price step; the `currency` field stays on the listing model for forward compatibility.
 - Q: When does the app upload the photos collected in the create flow, given the media API requires the listing to exist first? → A: Single Submit creates the listing first, then auto-uploads all collected photos as part of the same action; a failed upload leaves a pending listing with a clear message and a retry path via edit.
 - Q: When should photo changes (add, remove, reorder) during the edit flow be persisted? → A: All photo changes are buffered locally and committed together with the listing update when the landlord saves (all-or-nothing per Save).
+
+### Session 2026-08-08
+
+- Q: How should the marketplace treat RENTED listings, given the API guide's browse endpoint filters `status=AVAILABLE` (§5.2) and never documents a "Rented" tag, while the implementation plan left the question open (line 326)? → A: Treat RENTED as hidden — only AVAILABLE listings appear in the marketplace. Spec Q2, US4, FR-011, SC-005, and assumptions updated.
+- Q: Are the security-deposit units confirmed against the API guide's `securityDepositMonths` field? → A: Yes — the deposit is entered as a whole number of months (int), matching `securityDepositMonths`. Spec FR-003/entity updated.
+- Q: Keep the free-form status picker even though the API guide lists all four statuses as "allowed" without documenting transitions? → A: Yes — keep the free-form picker; the backend is authoritative on transitions and any rejection surfaces as a localized error with a retry path. No client-side transition graph.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -77,7 +83,7 @@ A landlord opens one of their listings from My Listings and edits it. The same m
 
 ### User Story 4 - A landlord manages a listing's lifecycle and can remove it (Priority: P2)
 
-A landlord changes what happens to a listing over its life. They can publish a pending listing to make it available to tenants, mark an available listing as rented once a lease is signed, mark a listing as expired when it can no longer be offered, and delete a listing entirely. Rented listings stay visible to tenants but tagged "Rented" rather than offered as available; expired listings no longer show in the marketplace. Deleting is protected by a confirmation step because it is permanent.
+A landlord changes what happens to a listing over its life. They can publish a pending listing to make it available to tenants, mark an available listing as rented once a lease is signed, mark a listing as expired when it can no longer be offered, and delete a listing entirely. Only available listings are offered in the marketplace; rented and expired listings are no longer shown to tenants. Deleting is protected by a confirmation step because it is permanent.
 
 **Why this priority**: Lifecycle control is the difference between a listing that stays stale and one that reflects reality. Status management is how a landlord keeps the marketplace honest and manages their commitments; deletion is the final cleanup action. It is P2 because it sits on top of create and view.
 
@@ -86,7 +92,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 **Acceptance Scenarios**:
 
 1. **Given** a pending listing, **When** the landlord publishes it, **Then** the status changes to available.
-2. **Given** an available listing, **When** the landlord marks it as rented, **Then** the status changes to rented and the listing remains visible in the marketplace carrying a "Rented" tag rather than being offered as available.
+2. **Given** an available listing, **When** the landlord marks it as rented, **Then** the status changes to rented and the listing is no longer shown in the marketplace.
 3. **Given** an available or pending listing, **When** the landlord marks it as expired, **Then** the status changes to expired and the listing no longer appears as available in the marketplace.
 4. **Given** a landlord initiates deletion of a listing, **When** they confirm the deletion, **Then** the listing and its photos are removed and it disappears from My Listings.
 5. **Given** a status change or deletion fails (e.g. no connection), **When** the action completes, **Then** a friendly, localized error with a retry path is shown and the listing's actual state is unchanged.
@@ -116,7 +122,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 
 - **FR-001**: The system MUST provide a single "List a shop" entry point. When the account's roles do not include the landlord role, the system MUST show a "Become a Landlord" confirmation sheet before any listing-management action, and MUST NOT grant listing permissions based on the active-role choice alone.
 - **FR-002**: On confirmation, the system MUST add the landlord role to the account and immediately adopt the refreshed credentials returned by the change so listing management works right away, then route the user into the create-listing flow without requiring a re-login.
-- **FR-003**: The system MUST let a landlord create a listing through a multi-step form covering, in order: shop details (title, category, size, location details, description, amenities, floors), photos, price and lease terms (annual rent, currency, security deposit, minimum lease term, availability date), and a final review before submission.
+- **FR-003**: The system MUST let a landlord create a listing through a multi-step form covering, in order: shop details (title, category, size, location details, description, amenities, floors), photos, price and lease terms (annual rent, currency, security deposit entered as a whole number of months, minimum lease term, availability date), and a final review before submission.
 - **FR-004**: The category and amenity options offered by the form MUST be driven by the listing metadata provided by the backend, not hardcoded in the app, and the form MUST surface a retryable state if that metadata cannot be loaded.
 - **FR-005**: The system MUST require the shop's city and district to be chosen from provided options rather than typed freely, with the address carrying the street/building-level detail.
 - **FR-006**: A newly created listing MUST start in the pending state — not visible to tenants in the marketplace — and MUST require an explicit publish action to become available.
@@ -124,7 +130,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 - **FR-008**: The final review step MUST show all entered data before submission and MUST display both the annual rent the landlord entered and the VAT-inclusive amount tenants would see.
 - **FR-009**: The system MUST provide a "My Listings" view listing every listing the landlord owns, showing photo, title, key details, and current status, and MUST reflect create, edit, and status changes on refresh.
 - **FR-010**: The system MUST let a landlord edit every field of an existing listing they own through the same multi-step form, prefilled with current values, and save changes without altering the listing's status. Photo additions, removals, and reordering are buffered during editing and persisted together with the listing update when the landlord saves.
-- **FR-011**: The system MUST let a landlord change a listing's status (publish to available, mark as rented, mark as expired). Rented listings MUST remain visible in the marketplace but tagged as "Rented" (never offered as available); expired listings MUST NOT be shown in the marketplace at all.
+- **FR-011**: The system MUST let a landlord change a listing's status (publish to available, mark as rented, mark as expired). Only AVAILABLE listings MUST be shown in the marketplace; PENDING, RENTED, and EXPIRED listings MUST NOT be shown at all.
 - **FR-012**: The system MUST let a landlord delete a listing they own after an explicit confirmation, removing the listing and its photos.
 - **FR-013**: Permission-sensitive listing actions MUST check the account's roles (specifically the landlord role), never the active-role selection alone.
 - **FR-014**: Every listing action (create, edit, status change, delete, photo operations) MUST either succeed or end in a friendly, localized message with a clear retry path — raw technical errors MUST never reach the user. Duplicate submissions MUST be prevented.
@@ -133,7 +139,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 
 ### Key Entities *(include if feature involves data)*
 
-- **Shop listing**: The rentable shop — title, category, size (m²), city, district, address, description, amenities, floor details, availability date, minimum lease term, annual rent, currency (fixed to EGP in this phase; the field remains on the model for forward compatibility), security deposit, current status (pending/available/rented/expired), its photos in order, and its VAT-inclusive rent (computed by the backend, read-only). Owned by exactly one landlord.
+- **Shop listing**: The rentable shop — title, category, size (m²), city, district, address, description, amenities, floor details, availability date, minimum lease term, annual rent, currency (fixed to EGP in this phase; the field remains on the model for forward compatibility), security deposit in whole months, current status (pending/available/rented/expired), its photos in order, and its VAT-inclusive rent (computed by the backend, read-only). Owned by exactly one landlord.
 - **Listing photo**: An image attached to a listing with a display order; a listing can have several, and the order controls how they appear.
 - **Listing metadata**: The reference options (categories, amenities, statuses) the backend publishes so the create/edit form is never hardcoded.
 - **Landlord role**: The account permission added (via the shared role capability from Phase 1) that grants the right to create and manage listings. It is part of the account's roles and is what listing permissions are checked against.
@@ -146,7 +152,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 - **SC-002**: A landlord can complete the create flow, the edit flow, a status change, and a deletion — 100% of these actions either succeed or end in a friendly, localized message with a retry path; no crashes and no raw technical errors.
 - **SC-003**: Every listing created appears in My Listings immediately in the correct status, and every publish/rented/expired change is reflected in My Listings on the next refresh.
 - **SC-004**: 100% of photos added, removed, or reordered appear correctly and persist; unsupported files and oversized files are rejected with a clear message in every attempt.
-- **SC-005**: Rented listings appear in the marketplace only with a "Rented" tag (never as available), and expired listings never appear in the marketplace at all.
+- **SC-005**: Only available listings appear in the marketplace; pending, rented, and expired listings never appear in it.
 - **SC-006**: A tenant-only account upgraded through "List a shop" gains the landlord role and can immediately create and manage listings, with the upgraded credentials working on the first action.
 - **SC-007**: The create/edit form renders its category and amenity options from live metadata with no hardcoded lists; when metadata is unavailable the form shows a retryable state rather than a broken or misleading form.
 - **SC-008**: All screens in this phase are verified at all three screen-size classes and in both English and Arabic (RTL), with the My Listings two-pane layout on the widest class and no layout overflow.
@@ -155,7 +161,7 @@ A landlord changes what happens to a listing over its life. They can publish a p
 
 - The finalized Phase 2 listings API guide (`FRONTEND_PHASE2_LISTINGS_API_GUIDE.md`) is the authoritative contract for this phase; the implementation plan's earlier simplified listing shapes (draft/published/rented statuses and `GET /listings/mine`) are superseded by it (see Clarifications Q1).
 - The pending status plays the "not yet public" role; there is no separate draft state beyond it (see Clarifications Q1).
-- A listing's marketplace presence is driven by its status: only AVAILABLE listings are offered to tenants, RENTED listings remain visible with a "Rented" tag, and PENDING/EXPIRED listings are hidden (see Clarifications Q2).
+- A listing's marketplace presence is driven by its status: only AVAILABLE listings are shown in the marketplace; PENDING, RENTED, and EXPIRED listings are hidden (see Clarifications Q2).
 - The app recommends at least 3 photos per listing but enforces no minimum; the backend accepts any count (see Clarifications Q3).
 - The listings metadata response is the one listing response that does not use the standard envelope (it returns `{ success, data }` instead of `{ message, status, data }`); the networking layer handles this single exception.
 - `minimumLeaseTerm` is a free-text field per the API guide, not a preset dropdown of options.

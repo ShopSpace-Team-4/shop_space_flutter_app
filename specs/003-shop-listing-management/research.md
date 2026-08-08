@@ -86,10 +86,11 @@ machines entirely.
 
 **Decision**: The landlord changes a listing's lifecycle through a **single status picker** offering
 PENDING / AVAILABLE / RENTED / EXPIRED (the backend's enum, from `GET /listings/meta` or the model's
-known set), calling `PATCH /listings/:id/status` with the chosen value. The backend validates
-transitions; the app does not re-implement a transition graph. Marketplace visibility (AVAILABLE
-offered, RENTED visible with tag, PENDING/EXPIRED hidden) is backend-driven and the app reflects the
-status value only — it never re-implements visibility rules (FR-011).
+known set), calling `PATCH /listings/:id/status` with the chosen value. The backend is authoritative
+on transitions (it may reject an invalid one — surfaced as a localized error); the app does not
+re-implement a transition graph. Marketplace visibility (only AVAILABLE shows; PENDING/RENTED/
+EXPIRED hidden — resolved 2026-08-08) is backend-driven and the app reflects the status value only —
+it never re-implements visibility rules (FR-011).
 
 **Rationale**:
 - User decision 2026-08-07: free-form picker over fixed per-status action buttons.
@@ -151,7 +152,7 @@ US3 edge case).
 **Decision**: The single "List a shop" entry point (FR-001) checks the account's `roles[]`. If it
 lacks `landlord`, a "Become a Landlord" confirmation bottom sheet explains what the role grants and
 asks for confirmation (US1 scenario 1). On confirm, `BecomeLandlordCubit` calls the **injected
-`UserRepository.addRole('landlord')`** — the shared Phase 1 method, never a re-implementation. On
+`UserRepository.addRole(UserRole.landlord)`** — the shared Phase 1 method, never a re-implementation. On
 success it switches the active dashboard via `UserRepository.switchActiveRole` and routes straight
 into the create flow with no re-login (FR-002). The fresh token pair returned by `addRole` is written
 to storage by the Phase 1 implementation via `SessionController.onTokensUpdated` **before** the
@@ -199,3 +200,124 @@ shell (NavigationBar compact / NavigationRail medium+expanded) — untouched.
 - **Figma fidelity**: `shop-space-ui` frames for My Listings / Create-Edit / status / Become-a-Landlord
   sheet are pulled at the START of implementation; missing error/empty/loading frames are built from
   existing tokens and flagged per the Phase 0 gap protocol.
+
+## Figma frame index (Phase 2) — recorded during T002
+
+File: **`shop space ui`** · file_key **`pvU6vSwQkWqwT27HVS4Jcp`** · accessed via Composio Figma MCP
+(account `figma_crum-wecht`, ACTIVE). Frame tree: CANVAS `0:1` "Design System" → SECTION `104:262`
+"Mobile App" → screen FRAMEs below. Used by per-screen pulls T023 (US2), T034 (US1), T049 (US3),
+T057 (US4) via `FIGMA_GET_FILE_NODES` + `FIGMA_RENDER_IMAGES_OF_FILE_NODES`.
+
+| Phase 2 screen | Frame node ID | Content holder(s) |
+|---|---|---|
+| My Listings (list) | `257:4378` | `257:4407` (Frame 60), `257:4408` (Frame 63) |
+| Add Listing (form) | `242:1713` | `242:1811` (Frame 60) |
+| Publish (form/publish step) | `242:1858` | `242:1887` (Frame 60), `242:2255` (Frame 63) |
+| Verification (candidate for Become-a-Landlord) | `257:5164` | `257:5196`, `257:5197` |
+
+**Gaps flagged (Phase 0 gap protocol — to confirm at the screen's pull time):**
+- **My Listings detail pane**: no dedicated frame exists at top level; the detail is a sub-state of
+  `257:4378` (or missing) — confirm when pulling T023.
+- **4-step create form**: no explicit per-step frames; `242:1713` / `242:1858` are the form/publish
+  surfaces — enumerate the actual steps during T034.
+- **Status picker**: not found as a top-level frame — likely nested in a detail/My Listings child or
+  missing; confirm during T023.
+- **Delete confirmation dialog**: not found as a top-level frame — likely missing; build from tokens
+  and flag during T057.
+- **Become-a-Landlord sheet**: no frame named "Become a Landlord"; `257:5164` "Verification" is the
+  closest candidate but unconfirmed — resolve during T034.
+- Any missing error/empty/loading states are built from existing tokens and flagged (Plan §Constraints,
+  spec Assumptions).
+
+### T023 pull result (My Listings, 2026-08-08) — CONFIRMED EMPTY SCREEN FRAMES
+
+Pulled `257:4378` (My Listings) at depth 3 via `FIGMA_GET_FILE_NODES` + rendered
+`257:4378`, `257:4407` (Frame 60), `257:4408` (Frame 63) via `FIGMA_RENDER_IMAGES_OF_FILE_NODES`.
+Also inspected `95:4028` (Home) and `97:5547` (Property) at depth 1.
+
+**Finding**: all three My Listings frames are **empty scaffolds** — only the shared app shell
+(status bar `92:*` instances, bottom-nav `Frame 51` with Home/Search/Saved/Profile buttons, and
+*empty* content containers `257:4380`/`257:4407`/`257:4761`). **No list card, no status badge, no
+status picker, no detail pane design exists anywhere in the file** (the same holds for Home/Property).
+This matches the pre-flagged gaps above.
+
+**Tokens extracted from the JSON that ARE present (all already in `lib/core/theme/app_colors.dart`)**:
+- Active nav label `#2563EB` = `AppColors.primary`; inactive `#94A3B8` = `AppColors.textTertiary`.
+- Content container `#F8FAFC` = `AppColors.background`; shell/bottom-nav fill `#FFFFFF` =
+  `AppColors.surface`; bottom-nav top stroke `#E2E8F0` = `AppColors.outline`.
+- Nav labels: Inter 10px (matches `AppTypography.caption`-scale usage; shell nav is `ThemeData`-styled).
+
+**Action taken (user decision 2026-08-08: "Build from existing tokens")**: US2 list/card/badge/picker
+widgets are built from the existing `core/theme` token set with **no invented values**; the absence of
+design frames for these components is flagged here and tracked in the T067 gap log. Renders could not
+be visually verified (model has no image input); JSON token extraction was used instead.
+
+### T034 pull result (Create form + Become-a-Landlord, 2026-08-08) — CONFIRMED EMPTY SCREEN FRAMES
+
+Pulled `242:1713` (Add Listing), `242:1811` (Frame 60 content), `242:1858` (Publish), `242:1887`
+(Frame 60), `242:2255` (Frame 63), `257:5164` (Verification), `257:5196`/`257:5197` (containers) via
+`FIGMA_GET_FILE_NODES` (depth 2) + rendered `242:1713`, `242:1858`, `257:5164` via
+`FIGMA_RENDER_IMAGES_OF_FILE_NODES`.
+
+**Finding**: same as T023 — all frames are **empty scaffolds**: only the shared app shell (status bar
+`92:*` instances, bottom-nav `Frame 51` with the five `Button`s, empty content containers) exists.
+`242:1811`/`242:1887`/`242:2255` are empty content frames (`#F8FAFC`/`#FFFFFF` fills); `257:5164`
+"Verification" contains empty `Container`s only. **No 4-step form, no field widgets, no step
+indicator, no photo grid, no review step, no become-landlord sheet design exists anywhere in the
+file.** This matches the pre-flagged gaps.
+
+**Tokens extracted from the JSON (all already in `lib/core/theme/app_colors.dart`)**: app-shell fill
+`#FFFFFF` = `AppColors.surface`; content container `#F8FAFC` = `AppColors.background` (identical to
+the T023 pull — no new tokens in the file).
+
+**Action taken (consistent with T023)**: the create form, step widgets, become-landlord sheet, and
+all form states are built from the existing `core/theme` token set with **no invented values**; the
+absence of design frames for the 4-step create form and the become-landlord sheet is flagged here and
+tracked in the T067 gap log. Renders could not be visually verified (model has no image input); JSON
+token extraction was used instead.
+
+### T049 pull result (Edit state, 2026-08-08) — CONFIRMED NO EDIT-STATE FRAMES EXIST
+
+Pulled `242:1713` (Add Listing) and `242:1858` (Publish) — the only form-related top-level frames —
+again via `FIGMA_GET_FILE_NODES` + `FIGMA_RENDER_IMAGES_OF_FILE_NODES`, specifically hunting for a
+prefilled/edit state.
+
+**Finding**: the create frames are reused for edit exactly as they are — **no prefilled-form,
+photo-reorder, or edit-state design exists anywhere in the file**. `242:1713`/`242:1858` are the
+same empty scaffolds as in T034 (app-shell fill `#FFFFFF` = `AppColors.surface`; content container
+`#F8FAFC` = `AppColors.background`). Everything was already present in `core/theme`.
+
+**Action taken (user decision 2026-08-08: "build from existing tokens")**: edit mode reuses the
+create form widgets with no new tokens; photo reorder uses the user-approved
+`flutter_reorderable_grid_view` package (v5.7.0) over the existing tile styling. The absence of
+edit-state design frames is flagged here and tracked in the T067 gap log.
+
+### T057 pull result (Delete confirmation + lifecycle, 2026-08-08) — CONFIRMED NO DELETE/LIFECYCLE FRAMES EXIST
+
+Pulled `257:4378` (My Listings), `257:4407`/`257:4408` (content holders), `242:1713` (Add
+Listing), `242:1858` (Publish), `257:5164` (Verification) at depth 3 via
+`FIGMA_GET_FILE_NODES` + rendered all six via `FIGMA_RENDER_IMAGES_OF_FILE_NODES`; the full
+JSON was walked node-by-node (children names + fill colors) hunting specifically for a delete
+confirmation dialog, success/confirmation state, or any lifecycle-specific surface.
+
+**Finding**: identical to T023/T034/T049 — every frame is an **empty scaffold**: shared app
+shell (status-bar `92:*` instances, bottom-nav `Frame 51` with Home/Search/Saved/Profile
+buttons) over **empty** content containers (`257:4380`/`Frame 60`/`Frame 63` content
+`#F8FAFC`/`#FFFFFF` fills). **No delete confirmation dialog, no "listing deleted" success
+state, no lifecycle-specific frame exists anywhere in the file.** This matches the pre-flagged
+gap (`research.md` Figma frame index).
+
+**Tokens extracted from the JSON (all already in `lib/core/theme/app_colors.dart`)**:
+- App-shell fill `#FFFFFF` = `AppColors.surface`; content container `#F8FAFC` =
+  `AppColors.background`; bottom-nav stroke `#E2E8F0` = `AppColors.outline` (already
+  verified in T023).
+- Nav labels: active `#2563EB` = `AppColors.primary`; inactive `#94A3B8` =
+  `AppColors.textTertiary` (unchanged across all pulls).
+
+**Action taken (user decision 2026-08-08: "build from existing tokens")**: the delete
+confirmation dialog (AlertDialog), the "listing deleted" success toast, and the rejected
+status-transition surface are built from the existing `core/theme` token set with **no
+invented values** (error-styled actions use `AppColors.error`, confirm surface uses
+`AppColors.surface`/`AppColors.surfaceVariant`, text uses `AppTypography`). The absence of
+delete/lifecycle design frames is flagged here and tracked in the T067 gap log. Renders could
+not be visually verified (model has no image input); JSON token extraction was used instead.

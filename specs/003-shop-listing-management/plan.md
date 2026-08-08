@@ -53,11 +53,11 @@ PATH is a different SDK and is only used by opencode's LSP — use `flutter` for
 duration of the form flow (`XFile`s) and buffered in the edit save protocol (D6); no local
 database or on-device photo persistence.
 
-**Testing**: `dart run tool/quality.dart` (runs `flutter analyze` + full `flutter test` incl.
-`test/integration_test/`, exits non-zero on failure). Quality gate is `flutter analyze` clean +
-all existing tests green; per the 2026-08-06 decision, new listing code ships without new tests
-but refactors must not break existing suites. Existing widget tests at 3 breakpoints × EN/AR
-continue to gate shared widgets (e.g. the shared form scaffold if reused).
+**Testing**: `dart run tool/quality.dart` runs `flutter analyze` **only** (analyze-only gate — the
+test suite was removed 2026-08-06) and exits non-zero on any failure. Per constitution §7 (amended
+2026-08-06), new listing code ships **without new tests** — no unit/cubit/widget/integration test
+files are written this phase. Verification = the analyze gate + manual smoke at 3 breakpoints ×
+EN/AR. Refactors must not break any existing suite.
 
 **Target Platform**: iOS + Android (mobile-first Flutter app). `AppAdaptiveShell` stays the app
 shell (NavigationBar compact, NavigationRail medium/expanded); My Listings is two-pane on
@@ -95,9 +95,11 @@ render with a lazy `ListView.builder` for long lists.
   re-Save (user decision; D6). The save protocol re-fetches fresh server state at the start of
   each attempt so retries converge (no duplicate uploads, 404 → "listing no longer exists").
 - Status changes are a **free-form picker** over PENDING/AVAILABLE/RENTED/EXPIRED (user decision;
-  D4) calling `PATCH /listings/:id/status`; the backend validates transitions. Marketplace
-  visibility (Rented tag, hidden PENDING/EXPIRED) is backend-driven; the app reflects status and
-  never re-implements visibility rules.
+  D4) calling `PATCH /listings/:id/status`; the backend is authoritative on transitions (it may
+  reject an invalid one — surfaced as a localized error, free-form picker kept, user decision
+  2026-08-08). Marketplace visibility is backend-driven (only AVAILABLE shows; PENDING/RENTED/
+  EXPIRED hidden — resolved 2026-08-08); the app reflects status and never re-implements
+  visibility rules.
 - VAT: `annualRentWithVat` is computed by the backend (annualRent × 1.15); the app only displays
   it and never submits it (FR-008, §8.4).
 - City and district are required dropdowns (FR-005, §8.1). The metadata endpoint does NOT publish
@@ -108,7 +110,11 @@ render with a lazy `ListView.builder` for long lists.
 - Photo rules: PNG/JPG only, ≤20MB/file, ≥3 is recommendation only (Q3). Reject others with a
   clear localized message without disturbing the rest of the form (FR-007).
 - Currency is fixed read-only EGP in the price step; the `currency` field stays on the model for
-  forward compatibility (spec Session 2026-08-07).
+  forward compatibility (spec Session 2026-08-07). `currency: "EGP"` is sent in the create request body
+  (API guide §5.1) but never re-submitted on update; only `annualRentWithVat` is never submitted
+  (FR-008, §8.4).
+- Security deposit is entered as a whole number of months (`securityDepositMonths`, optional int),
+  matching the API guide field (resolved 2026-08-08).
 - Base URL: `app_env.dart` points all envs at the single deployed Railway base
   (`https://shopspace-backend-production.up.railway.app`); the spec is port-agnostic.
 - No hardcoded user-facing strings; full Arabic RTL. Design tokens from Figma only (`shop-space-ui`
@@ -136,7 +142,7 @@ bottom sheet. One feature (`listing/`) with `data/`, `repository/`, `presentatio
 | 4 | Cross-feature reuse (both roles & listing upgrade) injects the same `UserRepository` | PASS — `BecomeLandlordCubit` calls injected `UserRepository.addRole`/`switchActiveRole`, no duplicated role logic |
 | 5 | Envelope unwrapped once in dio; typed `Failure` only to UI; raw exceptions never reach UI | PASS — reuses Phase 0 pipeline; `meta` exception handled transparently (D2) |
 | 6 | 401 → exactly one silent refresh, retry once, force logout | PASS — reuses `SessionController.sessionExpired` |
-| 7 | Dual-role: default `tenant`; `landlord` via one shared `UserRepository.addRole('landlord')`; `activeRole` persisted and only picks the dashboard; permission UI reads `roles[]` | PASS — by design (D7); listing actions gated on `roles[]` |
+| 7 | Dual-role: default `tenant`; `landlord` via one shared `UserRepository.addRole(UserRole.landlord)`; `activeRole` persisted and only picks the dashboard; permission UI reads `roles[]` | PASS — by design (D7); listing actions gated on `roles[]` |
 | 8 | `addRole` returns fresh tokens → replace stored pair immediately | PASS — reused Phase 1 `addRole` (already writes tokens via `onTokensUpdated`) |
 | 9 | Password change → clear session, go to login immediately | N/A Phase 2 — no new session-mutation surfaces |
 | 10 | Signup always routes to OTP, never login; Google sign-in uses ID token for `/auth/google` | N/A Phase 2 — auth flows untouched |
@@ -214,11 +220,9 @@ lib/
             └── screens/           # my_listings (list+detail panes), listing_form
                                    #   (4-step create; prefilled edit)
 
-test/
-├── features/listing/              # datasource/repo/cubit tests (mirrors existing patterns)
-├── widget/                        # listing widget tests (3 breakpoints, EN/AR)
-├── integration_test/              # become-landlord → create → publish → my-listings flow
-└── helpers/                       # mock repositories, pumps, l10n fixtures
+test/                              # UNCHANGED this phase — constitution §7 (2026-08-06):
+                                   # new code ships WITHOUT new tests; existing suites must stay
+                                   # green. No new listing test files are created.
 ```
 
 **Structure Decision**: Single Flutter project (as established in Phase 0 — no new packages or
