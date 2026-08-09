@@ -84,7 +84,7 @@ class _SearchPill extends StatelessWidget {
         side: BorderSide(color: AppColors.surface.withValues(alpha: 0.15)),
       ),
       child: InkWell(
-        onTap: () => context.go('/search'),
+        onTap: () => context.go('/search?focus=search'),
         borderRadius: BorderRadius.circular(AppRadius.pill),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),

@@ -29,6 +29,11 @@ abstract final class AppColors {
   static const Color successContainer = Color(0xFFF0FDF4);
   static const Color successOnContainer = Color(0xFF16A34A);
 
+  /// "Available" inline pill (Figma `97:5547` shop detail): fill `#ECFDF5`,
+  /// text `#10B981`. Distinct from [successContainer]'s `#F0FDF4`/`#16A34A`.
+  static const Color availableContainer = Color(0xFFECFDF5);
+  static const Color availableOnContainer = Color(0xFF10B981);
+
   static const Color warning = Color(0xFFF59E0B);
   static const Color warningContainer = Color(0xFFFFFBEB);
   static const Color warningOnContainer = Color(0xFFD97706);

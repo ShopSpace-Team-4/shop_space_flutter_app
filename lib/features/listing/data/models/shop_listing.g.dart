@@ -35,6 +35,13 @@ _ShopListing _$ShopListingFromJson(Map<String, dynamic> json) => _ShopListing(
       .toList(),
   thumbnailUrl: json['thumbnailUrl'] as String?,
   isSaved: json['isSaved'] as bool?,
+  whatsappLink: json['whatsappLink'] as String?,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
 );
 
 Map<String, dynamic> _$ShopListingToJson(_ShopListing instance) =>
@@ -61,4 +68,7 @@ Map<String, dynamic> _$ShopListingToJson(_ShopListing instance) =>
       'media': instance.media,
       'thumbnailUrl': instance.thumbnailUrl,
       'isSaved': instance.isSaved,
+      'whatsappLink': instance.whatsappLink,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };

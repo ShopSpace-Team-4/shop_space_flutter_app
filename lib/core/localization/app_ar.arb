@@ -7,10 +7,13 @@
   "navListings": "القوائم",
   "navSearch": "البحث",
   "navAdvisor": "المستشار",
-  "navInquiries": "الاستفسارات",
   "navSaved": "المحفوظة",
   "navAdd": "إضافة قائمة",
   "savedTitle": "المحفوظة",
+  "savedEmptyTitle": "لا توجد محلات محفوظة بعد",
+  "savedEmptyMessage": "ستظهر المحلات التي تحفظها هنا لتتمكن من العودة إليها لاحقاً.",
+  "savedSaveTooltip": "احفظ هذا المحل",
+  "savedUnsaveTooltip": "إزالة من المحفوظة",
   "comingSoon": "قريباً",
   "routeNotFound": "الصفحة غير موجودة",
   "homeGreeting": "مرحباً، {name} 👋",
@@ -73,6 +76,101 @@
   "errorListingNotOwned": "ليس لديك صلاحية إدارة هذه القائمة.",
   "errorInvalidMediaFile": "يُسمح فقط بصور PNG أو JPG بحجم يصل إلى 20 ميجابايت.",
   "errorPhotoLimitReached": "يمكنك إضافة ما يصل إلى 10 صور.",
+  "errorSaveListingFailed": "تعذر حفظ هذا المحل. يرجى المحاولة مرة أخرى.",
+  "errorUnsaveListingFailed": "تعذر إزالة هذا المحل من المحفوظة. يرجى المحاولة مرة أخرى.",
+  "errorSavedListingsLoadFailed": "تعذر تحميل المحلات المحفوظة. يرجى المحاولة مرة أخرى.",
+  "errorContactLaunchFailed": "تعذر فتح تطبيق المراسلة. يرجى المحاولة مرة أخرى.",
+  "searchTitle": "البحث عن المحلات",
+  "searchBarHint": "المدينة، النوع، المنطقة…",
+  "searchBarClear": "مسح البحث",
+  "searchOpenFilters": "فتح الفلاتر",
+  "searchFilters": "الفلاتر",
+  "searchFilterSort": "الترتيب",
+  "searchFilterCity": "المدينة",
+  "searchFilterDistrict": "الحي",
+  "searchFilterCategory": "الفئة",
+  "searchFilterPriceRange": "نطاق السعر",
+  "searchFilterSizeRange": "نطاق المساحة",
+  "searchFilterAmenities": "المرافق",
+  "searchPriceMinLabel": "أقل سعر",
+  "searchPriceMaxLabel": "أعلى سعر",
+  "searchAreaMinLabel": "أقل مساحة",
+  "searchAreaMaxLabel": "أكبر مساحة",
+  "searchSortNewest": "الأحدث",
+  "searchSortPriceAsc": "السعر: من الأقل إلى الأعلى",
+  "searchSortPriceDesc": "السعر: من الأعلى إلى الأقل",
+  "searchApply": "تطبيق",
+  "searchReset": "إعادة تعيين",
+  "searchResetFilters": "إعادة ضبط الفلاتر",
+  "searchClearAll": "مسح الكل",
+  "searchEmptyTitle": "لا توجد محلات تطابق الفلاتر",
+  "searchEmptyMessage": "جرّب إزالة بعض الفلاتر لرؤية نتائج أكثر.",
+  "searchEndOfList": "وصلت إلى نهاية النتائج",
+  "searchSelectShop": "اختر محلاً لعرض التفاصيل",
+  "searchPriceRangeInvalid": "يجب أن يكون أعلى سعر أكبر من أقل سعر",
+  "searchAreaRangeInvalid": "يجب أن تكون أكبر مساحة أكبر من أقل مساحة",
+  "searchValueNegative": "لا يمكن أن تكون القيم سالبة",
+  "searchSaveTooltip": "احفظ هذا المحل",
+  "searchSavedTooltip": "إزالة من المحفوظة",
+  "searchRangeSeparator": "إلى",
+  "searchFrom": "من {value}",
+  "@searchFrom": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "searchTo": "حتى {value}",
+  "@searchTo": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "searchRange": "{from} – {to}",
+  "@searchRange": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "shopDetailTitle": "تفاصيل المحل",
+  "shopDetailGalleryCounter": "{current} من {total}",
+  "@shopDetailGalleryCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "shopDetailContactLandlord": "تواصل عبر واتساب",
+  "shopDetailUnavailableTitle": "لم يعد متوفراً",
+  "shopDetailUnavailableMessage": "هذا المحل لم يعد متوفراً للإيجار.",
+  "shopDetailReturnToResults": "العودة إلى النتائج",
+  "whatsappContactMessage": "مرحباً، أنا مهتم بمحل '{title}' في {city}، {district}.",
+  "@whatsappContactMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      },
+      "district": {
+        "type": "String"
+      }
+    }
+  },
+  "whatsappContactUnavailable": "تفاصيل التواصل مع هذا المحل غير متاحة حالياً.",
   "authEmailLabel": "البريد الإلكتروني",
   "authPasswordLabel": "كلمة المرور",
   "authFirstNameLabel": "الاسم الأول",
@@ -175,6 +273,19 @@
   "detailSecurityDeposit": "التأمين",
   "detailMonths": "أشهر",
   "detailFloors": "عدد الطوابق",
+  "detailFloorsCount": "{count} طوابق",
+  "@detailFloorsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "detailPerYear": "/سنة",
+  "detailMoreCount": "+{count} المزيد",
+  "@detailMoreCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "detailDescription": "الوصف",
   "detailAddress": "العنوان",
   "detailCategory": "الفئة",

@@ -2,12 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/di/injectable.dart';
+import '../../../../core/errors/failure_messages.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../listing/data/models/browse_listing.dart';
+import '../../../saved/repository/saved_listings_repository.dart';
 
 /// Marketplace card for the home feed (Figma `95:4028`): thumbnail + title +
 /// district + compact annual rent (`120K EGP/yr` via [homeRentPerYear]). Two
@@ -95,7 +99,7 @@ class _VerticalLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 120.h,
+          height: 105.h,
           width: double.infinity,
           child: _Thumbnail(url: listing.thumbnailUrl),
         ),
@@ -140,11 +144,7 @@ class _VerticalLayout extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 6.w),
-                    Expanded(
-                      flex: 1,
-                      child: _SaveHeart(isSaved: listing.isSaved),
-                    ),
+                    Expanded(flex: 1, child: _SaveHeart(listing: listing)),
                   ],
                 ),
               ],
@@ -242,20 +242,84 @@ class _HorizontalLayout extends StatelessWidget {
   }
 }
 
-/// Visual-only save heart: filled primary when saved, outline otherwise. No
-/// tap handling — save/unsave wiring is Phase 3 (gap-log).
-class _SaveHeart extends StatelessWidget {
-  const _SaveHeart({required this.isSaved});
+/// Interactive save heart (US5, T058): injects the ONE shared
+/// [SavedListingsRepository] (via `getIt`, D8) and toggles save/unsave with
+/// the optimistic flip + revert + a localized failure message (contract
+/// `saved-listings.md` consistency protocol). A single in-flight flag blocks
+/// duplicate taps (FR-014). No per-screen save logic — every heart goes
+/// through this one repository.
+class _SaveHeart extends StatefulWidget {
+  const _SaveHeart({required this.listing});
 
-  final bool? isSaved;
+  final BrowseListing listing;
+
+  @override
+  State<_SaveHeart> createState() => _SaveHeartState();
+}
+
+class _SaveHeartState extends State<_SaveHeart> {
+  late bool _saved;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _saved = widget.listing.isSaved == true;
+  }
+
+  @override
+  void didUpdateWidget(covariant _SaveHeart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.listing.isSaved != widget.listing.isSaved) {
+      _saved = widget.listing.isSaved == true;
+    }
+  }
+
+  Future<void> _toggle() async {
+    if (_saving) return;
+    _saving = true;
+    final bool previous = _saved;
+    final bool target = !_saved;
+    setState(() => _saved = target);
+    try {
+      final SavedListingsRepository repository =
+          getIt<SavedListingsRepository>();
+      if (target) {
+        await repository.save(widget.listing.id);
+      } else {
+        await repository.unsave(widget.listing.id);
+      }
+    } on Failure catch (failure) {
+      _revertAndSurface(previous, failure);
+    } catch (_) {
+      _revertAndSurface(previous, const ServerFailure(''));
+    } finally {
+      _saving = false;
+    }
+  }
+
+  void _revertAndSurface(bool previous, Failure failure) {
+    if (!mounted) return;
+    setState(() => _saved = previous);
+    final AppLocalizations l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(failureMessage(l10n, failure))));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bool saved = isSaved == true;
-    return Icon(
-      saved ? Icons.favorite : Icons.favorite_border,
-      size: 16.sp,
-      color: saved ? AppColors.primary : AppColors.textTertiary,
+    final AppLocalizations l10n = AppLocalizations.of(context);
+    return IconButton(
+      onPressed: _toggle,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      tooltip: _saved ? l10n.savedUnsaveTooltip : l10n.savedSaveTooltip,
+      icon: Icon(
+        _saved ? Icons.favorite : Icons.favorite_border,
+        size: 16.sp,
+        color: _saved ? AppColors.primary : AppColors.textTertiary,
+      ),
     );
   }
 }

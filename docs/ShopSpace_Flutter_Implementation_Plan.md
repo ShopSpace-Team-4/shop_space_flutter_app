@@ -16,7 +16,7 @@
 | State management | BLoC / Cubit (`flutter_bloc`) |
 | Starting point | Brand new Flutter project, empty repo |
 | Backend API | REST, `/api/v1` prefix. Auth & User endpoints are finalized (Section 3.1). Listings/Search/Advisor endpoints are not final yet — this plan defines the shape the Flutter app needs, as a requirements list for the backend team |
-| Landlord–tenant contact | No in-app chat. Tenant taps landlord's phone number on a listing → deep-links into WhatsApp (`url_launcher` + `wa.me` link). An "Inquiry" is a logged record, not a chat thread |
+| Landlord–tenant contact | No in-app chat. The listing carries the landlord's WhatsApp deep link (`listing.whatsappLink`, `https://wa.me/<phone>`); the tenant detail button launches it via `url_launcher` with a localized prefilled message and `sms:`/`tel:` fallback. Nothing is recorded — no Inquiry entity (2026-08-09) |
 | AI Advisor responses | Simple request → full response (no token streaming) |
 | Localization | Arabic/English + RTL is a day-one architectural requirement |
 | Role model | Every account defaults to **tenant**. A user becomes a landlord later — either by tapping "List a shop" (Phase 2) or "Become a Landlord" in Profile (Phase 4) — which calls `POST /users/me/roles`. Accounts can hold **both** roles simultaneously; `activeRole` just controls which dashboard is currently shown |
@@ -54,8 +54,6 @@ lib/
     search/
       data/ repository/ presentation/
     advisor/                        → AI Business Advisor chat
-      data/ repository/ presentation/
-    inquiries/                       → "contacted landlord via WhatsApp" log/status
       data/ repository/ presentation/
   main.dart
   app.dart
@@ -150,7 +148,7 @@ Base URL: `https://shopspace-backend-production.up.railway.app` (dev/staging/pro
 
 ### 3.2 Other feature APIs — expected/pending (Phases 2, 3, 5)
 
-Unchanged from the original plan — Listings, Search, Inquiries and Advisor endpoints are not finalized yet. Each of those phases' specs still includes an "Expected API Contract" section as a requirements draft for the backend team, using the same `{message, status, data}` envelope and Bearer-auth convention established in 3.1 for consistency.
+Updated 2026-08-09 — Listings (Phase 2) and the Phase 3 browse/detail/save contracts are finalized in the API guide (the listing payload now includes `whatsappLink`). Advisor (Phase 5) endpoints are not finalized yet; the advisor spec still includes an "Expected API Contract" section as a requirements draft for the backend team, using the same `{message, status, data}` envelope and Bearer-auth convention established in 3.1 for consistency. Inquiries was removed from scope (2026-08-09) — nothing is recorded, no endpoint needed.
 
 ---
 
@@ -226,23 +224,20 @@ Each phase is scoped to be an independent spec: goal, screens (Figma frame names
 ### Phase 3 — Shop Search & Discovery (Tenant side)
 **Goal:** Tenant can search/filter listings, view details, and contact the landlord via WhatsApp.
 
-**Screens:** Search/Browse (list + filters: location, price range, size, shop type), Listing Detail, "Contact via WhatsApp" action, Inquiry confirmation, My Inquiries (contact history).
+**Screens:** Search/Browse (list + filters: location, price range, size, shop type), Listing Detail, "Contact via WhatsApp" action.
 
-**BLoCs:** `SearchCubit` (query + filter state, pagination), `ListingDetailCubit`, `ContactLandlordCubit` (fires the inquiry-log call + launches WhatsApp).
+**BLoCs:** `SearchCubit` (query + filter state, pagination), `ListingDetailCubit` (saved-heart + detail state). Contact is a self-contained widget — no Cubit.
 
-**Data models:** `SearchFilters { location, priceMin, priceMax, sizeMin, sizeMax, shopType }`, reuses `ShopListing`, `Inquiry { id, tenantId, listingId, landlordId, contactedAt, channel }`.
+**Data models:** `SearchFilters { location, priceMin, priceMax, sizeMin, sizeMax, shopType }`, reuses `ShopListing` (adds `whatsappLink`, `createdAt`, `updatedAt`). No Inquiry entity — nothing is recorded (2026-08-09).
 
-**Expected API endpoints (pending backend):**
-- `GET /listings?location=&priceMin=&priceMax=&size=&type=&page=`
-- `GET /listings/{id}`
-- `POST /inquiries`
-- `GET /inquiries/mine`
+**Finalized endpoints:**
+- `GET /listings` · `GET /listings/{id}` (carries `whatsappLink`) · `GET /listings/meta` · save/unsave · `GET /users/me/saved-listings` (Phase 2 API guide)
 
-**WhatsApp deep link logic:** `url_launcher` opens `https://wa.me/<landlordPhone>?text=<prefilled message>`; falls back to native dialer/SMS if WhatsApp isn't installed. Fires `POST /inquiries` in parallel.
+**WhatsApp deep link logic:** the tenant button reads `listing.whatsappLink` (`https://wa.me/<phone>`), appends a localized `?text=` prefilled message when the link has none, and opens it via `url_launcher`; falls back to `sms:`/`tel:` (phone from the link path) if WhatsApp isn't installed. Missing link or total launch failure → localized snackbar.
 
 **Adaptive behavior:** Search screen is a **two-pane list-detail layout on expanded** (results list left, selected listing detail right, filters as a persistent sidebar); on compact/medium, filters live in a bottom sheet/drawer and tapping a result pushes a full-screen detail page.
 
-**Definition of Done:** Search meets the PRD's <2s target (skeleton loaders, debounced filters), listing detail renders fully, WhatsApp contact opens with a prefilled message and logs the inquiry, My Inquiries reflects "Contacted" status. RTL and Arabic number/price formatting verified at all breakpoints.
+**Definition of Done:** Search meets the PRD's <2s target (skeleton loaders, debounced filters), listing detail renders fully, WhatsApp contact opens with a localized prefilled message (or the sms/tel fallback) and never records anything. RTL and Arabic number/price formatting verified at all breakpoints.
 
 **Depends on:** Phase 0, Phase 1. Independent of Phase 2 (buildable against seeded/mock listing data).
 
@@ -322,7 +317,7 @@ Each phase is scoped to be an independent spec: goal, screens (Figma frame names
 ## 6. Open Items to Resolve Before/During Phase 0
 
 - Confirm the Composio Figma MCP connection is authenticated and the implementing LLM (OpenCode) can reach the `shop-space-ui` file before Phase 0 starts, since token extraction is the first real task.
-- Confirm phone-number format/validation rule for the WhatsApp deep link and for the `phone` field validation in Phase 1 (the API guide's example uses `+201000000000` — confirm this `+2` country-code format is enforced client-side too).
+- Confirm the backend `whatsappLink` shape on `GET /listings/{id}`: it should be the full `https://wa.me/<phone>` deep link (phone E.164 with leading `+` stripped), so the app can launch it directly and derive the `sms:`/`tel:` fallback phone from the path.
 - Confirm whether "mark as rented" auto-hides a listing from search or just changes its badge/status (affects Phase 2 & 3 contract).
 - Backend team should review Section 3.2's "Expected API Contract" per phase early — this is effectively the API requirements doc from the client's point of view, following the same envelope/auth conventions already finalized in Section 3.1.
 - Confirm minimum supported tablet size (e.g. 7" vs 10"+) so the `expanded` breakpoint's two-pane layouts are tested against real target hardware.

@@ -155,6 +155,61 @@ class ListingFormCubit extends Cubit<ListingFormState> {
     ));
   }
 
+  /// Stages multiple picked photos at once (gallery multi-select). Each file
+  /// is validated individually (PNG/JPG, ≤20MB, ≤[maxPhotoCount] photos); all
+  /// valid files up to the remaining count are staged and the first violation
+  /// surfaces inline as [InvalidMediaFile] / [PhotoLimitReached] — rejected
+  /// files are never staged (FR-007).
+  Future<void> addPhotos(List<XFile> files) async {
+    if (files.isEmpty) return;
+    final List<XFile> accepted = <XFile>[];
+    Failure? firstFailure;
+    for (final XFile file in files) {
+      if (state.pendingOrder.length + accepted.length >= maxPhotoCount) {
+        firstFailure ??= const PhotoLimitReached('');
+        break;
+      }
+      final String lowerName = file.name.toLowerCase();
+      final bool isAllowedType = lowerName.endsWith('.png') ||
+          lowerName.endsWith('.jpg') ||
+          lowerName.endsWith('.jpeg');
+      if (!isAllowedType) {
+        firstFailure ??= const InvalidMediaFile('');
+        continue;
+      }
+      int length;
+      try {
+        length = await file.length();
+      } catch (_) {
+        firstFailure ??= const InvalidMediaFile('');
+        continue;
+      }
+      if (length > maxPhotoBytes) {
+        firstFailure ??= const InvalidMediaFile('');
+        continue;
+      }
+      accepted.add(file);
+    }
+    if (accepted.isEmpty) {
+      emit(state.copyWith(
+        submitFailure: firstFailure ?? const InvalidMediaFile(''),
+      ));
+      return;
+    }
+    final List<PendingMedia> adds = [...state.pendingAdds];
+    final List<StagedMediaEntry> order = [...state.pendingOrder];
+    for (final XFile file in accepted) {
+      final int clientId = _nextClientId++;
+      adds.add(PendingMedia(file: file, clientId: clientId));
+      order.add(StagedMediaEntry.add(clientId));
+    }
+    emit(state.copyWith(
+      pendingAdds: adds,
+      pendingOrder: order,
+      submitFailure: firstFailure,
+    ));
+  }
+
   void removePhoto(int clientId) {
     emit(state.copyWith(
       pendingAdds: state.pendingAdds

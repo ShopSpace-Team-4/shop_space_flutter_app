@@ -38,6 +38,12 @@ import 'package:shop_space/features/listing/repository/listing_repository.dart'
     as _i732;
 import 'package:shop_space/features/listing/repository/listing_repository_impl.dart'
     as _i150;
+import 'package:shop_space/features/saved/data/saved_listings_datasource.dart'
+    as _i572;
+import 'package:shop_space/features/saved/repository/saved_listings_repository.dart'
+    as _i266;
+import 'package:shop_space/features/saved/repository/saved_listings_repository_impl.dart'
+    as _i603;
 import 'package:shop_space/features/user/data/user_datasource.dart' as _i983;
 import 'package:shop_space/features/user/repository/user_repository.dart'
     as _i251;
@@ -75,6 +81,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.ErrorMapper>(),
       ),
     );
+    gh.factory<_i572.SavedListingsDataSource>(
+      () => _i572.SavedListingsDataSourceImpl(gh<_i361.Dio>()),
+    );
     gh.factory<_i535.ListingDataSource>(
       () => _i535.ListingDataSourceImpl(gh<_i361.Dio>()),
     );
@@ -88,6 +97,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i251.UserRepositoryImpl(
         gh<_i983.UserDataSource>(),
         gh<_i560.SessionController>(),
+      ),
+    );
+    gh.factory<_i266.SavedListingsRepository>(
+      () => _i603.SavedListingsRepositoryImpl(
+        gh<_i572.SavedListingsDataSource>(),
       ),
     );
     gh.factory<_i951.AuthRepository>(

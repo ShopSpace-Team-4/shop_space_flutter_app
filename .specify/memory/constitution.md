@@ -208,11 +208,12 @@ Hard rules:
 
 ## 6. Product Rules & Integrations
 
-- Landlord–tenant contact is a WhatsApp deep link only
-  (`https://wa.me/<phone>` with a prefilled message, opened via
-  `url_launcher` with dialer/SMS fallback). There is no in-app chat.
-- Every landlord contact is recorded as an Inquiry (a logged record), not
-  a chat thread.
+- Landlord–tenant contact is a WhatsApp deep link only, read straight from
+  the listing (`listing.whatsappLink`, `https://wa.me/<phone>` with a
+  localized prefilled message appended, opened via `url_launcher` with
+  dialer/SMS fallback). There is no in-app chat.
+- No contact is ever recorded — there is no Inquiry entity or inquiries
+  endpoint (removed 2026-08-09).
 - Advisor chat is strictly request → full response; no token streaming.
 - Signup always routes to OTP verification, never straight to login.
 

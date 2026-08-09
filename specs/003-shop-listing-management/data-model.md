@@ -81,6 +81,9 @@ abstract class ShopListing with _$ShopListing {
     required List<ListingMedia> media,      // ordered by sortOrder
     String? thumbnailUrl,                   // absolute Cloudinary URL
     bool? isSaved,                          // meaningful only with a valid token (Phase 3 uses this; present on detail)
+    String? whatsappLink,                   // full https://wa.me/<phone> deep link (Phase 3 contact; appended 2026-08-09)
+    DateTime? createdAt,                    // optional ISO-8601; model parity, not rendered
+    DateTime? updatedAt,                    // optional ISO-8601; model parity, not rendered
   }) = _ShopListing;
   factory ShopListing.fromJson(Map<String, dynamic> json) => _$ShopListingFromJson(json);
 }
@@ -96,6 +99,10 @@ abstract class ShopListing with _$ShopListing {
 - `floorNumber: 0` means ground floor; keep the int, render `0` as ground floor in EN/AR.
 - `isSaved` is read-only and only relevant when a token is sent (Phase 3's saved-listing UI); it is
   tolerated here but unused in Phase 2.
+- `whatsappLink` (added 2026-08-09) is the landlord's full `https://wa.me/<phone>` deep link returned
+  by `GET /listings/:id` (§5.3); Phase 3's "Contact via WhatsApp" button launches it directly and is
+  unused in Phase 2. `createdAt`/`updatedAt` are optional ISO-8601 datetimes kept for parity, not
+  rendered or submitted.
 
 ### 1.4 `ListingSummary` (list item, `GET /listings/my-listings`)
 

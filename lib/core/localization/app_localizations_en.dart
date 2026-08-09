@@ -30,9 +30,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navAdvisor => 'Advisor';
 
   @override
-  String get navInquiries => 'Inquiries';
-
-  @override
   String get navSaved => 'Saved';
 
   @override
@@ -40,6 +37,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get savedTitle => 'Saved';
+
+  @override
+  String get savedEmptyTitle => 'No saved shops yet';
+
+  @override
+  String get savedEmptyMessage =>
+      'Shops you save will appear here so you can revisit them.';
+
+  @override
+  String get savedSaveTooltip => 'Save this shop';
+
+  @override
+  String get savedUnsaveTooltip => 'Remove from Saved';
 
   @override
   String get comingSoon => 'Coming soon';
@@ -209,6 +219,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorPhotoLimitReached => 'You can add up to 10 photos.';
+
+  @override
+  String get errorSaveListingFailed =>
+      'Couldn\'t save this shop. Please try again.';
+
+  @override
+  String get errorUnsaveListingFailed =>
+      'Couldn\'t remove this shop from Saved. Please try again.';
+
+  @override
+  String get errorSavedListingsLoadFailed =>
+      'Couldn\'t load your saved shops. Please try again.';
+
+  @override
+  String get errorContactLaunchFailed =>
+      'Couldn\'t open a messaging app. Please try again.';
+
+  @override
+  String get searchTitle => 'Search shops';
+
+  @override
+  String get searchBarHint => 'City, type, district…';
+
+  @override
+  String get searchBarClear => 'Clear search';
+
+  @override
+  String get searchOpenFilters => 'Open filters';
+
+  @override
+  String get searchFilters => 'Filters';
+
+  @override
+  String get searchFilterSort => 'Sort';
+
+  @override
+  String get searchFilterCity => 'City';
+
+  @override
+  String get searchFilterDistrict => 'District';
+
+  @override
+  String get searchFilterCategory => 'Category';
+
+  @override
+  String get searchFilterPriceRange => 'Price range';
+
+  @override
+  String get searchFilterSizeRange => 'Size range';
+
+  @override
+  String get searchFilterAmenities => 'Amenities';
+
+  @override
+  String get searchPriceMinLabel => 'Min price';
+
+  @override
+  String get searchPriceMaxLabel => 'Max price';
+
+  @override
+  String get searchAreaMinLabel => 'Min size';
+
+  @override
+  String get searchAreaMaxLabel => 'Max size';
+
+  @override
+  String get searchSortNewest => 'Newest';
+
+  @override
+  String get searchSortPriceAsc => 'Price: low to high';
+
+  @override
+  String get searchSortPriceDesc => 'Price: high to low';
+
+  @override
+  String get searchApply => 'Apply';
+
+  @override
+  String get searchReset => 'Reset';
+
+  @override
+  String get searchResetFilters => 'Reset filters';
+
+  @override
+  String get searchClearAll => 'Clear all';
+
+  @override
+  String get searchEmptyTitle => 'No shops match your filters';
+
+  @override
+  String get searchEmptyMessage =>
+      'Try removing some filters to see more results.';
+
+  @override
+  String get searchEndOfList => 'You\'ve reached the end';
+
+  @override
+  String get searchSelectShop => 'Select a shop to view details';
+
+  @override
+  String get searchPriceRangeInvalid =>
+      'Max price must be greater than min price';
+
+  @override
+  String get searchAreaRangeInvalid => 'Max size must be greater than min size';
+
+  @override
+  String get searchValueNegative => 'Values can\'t be negative';
+
+  @override
+  String get searchSaveTooltip => 'Save this shop';
+
+  @override
+  String get searchSavedTooltip => 'Remove from Saved';
+
+  @override
+  String get searchRangeSeparator => 'to';
+
+  @override
+  String searchFrom(String value) {
+    return 'From $value';
+  }
+
+  @override
+  String searchTo(String value) {
+    return 'Up to $value';
+  }
+
+  @override
+  String searchRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get shopDetailTitle => 'Shop details';
+
+  @override
+  String shopDetailGalleryCounter(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get shopDetailContactLandlord => 'Contact via WhatsApp';
+
+  @override
+  String get shopDetailUnavailableTitle => 'No longer available';
+
+  @override
+  String get shopDetailUnavailableMessage =>
+      'This shop is no longer available for rent.';
+
+  @override
+  String get shopDetailReturnToResults => 'Back to results';
+
+  @override
+  String whatsappContactMessage(String title, String city, String district) {
+    return 'Hello, I\'m interested in the shop \'$title\' in $city, $district.';
+  }
+
+  @override
+  String get whatsappContactUnavailable =>
+      'This shop\'s contact details aren\'t available right now.';
 
   @override
   String get authEmailLabel => 'Email';
@@ -471,6 +643,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailFloors => 'Floors';
+
+  @override
+  String detailFloorsCount(int count) {
+    return '$count floors';
+  }
+
+  @override
+  String get detailPerYear => '/year';
+
+  @override
+  String detailMoreCount(int count) {
+    return '+$count more';
+  }
 
   @override
   String get detailDescription => 'Description';
