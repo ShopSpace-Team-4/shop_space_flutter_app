@@ -140,12 +140,6 @@ abstract class AppLocalizations {
   /// **'Advisor'**
   String get navAdvisor;
 
-  /// No description provided for @navInquiries.
-  ///
-  /// In en, this message translates to:
-  /// **'Inquiries'**
-  String get navInquiries;
-
   /// No description provided for @navSaved.
   ///
   /// In en, this message translates to:
@@ -163,6 +157,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved'**
   String get savedTitle;
+
+  /// No description provided for @savedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved shops yet'**
+  String get savedEmptyTitle;
+
+  /// No description provided for @savedEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Shops you save will appear here so you can revisit them.'**
+  String get savedEmptyMessage;
+
+  /// No description provided for @savedSaveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this shop'**
+  String get savedSaveTooltip;
+
+  /// No description provided for @savedUnsaveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Saved'**
+  String get savedUnsaveTooltip;
 
   /// No description provided for @comingSoon.
   ///
@@ -451,6 +469,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can add up to 10 photos.'**
   String get errorPhotoLimitReached;
+
+  /// No description provided for @errorSaveListingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save this shop. Please try again.'**
+  String get errorSaveListingFailed;
+
+  /// No description provided for @errorUnsaveListingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t remove this shop from Saved. Please try again.'**
+  String get errorUnsaveListingFailed;
+
+  /// No description provided for @errorSavedListingsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your saved shops. Please try again.'**
+  String get errorSavedListingsLoadFailed;
+
+  /// No description provided for @errorContactLaunchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open a messaging app. Please try again.'**
+  String get errorContactLaunchFailed;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search shops'**
+  String get searchTitle;
+
+  /// No description provided for @searchBarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'City, type, district…'**
+  String get searchBarHint;
+
+  /// No description provided for @searchBarClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get searchBarClear;
+
+  /// No description provided for @searchOpenFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Open filters'**
+  String get searchOpenFilters;
+
+  /// No description provided for @searchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get searchFilters;
+
+  /// No description provided for @searchFilterSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get searchFilterSort;
+
+  /// No description provided for @searchFilterCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get searchFilterCity;
+
+  /// No description provided for @searchFilterDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get searchFilterDistrict;
+
+  /// No description provided for @searchFilterCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get searchFilterCategory;
+
+  /// No description provided for @searchFilterPriceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price range'**
+  String get searchFilterPriceRange;
+
+  /// No description provided for @searchFilterSizeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Size range'**
+  String get searchFilterSizeRange;
+
+  /// No description provided for @searchFilterAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get searchFilterAmenities;
+
+  /// No description provided for @searchPriceMinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Min price'**
+  String get searchPriceMinLabel;
+
+  /// No description provided for @searchPriceMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Max price'**
+  String get searchPriceMaxLabel;
+
+  /// No description provided for @searchAreaMinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Min size'**
+  String get searchAreaMinLabel;
+
+  /// No description provided for @searchAreaMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Max size'**
+  String get searchAreaMaxLabel;
+
+  /// No description provided for @searchSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get searchSortNewest;
+
+  /// No description provided for @searchSortPriceAsc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: low to high'**
+  String get searchSortPriceAsc;
+
+  /// No description provided for @searchSortPriceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: high to low'**
+  String get searchSortPriceDesc;
+
+  /// No description provided for @searchApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get searchApply;
+
+  /// No description provided for @searchReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get searchReset;
+
+  /// No description provided for @searchResetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset filters'**
+  String get searchResetFilters;
+
+  /// No description provided for @searchClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get searchClearAll;
+
+  /// No description provided for @searchEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No shops match your filters'**
+  String get searchEmptyTitle;
+
+  /// No description provided for @searchEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try removing some filters to see more results.'**
+  String get searchEmptyMessage;
+
+  /// No description provided for @searchEndOfList.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached the end'**
+  String get searchEndOfList;
+
+  /// No description provided for @searchSelectShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a shop to view details'**
+  String get searchSelectShop;
+
+  /// No description provided for @searchPriceRangeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Max price must be greater than min price'**
+  String get searchPriceRangeInvalid;
+
+  /// No description provided for @searchAreaRangeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Max size must be greater than min size'**
+  String get searchAreaRangeInvalid;
+
+  /// No description provided for @searchValueNegative.
+  ///
+  /// In en, this message translates to:
+  /// **'Values can\'t be negative'**
+  String get searchValueNegative;
+
+  /// No description provided for @searchSaveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this shop'**
+  String get searchSaveTooltip;
+
+  /// No description provided for @searchSavedTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Saved'**
+  String get searchSavedTooltip;
+
+  /// No description provided for @searchRangeSeparator.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get searchRangeSeparator;
+
+  /// No description provided for @searchFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From {value}'**
+  String searchFrom(String value);
+
+  /// No description provided for @searchTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {value}'**
+  String searchTo(String value);
+
+  /// No description provided for @searchRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String searchRange(String from, String to);
+
+  /// No description provided for @shopDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop details'**
+  String get shopDetailTitle;
+
+  /// No description provided for @shopDetailGalleryCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String shopDetailGalleryCounter(int current, int total);
+
+  /// No description provided for @shopDetailContactLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact via WhatsApp'**
+  String get shopDetailContactLandlord;
+
+  /// No description provided for @shopDetailUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No longer available'**
+  String get shopDetailUnavailableTitle;
+
+  /// No description provided for @shopDetailUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This shop is no longer available for rent.'**
+  String get shopDetailUnavailableMessage;
+
+  /// No description provided for @shopDetailReturnToResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to results'**
+  String get shopDetailReturnToResults;
+
+  /// No description provided for @whatsappContactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I\'m interested in the shop \'{title}\' in {city}, {district}.'**
+  String whatsappContactMessage(String title, String city, String district);
+
+  /// No description provided for @whatsappContactUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This shop\'s contact details aren\'t available right now.'**
+  String get whatsappContactUnavailable;
 
   /// No description provided for @authEmailLabel.
   ///
@@ -943,6 +1249,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Floors'**
   String get detailFloors;
+
+  /// No description provided for @detailFloorsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} floors'**
+  String detailFloorsCount(int count);
+
+  /// No description provided for @detailPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'/year'**
+  String get detailPerYear;
+
+  /// No description provided for @detailMoreCount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String detailMoreCount(int count);
 
   /// No description provided for @detailDescription.
   ///

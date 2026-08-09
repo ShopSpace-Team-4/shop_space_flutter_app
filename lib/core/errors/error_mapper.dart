@@ -35,6 +35,10 @@ class ErrorMapper {
   static const String mediaDeleteFailedMessageKey = 'errorMediaDeleteFailed';
   static const String listingNotOwnedMessageKey = 'errorListingNotOwned';
   static const String invalidMediaFileMessageKey = 'errorInvalidMediaFile';
+  static const String saveListingFailedMessageKey = 'errorSaveListingFailed';
+  static const String unsaveListingFailedMessageKey = 'errorUnsaveListingFailed';
+  static const String savedListingsLoadFailedMessageKey =
+      'errorSavedListingsLoadFailed';
 
   static const String codeEmailAlreadyRegistered = 'email_already_registered';
   static const String codePhoneAlreadyRegistered = 'phone_already_registered';
@@ -66,6 +70,10 @@ class ErrorMapper {
   }
 
   Failure _mapBadResponse(DioException error) {
+    final Failure? savedFailure = _mapSavedBadResponse(error);
+    if (savedFailure != null) {
+      return savedFailure;
+    }
     final Failure? listingFailure = _mapListingBadResponse(error);
     if (listingFailure != null) {
       return listingFailure;
@@ -103,6 +111,26 @@ class ErrorMapper {
       }
     }
     return const InvalidCredentials(invalidCredentialsMessageKey);
+  }
+
+  /// Maps the finalized saved-listings endpoints (`POST /listings/:id/save`,
+  /// `DELETE /listings/:id/save`, `GET /users/me/saved-listings`, API guide §7)
+  /// to their typed [Failure]s (contract `contracts/saved-listings.md`). Runs
+  /// BEFORE the listing mapper so the save sub-paths are never attributed to a
+  /// generic listing failure (e.g. DELETE `/listings/:id/save` is an unsave, not
+  /// a listing delete). Returns `null` for anything that isn't a saved endpoint.
+  Failure? _mapSavedBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _SavedPaths.normalized(options.path);
+    if (!_SavedPaths.isSavedPath(path)) {
+      return null;
+    }
+    return switch (options.method) {
+      'POST' => const SaveListingFailed(saveListingFailedMessageKey),
+      'DELETE' => const UnsaveListingFailed(unsaveListingFailedMessageKey),
+      'GET' => const SavedListingsLoadFailed(savedListingsLoadFailedMessageKey),
+      _ => null,
+    };
   }
 
   /// Maps `/listings*` non-2xx responses to their typed listing [Failure]
@@ -222,6 +250,25 @@ abstract final class _ListingPaths {
   /// [path] must already be normalized via [normalized].
   static bool isListingPath(String path) =>
       path == 'listings' || path.startsWith('listings/');
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
+  }
+}
+
+/// Matcher for the finalized saved-listings endpoints used by [ErrorMapper]:
+/// `POST /listings/:id/save`, `DELETE /listings/:id/save`, and
+/// `GET /users/me/saved-listings` (API guide §7, contract `saved-listings.md`).
+/// Normalization mirrors [_ListingPaths].
+abstract final class _SavedPaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isSavedPath(String path) =>
+      RegExp(r'^listings/[^/]+/save$').hasMatch(path) ||
+      path == 'users/me/saved-listings';
 
   static String normalized(String path) {
     String normalized = path.replaceFirst(RegExp(r'^/+'), '');

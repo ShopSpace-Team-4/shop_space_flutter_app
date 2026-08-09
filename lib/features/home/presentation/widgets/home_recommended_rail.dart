@@ -12,8 +12,8 @@ import 'home_section_heading.dart';
 
 /// Spaces rail (Figma `95:4028`, child `95:4339`): heading + "See all" action
 /// + a horizontal carousel of 133-wide cards (gap 7). "See all" deep-links to
-/// `/search`; tapping a card opens the listing detail (currently the
-/// landlord-oriented `/my-listings/{id}` — flagged gap for Phase 3).
+/// `/search`; tapping a card opens the tenant listing detail `/search/{id}`
+/// (US2, T033 — was the landlord-oriented `/my-listings/{id}`).
 class HomeRecommendedRail extends StatelessWidget {
   const HomeRecommendedRail({super.key, required this.listings});
 
@@ -55,7 +55,7 @@ class HomeRecommendedRail extends StatelessWidget {
                   width: 133.w,
                   child: HomeListingCard(
                     listing: listing,
-                    onTap: () => context.push('/my-listings/${listing.id}'),
+                    onTap: () => context.push('/search/${listing.id}'),
                   ),
                 );
               },

@@ -196,9 +196,18 @@ class _ListingFormStepPhotosState extends State<ListingFormStepPhotos> {
     if (_picking) return;
     setState(() => _picking = true);
     try {
-      final XFile? file = await _picker.pickImage(source: source);
-      if (file != null) {
-        await widget.cubit.addPhoto(file);
+      if (source == ImageSource.gallery) {
+        // Gallery allows multi-select; each file is validated and staged via
+        // the cubit (type/size/count, FR-007).
+        final List<XFile> files = await _picker.pickMultiImage();
+        if (files.isNotEmpty) {
+          await widget.cubit.addPhotos(files);
+        }
+      } else {
+        final XFile? file = await _picker.pickImage(source: source);
+        if (file != null) {
+          await widget.cubit.addPhoto(file);
+        }
       }
     } catch (_) {
       // Picker failure is non-fatal; the form stays usable (FR-007).

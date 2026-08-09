@@ -23,7 +23,7 @@
   `/speckit.tasks` → `/speckit.implement`. Only parallelize if explicitly told.
 - Do NOT introduce a package, architectural pattern, or folder convention
   beyond the locked list below without flagging it for approval first.
-- Feature APIs that aren't finalized (listings, search, advisor, inquiries):
+- Feature APIs that aren't finalized (listings, search, advisor):
   build the repository interface + Cubit against the expected contract with a
   mock/stub datasource. Never block on the real backend.
 
@@ -128,8 +128,10 @@
 
 ## Product rules
 
-- Landlord contact is a WhatsApp deep link (`https://wa.me/<phone>`), not
-  in-app chat; every contact is recorded as an Inquiry, not a chat thread.
+- Landlord contact is a WhatsApp deep link read straight from the listing
+  (`listing.whatsappLink`, `https://wa.me/<phone>`), not in-app chat. The
+  tenant button launches it directly with a localized prefilled message and an
+  `sms:`/`tel:` fallback. **No contact is recorded** — no Inquiry entity.
 - Advisor chat is request → full response, no streaming.
 - Signup always routes to OTP verification, never straight to login.
 

@@ -174,12 +174,6 @@ class _ProfileContent extends StatelessWidget {
                       onTap: () => context.go('/advisor'),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.chat_bubble_outline),
-                      title: Text(l10n.navInquiries),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.go('/inquiries'),
-                    ),
-                    ListTile(
                       leading: const Icon(Icons.lock_outline),
                       title: Text(l10n.profileChangePassword),
                       trailing: const Icon(Icons.chevron_right),

@@ -240,13 +240,18 @@ Success response:
     "status": "AVAILABLE",
     "media": [],
     "thumbnailUrl": "https://res.cloudinary.com/<cloud-name>/image/upload/...",
-    "isSaved": true
+    "isSaved": true,
+    "whatsappLink": "https://wa.me/201000000000",
+    "createdAt": "2026-08-09T12:00:00.000Z",
+    "updatedAt": "2026-08-09T12:00:00.000Z"
   }
 }
 ```
 
 Notes:
 - `availableFrom` is submitted as a date only (`YYYY-MM-DD`) but returned as an ISO-8601 datetime; parse it back to a date when editing.
+- `whatsappLink` is the landlord's full `https://wa.me/<phone>` deep link (phone in E.164 with the leading `+` stripped). The app's "Contact via WhatsApp" button launches it directly; when the link carries no `?text=`, the app appends a localized prefilled message about the shop. On launch failure the app falls back to `sms:` → `tel:` built from the phone in the link's path.
+- `createdAt`/`updatedAt` are optional ISO-8601 datetimes returned for parity; the app does not render them this phase.
 
 ---
 

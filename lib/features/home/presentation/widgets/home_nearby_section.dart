@@ -11,8 +11,8 @@ import 'home_section_heading.dart';
 
 /// Nearby Listings section (Figma `95:4028`): heading + stacked 343×84
 /// horizontal cards (thumbnail left, text right). Tapping a card opens the
-/// listing detail (landlord-oriented `/my-listings/{id}` for now — flagged
-/// for Phase 3).
+/// tenant listing detail `/search/{id}` (US2, T033 — was the
+/// landlord-oriented `/my-listings/{id}`).
 class HomeNearbySection extends StatelessWidget {
   const HomeNearbySection({super.key, required this.listings});
 
@@ -46,7 +46,7 @@ class HomeNearbySection extends StatelessWidget {
                   HomeListingCard(
                     horizontal: true,
                     listing: listing,
-                    onTap: () => context.push('/my-listings/${listing.id}'),
+                    onTap: () => context.push('/search/${listing.id}'),
                   ),
                 ],
               ],

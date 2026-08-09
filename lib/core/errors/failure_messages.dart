@@ -33,4 +33,7 @@ String failureMessage(AppLocalizations l10n, Failure failure) => switch (failure
       ListingNotOwned() => l10n.errorListingNotOwned,
       InvalidMediaFile() => l10n.errorInvalidMediaFile,
       PhotoLimitReached() => l10n.errorPhotoLimitReached,
+      SaveListingFailed() => l10n.errorSaveListingFailed,
+      UnsaveListingFailed() => l10n.errorUnsaveListingFailed,
+      SavedListingsLoadFailed() => l10n.errorSavedListingsLoadFailed,
     };

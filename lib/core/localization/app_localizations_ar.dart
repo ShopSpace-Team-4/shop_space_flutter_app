@@ -30,9 +30,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navAdvisor => 'المستشار';
 
   @override
-  String get navInquiries => 'الاستفسارات';
-
-  @override
   String get navSaved => 'المحفوظة';
 
   @override
@@ -40,6 +37,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get savedTitle => 'المحفوظة';
+
+  @override
+  String get savedEmptyTitle => 'لا توجد محلات محفوظة بعد';
+
+  @override
+  String get savedEmptyMessage =>
+      'ستظهر المحلات التي تحفظها هنا لتتمكن من العودة إليها لاحقاً.';
+
+  @override
+  String get savedSaveTooltip => 'احفظ هذا المحل';
+
+  @override
+  String get savedUnsaveTooltip => 'إزالة من المحفوظة';
 
   @override
   String get comingSoon => 'قريباً';
@@ -208,6 +218,167 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorPhotoLimitReached => 'يمكنك إضافة ما يصل إلى 10 صور.';
+
+  @override
+  String get errorSaveListingFailed =>
+      'تعذر حفظ هذا المحل. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorUnsaveListingFailed =>
+      'تعذر إزالة هذا المحل من المحفوظة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorSavedListingsLoadFailed =>
+      'تعذر تحميل المحلات المحفوظة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorContactLaunchFailed =>
+      'تعذر فتح تطبيق المراسلة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get searchTitle => 'البحث عن المحلات';
+
+  @override
+  String get searchBarHint => 'المدينة، النوع، المنطقة…';
+
+  @override
+  String get searchBarClear => 'مسح البحث';
+
+  @override
+  String get searchOpenFilters => 'فتح الفلاتر';
+
+  @override
+  String get searchFilters => 'الفلاتر';
+
+  @override
+  String get searchFilterSort => 'الترتيب';
+
+  @override
+  String get searchFilterCity => 'المدينة';
+
+  @override
+  String get searchFilterDistrict => 'الحي';
+
+  @override
+  String get searchFilterCategory => 'الفئة';
+
+  @override
+  String get searchFilterPriceRange => 'نطاق السعر';
+
+  @override
+  String get searchFilterSizeRange => 'نطاق المساحة';
+
+  @override
+  String get searchFilterAmenities => 'المرافق';
+
+  @override
+  String get searchPriceMinLabel => 'أقل سعر';
+
+  @override
+  String get searchPriceMaxLabel => 'أعلى سعر';
+
+  @override
+  String get searchAreaMinLabel => 'أقل مساحة';
+
+  @override
+  String get searchAreaMaxLabel => 'أكبر مساحة';
+
+  @override
+  String get searchSortNewest => 'الأحدث';
+
+  @override
+  String get searchSortPriceAsc => 'السعر: من الأقل إلى الأعلى';
+
+  @override
+  String get searchSortPriceDesc => 'السعر: من الأعلى إلى الأقل';
+
+  @override
+  String get searchApply => 'تطبيق';
+
+  @override
+  String get searchReset => 'إعادة تعيين';
+
+  @override
+  String get searchResetFilters => 'إعادة ضبط الفلاتر';
+
+  @override
+  String get searchClearAll => 'مسح الكل';
+
+  @override
+  String get searchEmptyTitle => 'لا توجد محلات تطابق الفلاتر';
+
+  @override
+  String get searchEmptyMessage => 'جرّب إزالة بعض الفلاتر لرؤية نتائج أكثر.';
+
+  @override
+  String get searchEndOfList => 'وصلت إلى نهاية النتائج';
+
+  @override
+  String get searchSelectShop => 'اختر محلاً لعرض التفاصيل';
+
+  @override
+  String get searchPriceRangeInvalid => 'يجب أن يكون أعلى سعر أكبر من أقل سعر';
+
+  @override
+  String get searchAreaRangeInvalid =>
+      'يجب أن تكون أكبر مساحة أكبر من أقل مساحة';
+
+  @override
+  String get searchValueNegative => 'لا يمكن أن تكون القيم سالبة';
+
+  @override
+  String get searchSaveTooltip => 'احفظ هذا المحل';
+
+  @override
+  String get searchSavedTooltip => 'إزالة من المحفوظة';
+
+  @override
+  String get searchRangeSeparator => 'إلى';
+
+  @override
+  String searchFrom(String value) {
+    return 'من $value';
+  }
+
+  @override
+  String searchTo(String value) {
+    return 'حتى $value';
+  }
+
+  @override
+  String searchRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get shopDetailTitle => 'تفاصيل المحل';
+
+  @override
+  String shopDetailGalleryCounter(int current, int total) {
+    return '$current من $total';
+  }
+
+  @override
+  String get shopDetailContactLandlord => 'تواصل عبر واتساب';
+
+  @override
+  String get shopDetailUnavailableTitle => 'لم يعد متوفراً';
+
+  @override
+  String get shopDetailUnavailableMessage =>
+      'هذا المحل لم يعد متوفراً للإيجار.';
+
+  @override
+  String get shopDetailReturnToResults => 'العودة إلى النتائج';
+
+  @override
+  String whatsappContactMessage(String title, String city, String district) {
+    return 'مرحباً، أنا مهتم بمحل \'$title\' في $city، $district.';
+  }
+
+  @override
+  String get whatsappContactUnavailable =>
+      'تفاصيل التواصل مع هذا المحل غير متاحة حالياً.';
 
   @override
   String get authEmailLabel => 'البريد الإلكتروني';
@@ -472,6 +643,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get detailFloors => 'عدد الطوابق';
+
+  @override
+  String detailFloorsCount(int count) {
+    return '$count طوابق';
+  }
+
+  @override
+  String get detailPerYear => '/سنة';
+
+  @override
+  String detailMoreCount(int count) {
+    return '+$count المزيد';
+  }
 
   @override
   String get detailDescription => 'الوصف';

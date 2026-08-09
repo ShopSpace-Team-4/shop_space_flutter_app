@@ -94,4 +94,7 @@ class HomeCubit extends Cubit<HomeState> {
       return null;
     }
   }
+
+  /// Pull-to-refresh alias (mirrors `MyListingsCubit.refresh`).
+  Future<void> refresh() => load();
 }

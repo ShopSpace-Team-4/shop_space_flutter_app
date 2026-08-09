@@ -9,6 +9,12 @@ part 'shop_listing.g.dart';
 /// Full listing detail (response model for `GET /listings/:id`). The same
 /// model flows unchanged into `repository/` and `presentation/` (data-model.md
 /// §1.3) — no DTO mapping.
+///
+/// [whatsappLink] is the landlord's full `https://wa.me/<phone>` deep link
+/// returned by the backend — the tenant contact button launches it directly
+/// (appending a localized prefilled `?text=` when the link carries none).
+/// [createdAt]/[updatedAt] are optional ISO-8601 datetimes kept for model
+/// parity; they are not rendered this phase.
 @freezed
 abstract class ShopListing with _$ShopListing {
   const factory ShopListing({
@@ -34,6 +40,9 @@ abstract class ShopListing with _$ShopListing {
     required List<ListingMedia> media,
     String? thumbnailUrl,
     bool? isSaved,
+    String? whatsappLink,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _ShopListing;
 
   factory ShopListing.fromJson(Map<String, dynamic> json) =>

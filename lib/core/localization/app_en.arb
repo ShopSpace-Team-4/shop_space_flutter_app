@@ -7,10 +7,13 @@
   "navListings": "Listings",
   "navSearch": "Search",
   "navAdvisor": "Advisor",
-  "navInquiries": "Inquiries",
   "navSaved": "Saved",
   "navAdd": "Add listing",
   "savedTitle": "Saved",
+  "savedEmptyTitle": "No saved shops yet",
+  "savedEmptyMessage": "Shops you save will appear here so you can revisit them.",
+  "savedSaveTooltip": "Save this shop",
+  "savedUnsaveTooltip": "Remove from Saved",
   "comingSoon": "Coming soon",
   "routeNotFound": "Page not found",
   "homeGreeting": "Hello, {name} 👋",
@@ -73,6 +76,101 @@
   "errorListingNotOwned": "You don't have permission to manage this listing.",
   "errorInvalidMediaFile": "Only PNG or JPG photos up to 20 MB are supported.",
   "errorPhotoLimitReached": "You can add up to 10 photos.",
+  "errorSaveListingFailed": "Couldn't save this shop. Please try again.",
+  "errorUnsaveListingFailed": "Couldn't remove this shop from Saved. Please try again.",
+  "errorSavedListingsLoadFailed": "Couldn't load your saved shops. Please try again.",
+  "errorContactLaunchFailed": "Couldn't open a messaging app. Please try again.",
+  "searchTitle": "Search shops",
+  "searchBarHint": "City, type, district…",
+  "searchBarClear": "Clear search",
+  "searchOpenFilters": "Open filters",
+  "searchFilters": "Filters",
+  "searchFilterSort": "Sort",
+  "searchFilterCity": "City",
+  "searchFilterDistrict": "District",
+  "searchFilterCategory": "Category",
+  "searchFilterPriceRange": "Price range",
+  "searchFilterSizeRange": "Size range",
+  "searchFilterAmenities": "Amenities",
+  "searchPriceMinLabel": "Min price",
+  "searchPriceMaxLabel": "Max price",
+  "searchAreaMinLabel": "Min size",
+  "searchAreaMaxLabel": "Max size",
+  "searchSortNewest": "Newest",
+  "searchSortPriceAsc": "Price: low to high",
+  "searchSortPriceDesc": "Price: high to low",
+  "searchApply": "Apply",
+  "searchReset": "Reset",
+  "searchResetFilters": "Reset filters",
+  "searchClearAll": "Clear all",
+  "searchEmptyTitle": "No shops match your filters",
+  "searchEmptyMessage": "Try removing some filters to see more results.",
+  "searchEndOfList": "You've reached the end",
+  "searchSelectShop": "Select a shop to view details",
+  "searchPriceRangeInvalid": "Max price must be greater than min price",
+  "searchAreaRangeInvalid": "Max size must be greater than min size",
+  "searchValueNegative": "Values can't be negative",
+  "searchSaveTooltip": "Save this shop",
+  "searchSavedTooltip": "Remove from Saved",
+  "searchRangeSeparator": "to",
+  "searchFrom": "From {value}",
+  "@searchFrom": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "searchTo": "Up to {value}",
+  "@searchTo": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "searchRange": "{from} – {to}",
+  "@searchRange": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "shopDetailTitle": "Shop details",
+  "shopDetailGalleryCounter": "{current} of {total}",
+  "@shopDetailGalleryCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "shopDetailContactLandlord": "Contact via WhatsApp",
+  "shopDetailUnavailableTitle": "No longer available",
+  "shopDetailUnavailableMessage": "This shop is no longer available for rent.",
+  "shopDetailReturnToResults": "Back to results",
+  "whatsappContactMessage": "Hello, I'm interested in the shop '{title}' in {city}, {district}.",
+  "@whatsappContactMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      },
+      "district": {
+        "type": "String"
+      }
+    }
+  },
+  "whatsappContactUnavailable": "This shop's contact details aren't available right now.",
   "authEmailLabel": "Email",
   "authPasswordLabel": "Password",
   "authFirstNameLabel": "First name",
@@ -183,6 +281,23 @@
   "detailSecurityDeposit": "Security deposit",
   "detailMonths": "months",
   "detailFloors": "Floors",
+  "detailFloorsCount": "{count} floors",
+  "@detailFloorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailPerYear": "/year",
+  "detailMoreCount": "+{count} more",
+  "@detailMoreCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "detailDescription": "Description",
   "detailAddress": "Address",
   "detailCategory": "Category",

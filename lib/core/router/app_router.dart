@@ -13,7 +13,9 @@ import '../../features/listing/presentation/list_a_shop_flow.dart';
 import '../../features/listing/presentation/screens/listing_detail_screen.dart';
 import '../../features/listing/presentation/screens/listing_form_screen.dart';
 import '../../features/listing/presentation/screens/my_listings_screen.dart';
-import '../../features/listing/presentation/screens/saved_screen.dart';
+import '../../features/saved/presentation/screens/saved_screen.dart';
+import '../../features/search/presentation/screens/search_screen.dart';
+import '../../features/search/presentation/screens/shop_detail_screen.dart';
 import '../../features/user/presentation/screens/change_password_screen.dart';
 import '../../features/user/presentation/screens/profile_screen.dart';
 import '../localization/app_localizations.dart';
@@ -78,8 +80,9 @@ class AppRouter {
               routes: [
                 GoRoute(
                   path: '/search',
-                  builder: (context, state) => AppPlaceholderScreen(
-                    title: AppLocalizations.of(context).navSearch,
+                  builder: (context, state) => SearchScreen(
+                    focusRequested:
+                        state.uri.queryParameters['focus'] == 'search',
                   ),
                 ),
               ],
@@ -144,6 +147,15 @@ class AppRouter {
           ),
         ),
         GoRoute(
+          path: '/search/:listingId',
+          redirect: guard?.call,
+          // US2 (T031): tenant shop detail — pushed on compact/medium; the
+          // expanded two-pane (T032) renders ShopDetailPane in-place instead.
+          builder: (context, state) => ShopDetailScreen(
+            listingId: state.pathParameters['listingId'] ?? '',
+          ),
+        ),
+        GoRoute(
           path: '/listing-form',
           redirect: guard?.call,
           builder: (context, state) => const ListingFormScreen(),
@@ -156,7 +168,6 @@ class AppRouter {
           ),
         ),
         _placeholderRoute('/advisor', (l10n) => l10n.navAdvisor),
-        _placeholderRoute('/inquiries', (l10n) => l10n.navInquiries),
       ],
       errorBuilder: (context, state) {
         final AppLocalizations l10n = AppLocalizations.of(context);

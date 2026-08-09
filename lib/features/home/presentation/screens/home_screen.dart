@@ -62,13 +62,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<HomeCubit, HomeState>(
         bloc: _cubit,
         builder: (context, state) {
-          if (state.isLoading) {
+          final bool hasContent = state.categories.isNotEmpty ||
+              state.recommended.isNotEmpty ||
+              state.nearby.isNotEmpty;
+          if (state.isLoading && !hasContent) {
             return const AppLoadingView();
           }
-          if (state.failure != null) {
+          if (state.failure != null && !hasContent) {
             return AppErrorView(failure: state.failure!, onRetry: _cubit.load);
           }
-          return _HomeContent(state: state);
+          return _HomeContent(state: state, onRefresh: _cubit.refresh);
         },
       ),
     );
@@ -76,39 +79,44 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _HomeContent extends StatelessWidget {
-  const _HomeContent({required this.state});
+  const _HomeContent({required this.state, required this.onRefresh});
 
   final HomeState state;
+  final Future<void> Function() onRefresh;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        HomeHeroHeader(user: state.user),
-        SizedBox(height: AppSpacing.lg.h),
-        Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: _maxContentWidth),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: const HomeAdvisorCard(),
-                ),
-                SizedBox(height: 8.h),
-                HomeCategoryChips(categories: state.categories),
-                SizedBox(height: 8.h),
-                HomeRecommendedRail(listings: state.recommended),
-                SizedBox(height: 8.h),
-                HomeNearbySection(listings: state.nearby),
-                SizedBox(height: AppSpacing.xxl.h),
-              ],
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        children: [
+          HomeHeroHeader(user: state.user),
+          SizedBox(height: AppSpacing.lg.h),
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: _maxContentWidth),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: const HomeAdvisorCard(),
+                  ),
+                  SizedBox(height: 8.h),
+                  HomeCategoryChips(categories: state.categories),
+                  SizedBox(height: 8.h),
+                  HomeRecommendedRail(listings: state.recommended),
+                  SizedBox(height: 8.h),
+                  HomeNearbySection(listings: state.nearby),
+                  SizedBox(height: AppSpacing.xxl.h),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

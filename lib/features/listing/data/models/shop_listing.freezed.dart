@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShopListing {
 
- String get id; String? get landlordId; String get title; String get category; double get areaSqm; String get city; String get district; String? get address; String? get description; List<String> get amenities; int? get numberOfFloors; int get floorNumber; DateTime? get availableFrom; String? get minimumLeaseTerm; double get annualRent; double get annualRentWithVat; String get currency; int? get securityDepositMonths;@ListingStatusConverter() ListingStatus get status; List<ListingMedia> get media; String? get thumbnailUrl; bool? get isSaved;
+ String get id; String? get landlordId; String get title; String get category; double get areaSqm; String get city; String get district; String? get address; String? get description; List<String> get amenities; int? get numberOfFloors; int get floorNumber; DateTime? get availableFrom; String? get minimumLeaseTerm; double get annualRent; double get annualRentWithVat; String get currency; int? get securityDepositMonths;@ListingStatusConverter() ListingStatus get status; List<ListingMedia> get media; String? get thumbnailUrl; bool? get isSaved; String? get whatsappLink; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of ShopListing
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ShopListingCopyWith<ShopListing> get copyWith => _$ShopListingCopyWithImpl<Shop
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShopListing&&(identical(other.id, id) || other.id == id)&&(identical(other.landlordId, landlordId) || other.landlordId == landlordId)&&(identical(other.title, title) || other.title == title)&&(identical(other.category, category) || other.category == category)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.city, city) || other.city == city)&&(identical(other.district, district) || other.district == district)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.amenities, amenities)&&(identical(other.numberOfFloors, numberOfFloors) || other.numberOfFloors == numberOfFloors)&&(identical(other.floorNumber, floorNumber) || other.floorNumber == floorNumber)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom)&&(identical(other.minimumLeaseTerm, minimumLeaseTerm) || other.minimumLeaseTerm == minimumLeaseTerm)&&(identical(other.annualRent, annualRent) || other.annualRent == annualRent)&&(identical(other.annualRentWithVat, annualRentWithVat) || other.annualRentWithVat == annualRentWithVat)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.securityDepositMonths, securityDepositMonths) || other.securityDepositMonths == securityDepositMonths)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.isSaved, isSaved) || other.isSaved == isSaved));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShopListing&&(identical(other.id, id) || other.id == id)&&(identical(other.landlordId, landlordId) || other.landlordId == landlordId)&&(identical(other.title, title) || other.title == title)&&(identical(other.category, category) || other.category == category)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.city, city) || other.city == city)&&(identical(other.district, district) || other.district == district)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.amenities, amenities)&&(identical(other.numberOfFloors, numberOfFloors) || other.numberOfFloors == numberOfFloors)&&(identical(other.floorNumber, floorNumber) || other.floorNumber == floorNumber)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom)&&(identical(other.minimumLeaseTerm, minimumLeaseTerm) || other.minimumLeaseTerm == minimumLeaseTerm)&&(identical(other.annualRent, annualRent) || other.annualRent == annualRent)&&(identical(other.annualRentWithVat, annualRentWithVat) || other.annualRentWithVat == annualRentWithVat)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.securityDepositMonths, securityDepositMonths) || other.securityDepositMonths == securityDepositMonths)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.isSaved, isSaved) || other.isSaved == isSaved)&&(identical(other.whatsappLink, whatsappLink) || other.whatsappLink == whatsappLink)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,landlordId,title,category,areaSqm,city,district,address,description,const DeepCollectionEquality().hash(amenities),numberOfFloors,floorNumber,availableFrom,minimumLeaseTerm,annualRent,annualRentWithVat,currency,securityDepositMonths,status,const DeepCollectionEquality().hash(media),thumbnailUrl,isSaved]);
+int get hashCode => Object.hashAll([runtimeType,id,landlordId,title,category,areaSqm,city,district,address,description,const DeepCollectionEquality().hash(amenities),numberOfFloors,floorNumber,availableFrom,minimumLeaseTerm,annualRent,annualRentWithVat,currency,securityDepositMonths,status,const DeepCollectionEquality().hash(media),thumbnailUrl,isSaved,whatsappLink,createdAt,updatedAt]);
 
 @override
 String toString() {
-  return 'ShopListing(id: $id, landlordId: $landlordId, title: $title, category: $category, areaSqm: $areaSqm, city: $city, district: $district, address: $address, description: $description, amenities: $amenities, numberOfFloors: $numberOfFloors, floorNumber: $floorNumber, availableFrom: $availableFrom, minimumLeaseTerm: $minimumLeaseTerm, annualRent: $annualRent, annualRentWithVat: $annualRentWithVat, currency: $currency, securityDepositMonths: $securityDepositMonths, status: $status, media: $media, thumbnailUrl: $thumbnailUrl, isSaved: $isSaved)';
+  return 'ShopListing(id: $id, landlordId: $landlordId, title: $title, category: $category, areaSqm: $areaSqm, city: $city, district: $district, address: $address, description: $description, amenities: $amenities, numberOfFloors: $numberOfFloors, floorNumber: $floorNumber, availableFrom: $availableFrom, minimumLeaseTerm: $minimumLeaseTerm, annualRent: $annualRent, annualRentWithVat: $annualRentWithVat, currency: $currency, securityDepositMonths: $securityDepositMonths, status: $status, media: $media, thumbnailUrl: $thumbnailUrl, isSaved: $isSaved, whatsappLink: $whatsappLink, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ShopListingCopyWith<$Res>  {
   factory $ShopListingCopyWith(ShopListing value, $Res Function(ShopListing) _then) = _$ShopListingCopyWithImpl;
 @useResult
 $Res call({
- String id, String? landlordId, String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, DateTime? availableFrom, String? minimumLeaseTerm, double annualRent, double annualRentWithVat, String currency, int? securityDepositMonths,@ListingStatusConverter() ListingStatus status, List<ListingMedia> media, String? thumbnailUrl, bool? isSaved
+ String id, String? landlordId, String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, DateTime? availableFrom, String? minimumLeaseTerm, double annualRent, double annualRentWithVat, String currency, int? securityDepositMonths,@ListingStatusConverter() ListingStatus status, List<ListingMedia> media, String? thumbnailUrl, bool? isSaved, String? whatsappLink, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -65,7 +65,7 @@ class _$ShopListingCopyWithImpl<$Res>
 
 /// Create a copy of ShopListing
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? landlordId = freezed,Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? annualRentWithVat = null,Object? currency = null,Object? securityDepositMonths = freezed,Object? status = null,Object? media = null,Object? thumbnailUrl = freezed,Object? isSaved = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? landlordId = freezed,Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? annualRentWithVat = null,Object? currency = null,Object? securityDepositMonths = freezed,Object? status = null,Object? media = null,Object? thumbnailUrl = freezed,Object? isSaved = freezed,Object? whatsappLink = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,landlordId: freezed == landlordId ? _self.landlordId : landlordId // ignore: cast_nullable_to_non_nullable
@@ -89,7 +89,10 @@ as int?,status: null == status ? _self.status : status // ignore: cast_nullable_
 as ListingStatus,media: null == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
 as List<ListingMedia>,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
 as String?,isSaved: freezed == isSaved ? _self.isSaved : isSaved // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,whatsappLink: freezed == whatsappLink ? _self.whatsappLink : whatsappLink // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -174,10 +177,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved,  String? whatsappLink,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShopListing() when $default != null:
-return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved);case _:
+return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved,_that.whatsappLink,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -195,10 +198,10 @@ return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaS
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved,  String? whatsappLink,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ShopListing():
-return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved);case _:
+return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved,_that.whatsappLink,_that.createdAt,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -215,10 +218,10 @@ return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaS
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? landlordId,  String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  DateTime? availableFrom,  String? minimumLeaseTerm,  double annualRent,  double annualRentWithVat,  String currency,  int? securityDepositMonths, @ListingStatusConverter()  ListingStatus status,  List<ListingMedia> media,  String? thumbnailUrl,  bool? isSaved,  String? whatsappLink,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ShopListing() when $default != null:
-return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved);case _:
+return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.annualRentWithVat,_that.currency,_that.securityDepositMonths,_that.status,_that.media,_that.thumbnailUrl,_that.isSaved,_that.whatsappLink,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -230,7 +233,7 @@ return $default(_that.id,_that.landlordId,_that.title,_that.category,_that.areaS
 @JsonSerializable()
 
 class _ShopListing implements ShopListing {
-  const _ShopListing({required this.id, this.landlordId, required this.title, required this.category, required this.areaSqm, required this.city, required this.district, this.address, this.description, required final  List<String> amenities, this.numberOfFloors, required this.floorNumber, this.availableFrom, this.minimumLeaseTerm, required this.annualRent, required this.annualRentWithVat, required this.currency, this.securityDepositMonths, @ListingStatusConverter() required this.status, required final  List<ListingMedia> media, this.thumbnailUrl, this.isSaved}): _amenities = amenities,_media = media;
+  const _ShopListing({required this.id, this.landlordId, required this.title, required this.category, required this.areaSqm, required this.city, required this.district, this.address, this.description, required final  List<String> amenities, this.numberOfFloors, required this.floorNumber, this.availableFrom, this.minimumLeaseTerm, required this.annualRent, required this.annualRentWithVat, required this.currency, this.securityDepositMonths, @ListingStatusConverter() required this.status, required final  List<ListingMedia> media, this.thumbnailUrl, this.isSaved, this.whatsappLink, this.createdAt, this.updatedAt}): _amenities = amenities,_media = media;
   factory _ShopListing.fromJson(Map<String, dynamic> json) => _$ShopListingFromJson(json);
 
 @override final  String id;
@@ -267,6 +270,9 @@ class _ShopListing implements ShopListing {
 
 @override final  String? thumbnailUrl;
 @override final  bool? isSaved;
+@override final  String? whatsappLink;
+@override final  DateTime? createdAt;
+@override final  DateTime? updatedAt;
 
 /// Create a copy of ShopListing
 /// with the given fields replaced by the non-null parameter values.
@@ -281,16 +287,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShopListing&&(identical(other.id, id) || other.id == id)&&(identical(other.landlordId, landlordId) || other.landlordId == landlordId)&&(identical(other.title, title) || other.title == title)&&(identical(other.category, category) || other.category == category)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.city, city) || other.city == city)&&(identical(other.district, district) || other.district == district)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._amenities, _amenities)&&(identical(other.numberOfFloors, numberOfFloors) || other.numberOfFloors == numberOfFloors)&&(identical(other.floorNumber, floorNumber) || other.floorNumber == floorNumber)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom)&&(identical(other.minimumLeaseTerm, minimumLeaseTerm) || other.minimumLeaseTerm == minimumLeaseTerm)&&(identical(other.annualRent, annualRent) || other.annualRent == annualRent)&&(identical(other.annualRentWithVat, annualRentWithVat) || other.annualRentWithVat == annualRentWithVat)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.securityDepositMonths, securityDepositMonths) || other.securityDepositMonths == securityDepositMonths)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.isSaved, isSaved) || other.isSaved == isSaved));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShopListing&&(identical(other.id, id) || other.id == id)&&(identical(other.landlordId, landlordId) || other.landlordId == landlordId)&&(identical(other.title, title) || other.title == title)&&(identical(other.category, category) || other.category == category)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.city, city) || other.city == city)&&(identical(other.district, district) || other.district == district)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._amenities, _amenities)&&(identical(other.numberOfFloors, numberOfFloors) || other.numberOfFloors == numberOfFloors)&&(identical(other.floorNumber, floorNumber) || other.floorNumber == floorNumber)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom)&&(identical(other.minimumLeaseTerm, minimumLeaseTerm) || other.minimumLeaseTerm == minimumLeaseTerm)&&(identical(other.annualRent, annualRent) || other.annualRent == annualRent)&&(identical(other.annualRentWithVat, annualRentWithVat) || other.annualRentWithVat == annualRentWithVat)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.securityDepositMonths, securityDepositMonths) || other.securityDepositMonths == securityDepositMonths)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.isSaved, isSaved) || other.isSaved == isSaved)&&(identical(other.whatsappLink, whatsappLink) || other.whatsappLink == whatsappLink)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,landlordId,title,category,areaSqm,city,district,address,description,const DeepCollectionEquality().hash(_amenities),numberOfFloors,floorNumber,availableFrom,minimumLeaseTerm,annualRent,annualRentWithVat,currency,securityDepositMonths,status,const DeepCollectionEquality().hash(_media),thumbnailUrl,isSaved]);
+int get hashCode => Object.hashAll([runtimeType,id,landlordId,title,category,areaSqm,city,district,address,description,const DeepCollectionEquality().hash(_amenities),numberOfFloors,floorNumber,availableFrom,minimumLeaseTerm,annualRent,annualRentWithVat,currency,securityDepositMonths,status,const DeepCollectionEquality().hash(_media),thumbnailUrl,isSaved,whatsappLink,createdAt,updatedAt]);
 
 @override
 String toString() {
-  return 'ShopListing(id: $id, landlordId: $landlordId, title: $title, category: $category, areaSqm: $areaSqm, city: $city, district: $district, address: $address, description: $description, amenities: $amenities, numberOfFloors: $numberOfFloors, floorNumber: $floorNumber, availableFrom: $availableFrom, minimumLeaseTerm: $minimumLeaseTerm, annualRent: $annualRent, annualRentWithVat: $annualRentWithVat, currency: $currency, securityDepositMonths: $securityDepositMonths, status: $status, media: $media, thumbnailUrl: $thumbnailUrl, isSaved: $isSaved)';
+  return 'ShopListing(id: $id, landlordId: $landlordId, title: $title, category: $category, areaSqm: $areaSqm, city: $city, district: $district, address: $address, description: $description, amenities: $amenities, numberOfFloors: $numberOfFloors, floorNumber: $floorNumber, availableFrom: $availableFrom, minimumLeaseTerm: $minimumLeaseTerm, annualRent: $annualRent, annualRentWithVat: $annualRentWithVat, currency: $currency, securityDepositMonths: $securityDepositMonths, status: $status, media: $media, thumbnailUrl: $thumbnailUrl, isSaved: $isSaved, whatsappLink: $whatsappLink, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -301,7 +307,7 @@ abstract mixin class _$ShopListingCopyWith<$Res> implements $ShopListingCopyWith
   factory _$ShopListingCopyWith(_ShopListing value, $Res Function(_ShopListing) _then) = __$ShopListingCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? landlordId, String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, DateTime? availableFrom, String? minimumLeaseTerm, double annualRent, double annualRentWithVat, String currency, int? securityDepositMonths,@ListingStatusConverter() ListingStatus status, List<ListingMedia> media, String? thumbnailUrl, bool? isSaved
+ String id, String? landlordId, String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, DateTime? availableFrom, String? minimumLeaseTerm, double annualRent, double annualRentWithVat, String currency, int? securityDepositMonths,@ListingStatusConverter() ListingStatus status, List<ListingMedia> media, String? thumbnailUrl, bool? isSaved, String? whatsappLink, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -318,7 +324,7 @@ class __$ShopListingCopyWithImpl<$Res>
 
 /// Create a copy of ShopListing
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? landlordId = freezed,Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? annualRentWithVat = null,Object? currency = null,Object? securityDepositMonths = freezed,Object? status = null,Object? media = null,Object? thumbnailUrl = freezed,Object? isSaved = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? landlordId = freezed,Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? annualRentWithVat = null,Object? currency = null,Object? securityDepositMonths = freezed,Object? status = null,Object? media = null,Object? thumbnailUrl = freezed,Object? isSaved = freezed,Object? whatsappLink = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_ShopListing(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,landlordId: freezed == landlordId ? _self.landlordId : landlordId // ignore: cast_nullable_to_non_nullable
@@ -342,7 +348,10 @@ as int?,status: null == status ? _self.status : status // ignore: cast_nullable_
 as ListingStatus,media: null == media ? _self._media : media // ignore: cast_nullable_to_non_nullable
 as List<ListingMedia>,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
 as String?,isSaved: freezed == isSaved ? _self.isSaved : isSaved // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,whatsappLink: freezed == whatsappLink ? _self.whatsappLink : whatsappLink // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

@@ -117,3 +117,22 @@ class InvalidMediaFile extends Failure {
 class PhotoLimitReached extends Failure {
   const PhotoLimitReached(super.messageKey);
 }
+
+/// A tenant tap on a heart failed to save the listing (`POST /listings/:id/save`
+/// non-2xx). The surface must revert the optimistic `isSaved` flip and offer a
+/// retry (contract `saved-listings.md` consistency protocol).
+class SaveListingFailed extends Failure {
+  const SaveListingFailed(super.messageKey);
+}
+
+/// A tenant tap on a filled heart failed to unsave the listing
+/// (`DELETE /listings/:id/save` non-2xx). Revert the optimistic flip + retry.
+class UnsaveListingFailed extends Failure {
+  const UnsaveListingFailed(super.messageKey);
+}
+
+/// `GET /users/me/saved-listings` failed — the Saved screen shows a localized
+/// error + retry (US5 scenario 4).
+class SavedListingsLoadFailed extends Failure {
+  const SavedListingsLoadFailed(super.messageKey);
+}
