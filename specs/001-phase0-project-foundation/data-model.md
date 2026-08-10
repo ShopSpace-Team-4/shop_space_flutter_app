@@ -81,11 +81,11 @@ class AppEnv {
   final bool isLoggingEnabled; // dev/staging true, prod false
   final bool isRelease;
   const AppEnv({...});
-  static AppEnv fromDartDefine(String value); // via String.fromEnvironment
+  factory AppEnv.fromEnv();  // reads APP_ENV + API_BASE_URL from .env (flutter_dotenv)
 }
 ```
 
-Dev defaults to the local backend. Single build-time switch — SC-006 (all three environments build/run).
+Dev defaults to the local backend. Single runtime switch — SC-006 (all three environments build/run).
 
 ## 4. Network transport shapes (owned by `core/network/`)
 

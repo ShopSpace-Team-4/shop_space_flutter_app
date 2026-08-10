@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 enum AppEnvironment { dev, staging, prod }
 
 class AppEnv {
@@ -43,19 +45,33 @@ class AppEnv {
 
   /// Android web client ID for Google Sign-In, passed as `serverClientId` when
   /// `google-services.json` is absent (contract `google-signin-flow.md`).
-  /// Empty in dev → the plugin falls back to platform provisioning, which is a
-  /// dev/ops step; the app must build and run without it (T026).
-  static const String googleServerClientId =
-      String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID');
+  /// Read from `.env` (loaded in `bootstrap()` via flutter_dotenv). Empty when
+  /// the key is missing or `.env` wasn't loaded → the plugin falls back to
+  /// platform provisioning, which is a dev/ops step; the app must build and
+  /// run without it (T026).
+  static String get googleServerClientId =>
+      dotenv.isInitialized ? (dotenv.env['GOOGLE_SERVER_CLIENT_ID'] ?? '') : '';
 
-  factory AppEnv.fromDartDefine() {
-    const String value = String.fromEnvironment('APP_ENV');
-    const String baseOverride = String.fromEnvironment('API_BASE_URL');
+  /// iOS OAuth client ID for Google Sign-In, passed as `clientId` (takes
+  /// precedence over `GoogleService-Info.plist` provisioning). The reversed
+  /// client ID must also be registered in `ios/Runner/Info.plist` under
+  /// `CFBundleURLTypes`. Empty until the backend provisions the iOS client —
+  /// the plugin then falls back to platform provisioning.
+  static String get googleIosClientId =>
+      dotenv.isInitialized ? (dotenv.env['GOOGLE_IOS_CLIENT_ID'] ?? '') : '';
+
+  /// Resolves the active environment from `.env` (dev/staging/prod), with an
+  /// optional `API_BASE_URL` override. Falls back to [dev] when unset or when
+  /// `.env` wasn't loaded — the app still builds and runs without config (T026).
+  factory AppEnv.fromEnv() {
+    final String value = dotenv.isInitialized ? (dotenv.env['APP_ENV'] ?? '') : '';
+    final String baseOverride =
+        dotenv.isInitialized ? (dotenv.env['API_BASE_URL'] ?? '') : '';
     return switch (value) {
       'staging' => staging,
       'prod' => prod,
       _ => baseOverride.isNotEmpty
-          ? const AppEnv(
+          ? AppEnv(
               name: AppEnvironment.dev,
               apiBaseUrl: baseOverride,
               isLoggingEnabled: true,

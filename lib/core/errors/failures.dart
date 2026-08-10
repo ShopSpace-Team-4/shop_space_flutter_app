@@ -63,8 +63,34 @@ class GoogleSignInCancelled extends Failure {
   const GoogleSignInCancelled(super.messageKey);
 }
 
+/// Google Sign-In failed for a non-cancel reason (client misconfiguration,
+/// provider error, unknown/other codes). Surfaces a localized error instead of
+/// an unhandled platform exception (contract `google-signin-flow.md`).
+///
+/// [description]/[details] carry the platform-supplied diagnostics (from
+/// `GoogleSignInException`) for developers — they are debug-logged, never
+/// rendered. End users keep the generic localized message.
+class GoogleSignInFailed extends Failure {
+  const GoogleSignInFailed(super.messageKey, {this.description, this.details});
+
+  /// Human-readable platform failure description (e.g. "serverClientId must
+  /// be provided on Android"). Diagnostic only.
+  final String? description;
+
+  /// Additional platform failure details. Diagnostic only.
+  final Object? details;
+}
+
 class RateLimited extends Failure {
   const RateLimited(super.messageKey);
+}
+
+/// `PATCH /users/me/link-google` failed to link the Google account to the
+/// existing password account (contract `contracts/google-signin-flow.md`).
+/// Covers provider-side rejections (e.g. the Google account is already linked
+/// to another user) as well as any other non-2xx on the link endpoint.
+class GoogleLinkFailed extends Failure {
+  const GoogleLinkFailed(super.messageKey);
 }
 
 class ListingMetaUnavailable extends Failure {

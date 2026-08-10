@@ -171,6 +171,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorGoogleSignInCancelled => 'Sign-in with Google was cancelled.';
 
   @override
+  String get errorGoogleSignInFailed =>
+      'Could not sign in with Google. Please try again.';
+
+  @override
   String get errorRateLimited =>
       'You\'re trying too often. Please wait a moment and try again.';
 
@@ -231,6 +235,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorSavedListingsLoadFailed =>
       'Couldn\'t load your saved shops. Please try again.';
+
+  @override
+  String get errorGoogleLinkFailed =>
+      'Couldn\'t link your Google account. Please try again.';
 
   @override
   String get errorContactLaunchFailed =>
@@ -537,6 +545,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileSignOut => 'Sign out';
+
+  @override
+  String get profileLinkGoogle => 'Link Google account';
+
+  @override
+  String get profileLinkGoogleSuccess => 'Google account linked.';
+
+  @override
+  String get profileEditProfile => 'Edit Profile';
+
+  @override
+  String get profileEditTitle => 'Edit profile';
+
+  @override
+  String get profileEditSave => 'Save';
+
+  @override
+  String get profileEditSuccess => 'Profile updated.';
 
   @override
   String get changePasswordTitle => 'Change password';

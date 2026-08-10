@@ -42,7 +42,7 @@ envelope `{ message, status, data }` convention (Phase 0, `core/network/`).
 | `PUT /users/me/password` | `PasswordChangeRequest` | `{}` → **clear session now, go to login** | `ValidationFailure` (current password wrong → `InvalidCredentials`) |
 | `PATCH /users/me/active-role` | `ActiveRoleUpdateRequest` | `User` | per pipeline |
 | `POST /users/me/roles` | `RoleChangeRequest{role}` | `RoleChangeResponse{tokens, user}` → **replace stored tokens immediately** | `ValidationFailure` |
-| `POST /users/me/link-google` | `LinkGoogleRequest` | `User` | later phase — not built now |
+| `PATCH /users/me/link-google` | `LinkGoogleRequest{idToken}` | `{ id, googleId, avatarUrl }` (ignored — `Future<void>`) | `GoogleLinkFailed`; dismissed Google sheet → `GoogleSignInCancelled` (silent) |
 
 ## State-transition guarantees
 

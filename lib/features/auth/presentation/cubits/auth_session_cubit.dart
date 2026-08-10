@@ -123,8 +123,10 @@ class AuthSessionCubit extends Cubit<AuthSessionState>
     emit(const AuthSessionState.unauthenticated(isBootstrapping: false));
   }
 
-  /// React to a session-expired signal (storage already cleared upstream).
+  /// React to a session-expired signal (storage already cleared upstream). The
+  /// cached profile is dropped so a later sign-in never sees stale data.
   void clearSession() {
+    _userRepository.invalidate();
     if (state is AuthSessionUnauthenticated) return;
     emit(const AuthSessionState.unauthenticated(isBootstrapping: false));
   }

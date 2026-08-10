@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// **'Sign-in with Google was cancelled.'**
   String get errorGoogleSignInCancelled;
 
+  /// No description provided for @errorGoogleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sign in with Google. Please try again.'**
+  String get errorGoogleSignInFailed;
+
   /// No description provided for @errorRateLimited.
   ///
   /// In en, this message translates to:
@@ -487,6 +493,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t load your saved shops. Please try again.'**
   String get errorSavedListingsLoadFailed;
+
+  /// No description provided for @errorGoogleLinkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t link your Google account. Please try again.'**
+  String get errorGoogleLinkFailed;
 
   /// No description provided for @errorContactLaunchFailed.
   ///
@@ -1045,6 +1057,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get profileSignOut;
+
+  /// No description provided for @profileLinkGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Google account'**
+  String get profileLinkGoogle;
+
+  /// No description provided for @profileLinkGoogleSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Google account linked.'**
+  String get profileLinkGoogleSuccess;
+
+  /// No description provided for @profileEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get profileEditProfile;
+
+  /// No description provided for @profileEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditTitle;
+
+  /// No description provided for @profileEditSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get profileEditSave;
+
+  /// No description provided for @profileEditSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated.'**
+  String get profileEditSuccess;
 
   /// No description provided for @changePasswordTitle.
   ///

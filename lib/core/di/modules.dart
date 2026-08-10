@@ -20,7 +20,7 @@ import '../storage/token_storage.dart';
 @module
 abstract class CoreModule {
   @singleton
-  AppEnv get appEnv => AppEnv.fromDartDefine();
+  AppEnv get appEnv => AppEnv.fromEnv();
 
   @singleton
   TokenStorage get tokenStorage => SecureTokenStorage();

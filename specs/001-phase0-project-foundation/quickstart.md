@@ -13,16 +13,24 @@ Local run + validation for the Phase 0 foundation (theme, adaptive shell, l10n, 
 
 ## Environment selection (SC-006)
 
+Env comes from `.env` (git-ignored; copy `.env.example` → `.env` and set
+`APP_ENV` to `dev` / `staging` / `prod`). The file is a Flutter asset, so an
+edit requires a full re-run, NOT a hot reload.
+
 ```powershell
-# dev (default; local backend)
+# dev (default when .env is absent / APP_ENV unset)
 flutter run -d <device>
 
-# staging / prod
-flutter run --dart-define=APP_ENV=staging -d <device>
-flutter run --dart-define=APP_ENV=prod -d <device>
+# staging / prod — switch APP_ENV in .env
+flutter run -d <device>
 ```
 
 Env switch selects `lib/core/env/AppEnv` (base URL, logging on/off). All three must build and run.
+
+Google Sign-In: no `google-services.json` on Android — set
+`GOOGLE_SERVER_CLIENT_ID=<web client id>` in `.env` (web client ID is passed
+as `serverClientId`); iOS (once the backend provisions the client) via
+`GOOGLE_IOS_CLIENT_ID`.
 
 ## Commands
 

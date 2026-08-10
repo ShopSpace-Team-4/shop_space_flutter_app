@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,15 @@ import 'features/auth/presentation/cubits/auth_session_cubit.dart';
 
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load `.env` before any dependency reads config: `AppEnv`, Dio `baseUrl`,
+  // and the Google Sign-In client IDs all resolve from it. The file is
+  // bundled as a Flutter asset; `isOptional` tolerates a missing/empty file
+  // (it's git-ignored) — the app still builds and runs with AppEnv defaults
+  // (T026). Missing Google IDs surface later as a `ShopSpace.auth.google`
+  // WARNING banner.
+  await dotenv.load(fileName: '.env', isOptional: true);
+
   await configureDependencies();
 
   final LocalizationCubit localizationCubit = getIt<LocalizationCubit>();
