@@ -157,5 +157,19 @@
 - `freezed` / `injectable` / `json_serializable` are generated: after adding
   or editing models/DI, run `dart run build_runner build -d`. `flutter analyze`
   will fail on stale generated files.
-- Env config: `--dart-define` + `lib/core/env/` (dev/staging/prod).
+- Env config: `.env` file loaded via `flutter_dotenv` (`lib/core/env/` maps
+  `APP_ENV` → dev/staging/prod). `.env` is git-ignored; copy `.env.example` to
+  `.env` and adjust. It is bundled as a Flutter asset, so a change needs a full
+  `flutter run` re-run, NOT a hot reload. Missing/empty `.env` is tolerated —
+  the app falls back to dev defaults (T026).
+- **Google Sign-In REQUIRED key — Android has no `google-services.json`.** To
+  make Google sign-in work on Android you MUST set the web client ID as
+  `serverClientId`:
+  `GOOGLE_SERVER_CLIENT_ID=246506176135-fajj9l424b8rp5f5d6sum2rr7bfdrpoq`
+  in `.env` (iOS client ID, once provisioned, via
+  `GOOGLE_IOS_CLIENT_ID=<ios client id>`). Without it the app still builds and
+  runs (T026), but Google sign-in fails at runtime — the dev console logs a
+  `ShopSpace.auth.google` WARNING banner naming the missing key. All run
+  commands in the quickstarts are plain `flutter run`; `.env` carries the
+  config.
 - Localization files: ARB/JSON under `core/localization/`.

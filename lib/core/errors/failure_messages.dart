@@ -20,6 +20,7 @@ String failureMessage(AppLocalizations l10n, Failure failure) => switch (failure
       InvalidCredentials() => l10n.errorInvalidCredentials,
       EmailNotVerified() => l10n.errorEmailNotVerified,
       GoogleSignInCancelled() => l10n.errorGoogleSignInCancelled,
+      GoogleSignInFailed() => l10n.errorGoogleSignInFailed,
       RateLimited() => l10n.errorRateLimited,
       ListingMetaUnavailable() => l10n.errorListingMetaUnavailable,
       ListingCreateFailed() => l10n.errorListingCreateFailed,
@@ -36,4 +37,5 @@ String failureMessage(AppLocalizations l10n, Failure failure) => switch (failure
       SaveListingFailed() => l10n.errorSaveListingFailed,
       UnsaveListingFailed() => l10n.errorUnsaveListingFailed,
       SavedListingsLoadFailed() => l10n.errorSavedListingsLoadFailed,
+      GoogleLinkFailed() => l10n.errorGoogleLinkFailed,
     };

@@ -171,6 +171,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorGoogleSignInCancelled => 'تم إلغاء تسجيل الدخول عبر Google.';
 
   @override
+  String get errorGoogleSignInFailed =>
+      'تعذر تسجيل الدخول عبر Google. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get errorRateLimited =>
       'تحاول كثيراً. يرجى الانتظار قليلاً ثم المحاولة مرة أخرى.';
 
@@ -230,6 +234,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get errorSavedListingsLoadFailed =>
       'تعذر تحميل المحلات المحفوظة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorGoogleLinkFailed =>
+      'تعذر ربط حساب جوجل الخاص بك. يرجى المحاولة مرة أخرى.';
 
   @override
   String get errorContactLaunchFailed =>
@@ -537,6 +545,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileSignOut => 'تسجيل الخروج';
+
+  @override
+  String get profileLinkGoogle => 'ربط حساب جوجل';
+
+  @override
+  String get profileLinkGoogleSuccess => 'تم ربط حساب جوجل.';
+
+  @override
+  String get profileEditProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get profileEditTitle => 'تعديل الملف الشخصي';
+
+  @override
+  String get profileEditSave => 'حفظ';
+
+  @override
+  String get profileEditSuccess => 'تم تحديث الملف الشخصي.';
 
   @override
   String get changePasswordTitle => 'تغيير كلمة المرور';

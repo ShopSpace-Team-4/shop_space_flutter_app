@@ -39,6 +39,7 @@ class ErrorMapper {
   static const String unsaveListingFailedMessageKey = 'errorUnsaveListingFailed';
   static const String savedListingsLoadFailedMessageKey =
       'errorSavedListingsLoadFailed';
+  static const String linkGoogleFailedMessageKey = 'errorGoogleLinkFailed';
 
   static const String codeEmailAlreadyRegistered = 'email_already_registered';
   static const String codePhoneAlreadyRegistered = 'phone_already_registered';
@@ -52,6 +53,11 @@ class ErrorMapper {
   /// Exception name carried by the backend error body (`error.name`) when a
   /// resource already exists (signup email, Google-account collision).
   static const String codeDuplicateResource = 'DuplicateResourceException';
+
+  /// Exception name carried by the backend error body (`error.name`) for a
+  /// generic 400; on `POST /auth/google` it signals the password-account
+  /// collision (contract `contracts/google-signin-flow.md`).
+  static const String codeBadRequest = 'BadRequestException';
 
   Failure map(DioException error) {
     return switch (error.type) {
@@ -70,9 +76,17 @@ class ErrorMapper {
   }
 
   Failure _mapBadResponse(DioException error) {
+    final Failure? authGoogleFailure = _mapAuthGoogleBadResponse(error);
+    if (authGoogleFailure != null) {
+      return authGoogleFailure;
+    }
     final Failure? savedFailure = _mapSavedBadResponse(error);
     if (savedFailure != null) {
       return savedFailure;
+    }
+    final Failure? linkGoogleFailure = _mapLinkGoogleBadResponse(error);
+    if (linkGoogleFailure != null) {
+      return linkGoogleFailure;
     }
     final Failure? listingFailure = _mapListingBadResponse(error);
     if (listingFailure != null) {
@@ -131,6 +145,55 @@ class ErrorMapper {
       'GET' => const SavedListingsLoadFailed(savedListingsLoadFailedMessageKey),
       _ => null,
     };
+  }
+
+  /// Maps the finalized Google sign-in endpoint (`POST /auth/google`,
+  /// contract `contracts/google-signin-flow.md`) to its typed [Failure]. A
+  /// password-account collision surfaces as a 4xx carrying
+  /// `BadRequestException` or `DuplicateResourceException` → `EmailAlreadyRegistered`
+  /// (guide the user to sign in with their password; no auto-link). Runs FIRST
+  /// so the collision never falls through to a generic 4xx failure. Returns
+  /// `null` for anything that isn't the google endpoint (or that must fall
+  /// through to the shared pipeline).
+  Failure? _mapAuthGoogleBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _AuthGooglePaths.normalized(options.path);
+    if (!_AuthGooglePaths.isAuthGooglePath(path)) {
+      return null;
+    }
+    final int? statusCode = error.response?.statusCode;
+    if (statusCode == null || statusCode < 400 || statusCode >= 500) {
+      return null;
+    }
+    final dynamic data = error.response?.data;
+    if (data is! Map) {
+      return null;
+    }
+    final String? code = _businessCode(data);
+    if (code != codeBadRequest && code != codeDuplicateResource) {
+      return null;
+    }
+    return const EmailAlreadyRegistered(emailAlreadyRegisteredMessageKey);
+  }
+
+  /// Maps the finalized Google-account linking endpoint (`PATCH
+  /// /users/me/link-google`, API guide §5.6, contract
+  /// `contracts/google-signin-flow.md`) to its typed [Failure]. Any non-2xx on
+  /// the link endpoint is a link rejection → `GoogleLinkFailed` (e.g. the
+  /// Google account is already bound to another user). Runs before the generic
+  /// pipeline so a link 4xx never falls through to a generic failure. Returns
+  /// `null` for anything that isn't the link endpoint.
+  Failure? _mapLinkGoogleBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _LinkGooglePaths.normalized(options.path);
+    if (!_LinkGooglePaths.isLinkGooglePath(path)) {
+      return null;
+    }
+    final int? statusCode = error.response?.statusCode;
+    if (statusCode == null || statusCode < 400 || statusCode >= 500) {
+      return null;
+    }
+    return const GoogleLinkFailed(linkGoogleFailedMessageKey);
   }
 
   /// Maps `/listings*` non-2xx responses to their typed listing [Failure]
@@ -269,6 +332,37 @@ abstract final class _SavedPaths {
   static bool isSavedPath(String path) =>
       RegExp(r'^listings/[^/]+/save$').hasMatch(path) ||
       path == 'users/me/saved-listings';
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
+  }
+}
+
+/// Matcher for the Google-account linking endpoint (`PATCH /users/me/link-google`)
+/// used by [ErrorMapper] (API guide §5.6, contract `google-signin-flow.md`).
+/// Normalization mirrors [_SavedPaths].
+abstract final class _LinkGooglePaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isLinkGooglePath(String path) => path == 'users/me/link-google';
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
+  }
+}
+
+/// Matcher for the Google sign-in endpoint (`POST /auth/google`) used by
+/// [ErrorMapper]. Normalization mirrors [_SavedPaths].
+abstract final class _AuthGooglePaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isAuthGooglePath(String path) => path == 'auth/google';
 
   static String normalized(String path) {
     String normalized = path.replaceFirst(RegExp(r'^/+'), '');

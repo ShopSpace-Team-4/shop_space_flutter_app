@@ -93,7 +93,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i983.UserDataSource>(
       () => _i983.UserDataSourceImpl(gh<_i361.Dio>()),
     );
-    gh.factory<_i251.UserRepository>(
+    gh.lazySingleton<_i251.UserRepository>(
       () => _i251.UserRepositoryImpl(
         gh<_i983.UserDataSource>(),
         gh<_i560.SessionController>(),

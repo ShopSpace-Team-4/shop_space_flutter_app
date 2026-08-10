@@ -13,7 +13,7 @@ baseline) and `../002-auth-verification-roles/quickstart.md` for the user/role s
 # Flutter at C:\flutter (bare C:\dart-sdk on PATH is a DIFFERENT SDK — prefer `flutter`)
 flutter pub get
 dart run build_runner build -d          # after adding/editing freezed / injectable / json_serializable
-flutter run --dart-define=APP_ENV=prod   # base: https://shopspace-backend-production.up.railway.app
+flutter run   # config from .env (APP_ENV, API_BASE_URL, GOOGLE_SERVER_CLIENT_ID) — see 001 quickstart; .env is a Flutter asset, re-run (not hot reload) after edits
 ```
 
 Quality gate (must stay green; exits non-zero on failure):

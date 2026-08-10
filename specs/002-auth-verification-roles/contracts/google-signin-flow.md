@@ -13,7 +13,8 @@ mocktail-testable and the ID-token contract to `POST /auth/google` holds on both
 // features/auth/google/auth_google_service.dart
 abstract interface class AuthGoogleService {
   Future<void> initialize();                       // called ONCE at bootstrap
-  Future<AuthTokens?> signInAndGetTokens();        // throws typed Failure on collision/cancel
+  Future<AuthTokens> signInAndGetTokens();         // throws typed Failure on collision/cancel
+  Future<String> signInAndGetIdToken();            // raw ID token, NO backend call (link-google flow)
   Future<void> signOut();                          // local Google sign-out (does not logout session)
 }
 ```
@@ -50,8 +51,23 @@ abstract interface class AuthGoogleService {
 | Email exists as password account (409) | `EmailAlreadyRegistered` from `/auth/google` | localized message: use your password to sign in |
 | Google account signed-out / init missing | typed `Failure` from service | localized retry surface |
 
-Never auto-link (no `link-google` call in Phase 1); no `setState`/`GetX` — all transitions through
-`GoogleSignInCubit` states (`idle` → `submitting` → `authenticated`/`failure`).
+No sign-in-time auto-link: a password-account collision on `POST /auth/google` never links
+automatically — the user signs in with their password, then opts into linking via Profile.
+
+## Link flow (`PATCH /users/me/link-google`, §5.6 of the Phase 1 API guide)
+
+- Entry: Profile screen "Link Google account" tile → `ProfileCubit.linkGoogle()`.
+- `AuthGoogleService.signInAndGetIdToken()` runs the SAME sheet as
+  `signInAndGetTokens()` (shared `_authenticateAndGetIdToken()` helper) but returns the raw ID
+  token WITHOUT calling `/auth/google` — the account is already password-authenticated.
+- The ID token is forwarded to `UserRepository.linkGoogle(idToken)` →
+  `UserDataSource` `PATCH /users/me/link-google { idToken }` (envelope already unwrapped by the
+  dio layer). Response carries no tokens — the current session is left untouched (unlike
+  `addRole`, which writes a fresh pair).
+- Failure semantics are the same as sign-in: dismissed sheet → `GoogleSignInCancelled` (silent
+  no-op, no toast); any other platform failure → `GoogleSignInFailed`; a non-2xx on the link
+  endpoint → `GoogleLinkFailed` (`errorGoogleLinkFailed`). Success → localized SnackBar
+  `profileLinkGoogleSuccess`.
 
 ## Test seam
 
