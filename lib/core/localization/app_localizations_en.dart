@@ -15,6 +15,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonBack => 'Back';
 
   @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingLetsGo => 'Let\'s Go';
+
+  @override
+  String get onboardingPage1Title => 'Find Your Perfect Space';
+
+  @override
+  String get onboardingPage1Subtitle =>
+      'Browse 12,000+ verified commercial listings across Saudi Arabia.';
+
+  @override
+  String get onboardingPage2Title => 'Connect with Landlords';
+
+  @override
+  String get onboardingPage2Subtitle =>
+      'Chat directly, schedule visits, and close deals — all in one app.';
+
+  @override
+  String get onboardingPage3Title => 'List & Rent';
+
+  @override
+  String get onboardingPage3Subtitle =>
+      'One account to manage your properties and rent spaces from others.';
+
+  @override
   String get navHome => 'Home';
 
   @override

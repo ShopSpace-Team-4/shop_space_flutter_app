@@ -110,6 +110,60 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get commonBack;
 
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingLetsGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Go'**
+  String get onboardingLetsGo;
+
+  /// No description provided for @onboardingPage1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Perfect Space'**
+  String get onboardingPage1Title;
+
+  /// No description provided for @onboardingPage1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse 12,000+ verified commercial listings across Saudi Arabia.'**
+  String get onboardingPage1Subtitle;
+
+  /// No description provided for @onboardingPage2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with Landlords'**
+  String get onboardingPage2Title;
+
+  /// No description provided for @onboardingPage2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat directly, schedule visits, and close deals — all in one app.'**
+  String get onboardingPage2Subtitle;
+
+  /// No description provided for @onboardingPage3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'List & Rent'**
+  String get onboardingPage3Title;
+
+  /// No description provided for @onboardingPage3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One account to manage your properties and rent spaces from others.'**
+  String get onboardingPage3Subtitle;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

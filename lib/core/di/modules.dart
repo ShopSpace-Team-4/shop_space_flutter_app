@@ -6,6 +6,7 @@ import '../../features/auth/data/auth_datasource.dart';
 import '../../features/auth/data/models/auth_tokens.dart' as feature;
 import '../../features/auth/data/models/refresh_token_request.dart';
 import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
+import '../../features/onboarding/presentation/cubits/onboarding_cubit.dart';
 import '../env/app_env.dart';
 import '../errors/error_mapper.dart';
 import '../network/dio_client.dart';
@@ -57,9 +58,14 @@ abstract class CoreModule {
 
   // Router owns the initialized session (T021): bootstrap awaits
   // `session.initialize()` before `runApp`, so guards assume it is resolved.
+  // The onboarding flag is resolved the same way before `runApp`, so the
+  // first-launch redirect never fires while both readers are bootstrapping.
   @singleton
-  AppRouter provideAppRouter(AuthSessionCubit session) =>
-      AppRouter(session: session);
+  AppRouter provideAppRouter(
+    AuthSessionCubit session,
+    OnboardingCubit onboarding,
+  ) =>
+      AppRouter(session: session, onboarding: onboarding);
 
   // The session cubit registers as `SessionReader`; alias the concrete key so
   // `getIt<AuthSessionCubit>()` resolves to the same instance (bootstrap,
@@ -67,6 +73,13 @@ abstract class CoreModule {
   @singleton
   AuthSessionCubit provideAuthSessionCubit(SessionReader reader) =>
       reader as AuthSessionCubit;
+
+  // Alias the concrete cubit key so `getIt<OnboardingCubit>()` resolves to the
+  // `@LazySingleton` instance registered from `onboarding_cubit.dart`
+  // (bootstrap, onboarding screen).
+  @singleton
+  OnboardingCubit provideOnboardingCubit(OnboardingReader reader) =>
+      reader as OnboardingCubit;
 
   @singleton
   Dio dio(

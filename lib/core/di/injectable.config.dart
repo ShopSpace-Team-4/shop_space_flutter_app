@@ -46,6 +46,10 @@ import 'package:shop_space/features/listing/repository/listing_repository.dart'
     as _i732;
 import 'package:shop_space/features/listing/repository/listing_repository_impl.dart'
     as _i150;
+import 'package:shop_space/features/onboarding/presentation/cubits/onboarding_cubit.dart'
+    as _i136;
+import 'package:shop_space/features/onboarding/repository/onboarding_repository.dart'
+    as _i150;
 import 'package:shop_space/features/saved/data/saved_listings_datasource.dart'
     as _i572;
 import 'package:shop_space/features/saved/repository/saved_listings_repository.dart'
@@ -77,6 +81,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i937.TokenRefresher>(
       () => coreModule.tokenRefresher(gh<_i814.TokenStorage>()),
     );
+    gh.factory<_i150.OnboardingRepository>(
+      () =>
+          _i150.PreferencesOnboardingRepository(gh<_i514.PreferencesService>()),
+    );
     gh.singleton<_i756.LocalizationCubit>(
       () => _i756.LocalizationCubit(gh<_i514.PreferencesService>()),
     );
@@ -94,6 +102,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i572.SavedListingsDataSource>(
       () => _i572.SavedListingsDataSourceImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i645.OnboardingReader>(
+      () => _i136.OnboardingCubit(gh<_i150.OnboardingRepository>()),
     );
     gh.factory<_i535.ListingDataSource>(
       () => _i535.ListingDataSourceImpl(gh<_i361.Dio>()),
@@ -136,6 +147,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i732.ListingRepository>(
       () => _i150.ListingRepositoryImpl(gh<_i535.ListingDataSource>()),
     );
+    gh.singleton<_i136.OnboardingCubit>(
+      () => coreModule.provideOnboardingCubit(gh<_i645.OnboardingReader>()),
+    );
     gh.singleton<_i824.AuthSessionCubit>(
       () => coreModule.provideAuthSessionCubit(gh<_i645.SessionReader>()),
     );
@@ -143,7 +157,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i542.AdvisorChatCubit(repository: gh<_i790.AdvisorRepository>()),
     );
     gh.singleton<_i838.AppRouter>(
-      () => coreModule.provideAppRouter(gh<_i824.AuthSessionCubit>()),
+      () => coreModule.provideAppRouter(
+        gh<_i824.AuthSessionCubit>(),
+        gh<_i136.OnboardingCubit>(),
+      ),
     );
     return this;
   }

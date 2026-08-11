@@ -17,6 +17,20 @@ abstract interface class SessionReader {
   Set<String> get roles;
 }
 
+/// Reads first-launch progress for the onboarding gate.
+///
+/// Guards must not redirect while [isBootstrapping] is true (production
+/// awaits `initialize()` before `runApp`, so this is only observable
+/// pre-init). [isCompleted] gates every route to `/onboarding` until the
+/// flow is finished.
+abstract interface class OnboardingReader {
+  /// Whether the onboarding flag has been persisted.
+  bool get isCompleted;
+
+  /// True while the persisted flag is still being resolved on startup.
+  bool get isBootstrapping;
+}
+
 /// Redirects unauthenticated users to [signInPath].
 ///
 /// Phase 1 hook: attach to protected routes via go_router, e.g.
