@@ -23,6 +23,14 @@ import 'package:shop_space/core/router/app_router.dart' as _i838;
 import 'package:shop_space/core/router/route_guards.dart' as _i645;
 import 'package:shop_space/core/storage/preferences_service.dart' as _i514;
 import 'package:shop_space/core/storage/token_storage.dart' as _i814;
+import 'package:shop_space/features/advisor/data/advisor_datasource.dart'
+    as _i912;
+import 'package:shop_space/features/advisor/presentation/cubits/advisor_chat_cubit.dart'
+    as _i542;
+import 'package:shop_space/features/advisor/repository/advisor_repository.dart'
+    as _i790;
+import 'package:shop_space/features/advisor/repository/advisor_repository_impl.dart'
+    as _i457;
 import 'package:shop_space/features/auth/data/auth_datasource.dart' as _i287;
 import 'package:shop_space/features/auth/google/auth_google_service.dart'
     as _i826;
@@ -81,6 +89,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.ErrorMapper>(),
       ),
     );
+    gh.factory<_i912.AdvisorDataSource>(
+      () => _i912.AdvisorDataSourceImpl(gh<_i361.Dio>()),
+    );
     gh.factory<_i572.SavedListingsDataSource>(
       () => _i572.SavedListingsDataSourceImpl(gh<_i361.Dio>()),
     );
@@ -110,6 +121,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i826.AuthGoogleService>(
       () => _i105.GoogleAuthServiceImpl(gh<_i951.AuthRepository>()),
     );
+    gh.factory<_i790.AdvisorRepository>(
+      () => _i457.AdvisorRepositoryImpl(gh<_i912.AdvisorDataSource>()),
+    );
     gh.lazySingleton<_i645.SessionReader>(
       () => _i824.AuthSessionCubit(
         storage: gh<_i814.TokenStorage>(),
@@ -124,6 +138,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i824.AuthSessionCubit>(
       () => coreModule.provideAuthSessionCubit(gh<_i645.SessionReader>()),
+    );
+    gh.lazySingleton<_i542.AdvisorChatCubit>(
+      () => _i542.AdvisorChatCubit(repository: gh<_i790.AdvisorRepository>()),
     );
     gh.singleton<_i838.AppRouter>(
       () => coreModule.provideAppRouter(gh<_i824.AuthSessionCubit>()),

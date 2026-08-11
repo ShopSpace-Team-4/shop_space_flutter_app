@@ -162,3 +162,11 @@ class UnsaveListingFailed extends Failure {
 class SavedListingsLoadFailed extends Failure {
   const SavedListingsLoadFailed(super.messageKey);
 }
+
+/// `POST /advisor/chat` returned a non-2xx (or an unparseable `data` object) —
+/// the chat surfaces a friendly localized error with a retry (contract
+/// `contracts/advisor-chat-api.md`). 401/network/timeout/offline keep their
+/// global typed failures.
+class AdvisorChatFailed extends Failure {
+  const AdvisorChatFailed(super.messageKey);
+}

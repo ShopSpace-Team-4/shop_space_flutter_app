@@ -40,6 +40,7 @@ class ErrorMapper {
   static const String savedListingsLoadFailedMessageKey =
       'errorSavedListingsLoadFailed';
   static const String linkGoogleFailedMessageKey = 'errorGoogleLinkFailed';
+  static const String advisorChatFailedMessageKey = 'errorAdvisorChat';
 
   static const String codeEmailAlreadyRegistered = 'email_already_registered';
   static const String codePhoneAlreadyRegistered = 'phone_already_registered';
@@ -83,6 +84,10 @@ class ErrorMapper {
     final Failure? savedFailure = _mapSavedBadResponse(error);
     if (savedFailure != null) {
       return savedFailure;
+    }
+    final Failure? advisorFailure = _mapAdvisorBadResponse(error);
+    if (advisorFailure != null) {
+      return advisorFailure;
     }
     final Failure? linkGoogleFailure = _mapLinkGoogleBadResponse(error);
     if (linkGoogleFailure != null) {
@@ -145,6 +150,28 @@ class ErrorMapper {
       'GET' => const SavedListingsLoadFailed(savedListingsLoadFailedMessageKey),
       _ => null,
     };
+  }
+
+  /// Maps the finalized advisor chat endpoint (`POST /advisor/chat`, contract
+  /// `contracts/advisor-chat-api.md`) to its typed [Failure]. Any non-2xx on the
+  /// chat call is `AdvisorChatFailed`; a 401 (expired session) falls through to
+  /// the shared pipeline (exactly-one-refresh-then-logout), and network/timeout/
+  /// offline conditions never reach here (they map in [map]). Returns `null`
+  /// for anything that isn't the chat endpoint.
+  Failure? _mapAdvisorBadResponse(DioException error) {
+    final RequestOptions options = error.requestOptions;
+    final String path = _AdvisorPaths.normalized(options.path);
+    if (!_AdvisorPaths.isAdvisorChatPath(path)) {
+      return null;
+    }
+    final int? statusCode = error.response?.statusCode;
+    if (statusCode == null || statusCode < 400 || statusCode >= 500) {
+      return null;
+    }
+    if (statusCode == 401) {
+      return null;
+    }
+    return const AdvisorChatFailed(advisorChatFailedMessageKey);
   }
 
   /// Maps the finalized Google sign-in endpoint (`POST /auth/google`,
@@ -332,6 +359,22 @@ abstract final class _SavedPaths {
   static bool isSavedPath(String path) =>
       RegExp(r'^listings/[^/]+/save$').hasMatch(path) ||
       path == 'users/me/saved-listings';
+
+  static String normalized(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
+  }
+}
+
+/// Matcher for the advisor chat endpoint (`POST /advisor/chat`) used by
+/// [ErrorMapper] (contract `contracts/advisor-chat-api.md`). Normalization
+/// mirrors [_SavedPaths].
+abstract final class _AdvisorPaths {
+  /// [path] must already be normalized via [normalized].
+  static bool isAdvisorChatPath(String path) => path == 'advisor/chat';
 
   static String normalized(String path) {
     String normalized = path.replaceFirst(RegExp(r'^/+'), '');

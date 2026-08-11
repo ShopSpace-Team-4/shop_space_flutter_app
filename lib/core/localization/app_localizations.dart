@@ -506,6 +506,12 @@ abstract class AppLocalizations {
   /// **'Couldn\'t open a messaging app. Please try again.'**
   String get errorContactLaunchFailed;
 
+  /// No description provided for @errorAdvisorChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get an answer. Please try again.'**
+  String get errorAdvisorChat;
+
   /// No description provided for @searchTitle.
   ///
   /// In en, this message translates to:
@@ -667,6 +673,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a shop to view details'**
   String get searchSelectShop;
+
+  /// No description provided for @searchAskAdvisor.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the AI Space Advisor'**
+  String get searchAskAdvisor;
+
+  /// No description provided for @advisorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Space Advisor'**
+  String get advisorTitle;
+
+  /// No description provided for @advisorStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'● Always available'**
+  String get advisorStatus;
+
+  /// No description provided for @advisorWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m your AI business advisor. Ask me anything about finding, renting, or running a shop space.'**
+  String get advisorWelcome;
+
+  /// No description provided for @advisorTryAsking.
+  ///
+  /// In en, this message translates to:
+  /// **'Try asking…'**
+  String get advisorTryAsking;
+
+  /// No description provided for @advisorExampleQuestion1.
+  ///
+  /// In en, this message translates to:
+  /// **'What kind of business should I open in New Cairo?'**
+  String get advisorExampleQuestion1;
+
+  /// No description provided for @advisorExampleQuestion2.
+  ///
+  /// In en, this message translates to:
+  /// **'What licenses should I consider?'**
+  String get advisorExampleQuestion2;
+
+  /// No description provided for @advisorExampleQuestion3.
+  ///
+  /// In en, this message translates to:
+  /// **'I want shops for rent in Smouha suitable for a cafe'**
+  String get advisorExampleQuestion3;
+
+  /// No description provided for @advisorExampleQuestion4.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the difference between renting and buying a shop?'**
+  String get advisorExampleQuestion4;
+
+  /// No description provided for @advisorInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the AI advisor…'**
+  String get advisorInputHint;
+
+  /// No description provided for @advisorSendTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get advisorSendTooltip;
+
+  /// No description provided for @advisorThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking…'**
+  String get advisorThinking;
+
+  /// No description provided for @advisorSourcesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sources'**
+  String get advisorSourcesTitle;
+
+  /// No description provided for @advisorDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This information is provided for informational purposes only and does not constitute professional or legal advice.'**
+  String get advisorDisclaimer;
+
+  /// No description provided for @advisorRecommendedListings.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended Listings'**
+  String get advisorRecommendedListings;
 
   /// No description provided for @searchPriceRangeInvalid.
   ///

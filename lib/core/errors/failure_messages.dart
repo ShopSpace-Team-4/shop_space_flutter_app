@@ -38,4 +38,5 @@ String failureMessage(AppLocalizations l10n, Failure failure) => switch (failure
       UnsaveListingFailed() => l10n.errorUnsaveListingFailed,
       SavedListingsLoadFailed() => l10n.errorSavedListingsLoadFailed,
       GoogleLinkFailed() => l10n.errorGoogleLinkFailed,
+      AdvisorChatFailed() => l10n.errorAdvisorChat,
     };
