@@ -14,6 +14,8 @@ import '../../features/listing/presentation/list_a_shop_flow.dart';
 import '../../features/listing/presentation/screens/listing_detail_screen.dart';
 import '../../features/listing/presentation/screens/listing_form_screen.dart';
 import '../../features/listing/presentation/screens/my_listings_screen.dart';
+import '../../features/onboarding/presentation/cubits/onboarding_cubit.dart';
+import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/saved/presentation/screens/saved_screen.dart';
 import '../../features/search/presentation/screens/search_screen.dart';
 import '../../features/search/presentation/screens/shop_detail_screen.dart';
@@ -41,6 +43,23 @@ class _SessionRefresh extends ChangeNotifier {
   }
 }
 
+/// Forwards [OnboardingCubit] emissions to go_router so the first-launch
+/// redirect re-evaluates the moment the flow is completed (or unblocked from
+/// bootstrap). Kept alive by the router via `refreshListenable`.
+class _OnboardingRefresh extends ChangeNotifier {
+  _OnboardingRefresh(OnboardingCubit onboarding) {
+    _subscription = onboarding.stream.listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<OnboardingState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 /// Route table (Phase 1).
 ///
 /// The four main tabs (Home, Search, Saved, Profile) live inside a single
@@ -52,13 +71,20 @@ class _SessionRefresh extends ChangeNotifier {
 /// Unknown routes fall back to a graceful, localized [errorBuilder] instead
 /// of crashing.
 class AppRouter {
-  AppRouter({AuthSessionCubit? session}) {
+  AppRouter({AuthSessionCubit? session, OnboardingCubit? onboarding})
+      : _session = session,
+        _onboarding = onboarding {
     final AuthGuard? guard = session == null
         ? null
         : AuthGuard(session: session, signInPath: '/login');
 
     _router = GoRouter(
-      refreshListenable: session == null ? null : _SessionRefresh(session),
+      // First-launch gate runs ahead of per-route AuthGuards: while onboarding
+      // is incomplete every location lands on `/onboarding` (unless already
+      // there); once completed, exiting `/onboarding` goes to `/` when
+      // authenticated or `/login` otherwise.
+      redirect: _onboardingRedirect,
+      refreshListenable: _refreshListenable(session, onboarding),
       routes: [
         StatefulShellRoute.indexedStack(
           redirect: guard?.call,
@@ -176,6 +202,13 @@ class AppRouter {
           redirect: guard?.call,
           builder: (context, state) => const AdvisorChatScreen(),
         ),
+        // First-launch onboarding: public (no session guard) and outside the
+        // shell. The global [redirect] keeps it front-and-center until the
+        // flag is completed; it is never reachable again once done.
+        GoRoute(
+          path: _onboardingPath,
+          builder: (context, state) => const OnboardingScreen(),
+        ),
       ],
       errorBuilder: (context, state) {
         final AppLocalizations l10n = AppLocalizations.of(context);
@@ -184,7 +217,43 @@ class AppRouter {
     );
   }
 
+  static const String _onboardingPath = '/onboarding';
+
+  final AuthSessionCubit? _session;
+  final OnboardingCubit? _onboarding;
+
   late final GoRouter _router;
 
   GoRouter get router => _router;
+
+  /// Combined refresh listener so both the session and the onboarding flag
+  /// re-evaluate redirects (completion leaves `/onboarding`, a fresh sign-in
+  /// unlocks auth-guarded routes).
+  static Listenable? _refreshListenable(
+    AuthSessionCubit? session,
+    OnboardingCubit? onboarding,
+  ) {
+    return Listenable.merge([
+      if (session != null) _SessionRefresh(session),
+      if (onboarding != null) _OnboardingRefresh(onboarding),
+    ]);
+  }
+
+  /// First-launch gate: the top-level `redirect` runs before every per-route
+  /// AuthGuard. During bootstrap both readers are unblocked before `runApp`,
+  /// so no redirect fires while flags are unresolved (no first-frame flash).
+  String? _onboardingRedirect(BuildContext context, GoRouterState state) {
+    final OnboardingCubit? onboarding = _onboarding;
+    if (onboarding == null || onboarding.isBootstrapping) {
+      return null;
+    }
+    final bool isOnOnboarding = state.matchedLocation == _onboardingPath;
+    if (!onboarding.isCompleted) {
+      return isOnOnboarding ? null : _onboardingPath;
+    }
+    if (isOnOnboarding) {
+      return _session?.isAuthenticated == true ? '/' : '/login';
+    }
+    return null;
+  }
 }

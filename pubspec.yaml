@@ -56,4 +56,5 @@ flutter:
   assets:
     - assets/svgs/
     - assets/pngs/
+    - assets/pngs/onboarding/
     - .env

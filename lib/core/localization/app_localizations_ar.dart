@@ -15,6 +15,36 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonBack => 'رجوع';
 
   @override
+  String get onboardingNext => 'التالي';
+
+  @override
+  String get onboardingSkip => 'تخطي';
+
+  @override
+  String get onboardingLetsGo => 'هيا بنا';
+
+  @override
+  String get onboardingPage1Title => 'اعثر على مساحتك المثالية';
+
+  @override
+  String get onboardingPage1Subtitle =>
+      'تصفح أكثر من 12,000 قائمة تجارية موثقة في جميع أنحاء المملكة العربية السعودية.';
+
+  @override
+  String get onboardingPage2Title => 'تواصل مع الملاك';
+
+  @override
+  String get onboardingPage2Subtitle =>
+      'تحدث مباشرةً، ورتّب زياراتك، وأتمم الصفقات — كل ذلك في تطبيق واحد.';
+
+  @override
+  String get onboardingPage3Title => 'اعرض واستأجر';
+
+  @override
+  String get onboardingPage3Subtitle =>
+      'حساب واحد لإدارة عقاراتك واستئجار مساحات من الآخرين.';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override
