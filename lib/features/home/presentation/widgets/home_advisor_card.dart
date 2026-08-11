@@ -24,7 +24,7 @@ class HomeAdvisorCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.large.r),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.go('/advisor'),
+        onTap: () => context.push('/advisor'),
         child: Ink(
           width: double.infinity,
           height: 81.h,

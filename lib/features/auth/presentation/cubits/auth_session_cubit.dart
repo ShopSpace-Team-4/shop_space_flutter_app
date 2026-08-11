@@ -2,10 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network/session_controller.dart';
 import '../../../../core/router/route_guards.dart';
 import '../../../../core/storage/token_storage.dart';
+import '../../../advisor/presentation/cubits/advisor_chat_cubit.dart';
 import '../../../user/data/models/user.dart';
 import '../../../user/data/models/user_role.dart';
 import '../../../user/repository/user_repository.dart';
@@ -120,6 +122,7 @@ class AuthSessionCubit extends Cubit<AuthSessionState>
       // Best-effort; the local session is cleared regardless.
     }
     await _sessionController.onSessionExpired();
+    _resetAdvisorThread();
     emit(const AuthSessionState.unauthenticated(isBootstrapping: false));
   }
 
@@ -127,8 +130,19 @@ class AuthSessionCubit extends Cubit<AuthSessionState>
   /// cached profile is dropped so a later sign-in never sees stale data.
   void clearSession() {
     _userRepository.invalidate();
+    _resetAdvisorThread();
     if (state is AuthSessionUnauthenticated) return;
     emit(const AuthSessionState.unauthenticated(isBootstrapping: false));
+  }
+
+  /// Drops the app-run advisor conversation (T030, Q5/D3): a different user
+  /// must never see the previous user's thread or session id. The
+  /// [AdvisorChatCubit] is a get_it **lazy singleton** — it is only ever
+  /// constructed by the advisor screen, so this resolve is a no-op (empty
+  /// state) when the advisor was never opened this run; `reset` clears it when
+  /// it was.
+  void _resetAdvisorThread() {
+    getIt<AdvisorChatCubit>().reset();
   }
 
   /// Reflect a changed role set (from [RolesCubit]) on the session so guards

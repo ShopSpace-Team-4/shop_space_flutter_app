@@ -296,6 +296,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       onSortChanged: _onSortChanged,
                       onApplyFilters: _applyFilters,
                       onResetFilters: _resetFilters,
+                      onAskAdvisor: () => context.go('/advisor'),
                       searchController: _searchController,
                       searchFocusNode: _searchFocusNode,
                       onSearchChanged: _applySearchText,
@@ -329,6 +330,7 @@ class _SearchScreenState extends State<SearchScreen> {
               onSortChanged: _onSortChanged,
               onApplyFilters: _applyFilters,
               onResetFilters: _resetFilters,
+              onAskAdvisor: () => context.go('/advisor'),
               searchController: _searchController,
               searchFocusNode: _searchFocusNode,
               onSearchChanged: _applySearchText,
@@ -379,6 +381,7 @@ class _ResultsArea extends StatelessWidget {
     required this.onSortChanged,
     required this.onApplyFilters,
     required this.onResetFilters,
+    required this.onAskAdvisor,
     required this.searchController,
     required this.searchFocusNode,
     required this.onSearchChanged,
@@ -397,6 +400,9 @@ class _ResultsArea extends StatelessWidget {
   /// the screen can clear the bar when the explicit change conflicts with it.
   final ValueChanged<SearchFilters> onApplyFilters;
   final VoidCallback onResetFilters;
+
+  /// Opens the AI Space Advisor from the empty state (US5, T029).
+  final VoidCallback onAskAdvisor;
   final TextEditingController searchController;
   final FocusNode searchFocusNode;
   final ValueChanged<String> onSearchChanged;
@@ -452,7 +458,10 @@ class _ResultsArea extends StatelessWidget {
       return _SkeletonList();
     }
     if (state.loaded && state.items.isEmpty) {
-      return _EmptySearchView(onReset: onResetFilters);
+      return _EmptySearchView(
+        onReset: onResetFilters,
+        onAskAdvisor: onAskAdvisor,
+      );
     }
 
     final int footerCount = (state.isLoadingMore || !state.hasMore) ? 1 : 0;
@@ -592,11 +601,18 @@ class _EndOfListMarker extends StatelessWidget {
   }
 }
 
-/// Localized empty state with a one-tap reset-filters action (US1 scenario 3).
+/// Localized empty state with an advisor entry (US5, T029) and a one-tap
+/// reset-filters action (US1 scenario 3). The advisor CTA uses the established
+/// `AppEmptyView` + `FilledButton.tonal` pattern; tapping it opens the
+/// guarded `/advisor` chat route.
 class _EmptySearchView extends StatelessWidget {
-  const _EmptySearchView({required this.onReset});
+  const _EmptySearchView({
+    required this.onReset,
+    required this.onAskAdvisor,
+  });
 
   final VoidCallback onReset;
+  final VoidCallback onAskAdvisor;
 
   @override
   Widget build(BuildContext context) {
@@ -609,6 +625,12 @@ class _EmptySearchView extends StatelessWidget {
           message: l10n.searchEmptyMessage,
         ),
         SizedBox(height: AppSpacing.lg.h),
+        FilledButton.tonalIcon(
+          onPressed: onAskAdvisor,
+          icon: Icon(Icons.auto_awesome, size: 18.sp),
+          label: Text(l10n.searchAskAdvisor),
+        ),
+        SizedBox(height: AppSpacing.sm.h),
         FilledButton.tonal(
           onPressed: onReset,
           child: Text(l10n.searchResetFilters),

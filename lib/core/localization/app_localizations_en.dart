@@ -245,6 +245,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t open a messaging app. Please try again.';
 
   @override
+  String get errorAdvisorChat => 'Couldn\'t get an answer. Please try again.';
+
+  @override
   String get searchTitle => 'Search shops';
 
   @override
@@ -325,6 +328,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchSelectShop => 'Select a shop to view details';
+
+  @override
+  String get searchAskAdvisor => 'Ask the AI Space Advisor';
+
+  @override
+  String get advisorTitle => 'AI Space Advisor';
+
+  @override
+  String get advisorStatus => '● Always available';
+
+  @override
+  String get advisorWelcome =>
+      'I\'m your AI business advisor. Ask me anything about finding, renting, or running a shop space.';
+
+  @override
+  String get advisorTryAsking => 'Try asking…';
+
+  @override
+  String get advisorExampleQuestion1 =>
+      'What kind of business should I open in New Cairo?';
+
+  @override
+  String get advisorExampleQuestion2 => 'What licenses should I consider?';
+
+  @override
+  String get advisorExampleQuestion3 =>
+      'I want shops for rent in Smouha suitable for a cafe';
+
+  @override
+  String get advisorExampleQuestion4 =>
+      'What is the difference between renting and buying a shop?';
+
+  @override
+  String get advisorInputHint => 'Ask the AI advisor…';
+
+  @override
+  String get advisorSendTooltip => 'Send';
+
+  @override
+  String get advisorThinking => 'Thinking…';
+
+  @override
+  String get advisorSourcesTitle => 'Sources';
+
+  @override
+  String get advisorDisclaimer =>
+      'This information is provided for informational purposes only and does not constitute professional or legal advice.';
+
+  @override
+  String get advisorRecommendedListings => 'Recommended Listings';
 
   @override
   String get searchPriceRangeInvalid =>

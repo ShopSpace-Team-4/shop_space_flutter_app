@@ -249,7 +249,7 @@ class _ProfileContent extends StatelessWidget {
                       leading: const Icon(Icons.support_agent_outlined),
                       title: Text(l10n.navAdvisor),
                       trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.go('/advisor'),
+                      onTap: () => context.push('/advisor'),
                     ),
                     ListTile(
                       leading: const Icon(Icons.lock_outline),

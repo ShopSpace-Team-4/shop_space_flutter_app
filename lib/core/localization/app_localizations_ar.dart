@@ -244,6 +244,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تعذر فتح تطبيق المراسلة. يرجى المحاولة مرة أخرى.';
 
   @override
+  String get errorAdvisorChat =>
+      'تعذر الحصول على إجابة. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get searchTitle => 'البحث عن المحلات';
 
   @override
@@ -323,6 +327,56 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchSelectShop => 'اختر محلاً لعرض التفاصيل';
+
+  @override
+  String get searchAskAdvisor => 'اسأل مستشار المساحات الذكي';
+
+  @override
+  String get advisorTitle => 'مستشار المساحات الذكي';
+
+  @override
+  String get advisorStatus => '● متاح دائماً';
+
+  @override
+  String get advisorWelcome =>
+      'أنا مستشارك الذكي للأعمال. اسألني عن أي شيء يتعلق بإيجاد أو استئجار أو تشغيل مساحة تجارية.';
+
+  @override
+  String get advisorTryAsking => 'جرّب أن تسأل…';
+
+  @override
+  String get advisorExampleQuestion1 =>
+      'ما نوع العمل الذي يجب أن أفتتحه في القاهرة الجديدة؟';
+
+  @override
+  String get advisorExampleQuestion2 =>
+      'ما التراخيص التي يجب أن أضعها في الاعتبار؟';
+
+  @override
+  String get advisorExampleQuestion3 =>
+      'أريد محلات للإيجار في سموحة مناسبة لمقهى';
+
+  @override
+  String get advisorExampleQuestion4 => 'ما الفرق بين استئجار محل وشرائه؟';
+
+  @override
+  String get advisorInputHint => 'اسأل المستشار الذكي…';
+
+  @override
+  String get advisorSendTooltip => 'إرسال';
+
+  @override
+  String get advisorThinking => 'جارٍ التفكير…';
+
+  @override
+  String get advisorSourcesTitle => 'المصادر';
+
+  @override
+  String get advisorDisclaimer =>
+      'هذه المعلومات مقدمة لأغراض إعلامية فقط ولا تُعد نصيحة مهنية أو قانونية.';
+
+  @override
+  String get advisorRecommendedListings => 'القوائم الموصى بها';
 
   @override
   String get searchPriceRangeInvalid => 'يجب أن يكون أعلى سعر أكبر من أقل سعر';

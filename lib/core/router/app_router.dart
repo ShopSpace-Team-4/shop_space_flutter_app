@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/advisor/presentation/screens/advisor_chat_screen.dart';
 import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
 import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
@@ -167,7 +168,14 @@ class AppRouter {
             listingId: state.pathParameters['listingId'],
           ),
         ),
-        _placeholderRoute('/advisor', (l10n) => l10n.navAdvisor),
+        // US1 (T028): the Advisor is a guarded full-screen route outside the
+        // shell — the same AuthGuard pattern as `/change-password`/`/search/:listingId`
+        // (FR-001: signed-out access redirects to `/login`).
+        GoRoute(
+          path: '/advisor',
+          redirect: guard?.call,
+          builder: (context, state) => const AdvisorChatScreen(),
+        ),
       ],
       errorBuilder: (context, state) {
         final AppLocalizations l10n = AppLocalizations.of(context);
@@ -179,17 +187,4 @@ class AppRouter {
   late final GoRouter _router;
 
   GoRouter get router => _router;
-
-  GoRoute _placeholderRoute(
-    String path,
-    String Function(AppLocalizations l10n) title,
-  ) {
-    return GoRoute(
-      path: path,
-      builder: (context, state) {
-        final AppLocalizations l10n = AppLocalizations.of(context);
-        return AppPlaceholderScreen(title: title(l10n));
-      },
-    );
-  }
 }
