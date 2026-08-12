@@ -33,10 +33,9 @@ abstract class SavedListingsState with _$SavedListingsState {
 /// [SavedListingsRepository] (D8), and reverts + surfaces a transient
 /// localized failure on error.
 class SavedListingsCubit extends Cubit<SavedListingsState> {
-  SavedListingsCubit({
-    required SavedListingsRepository savedListingsRepository,
-  })  : _savedListingsRepository = savedListingsRepository,
-        super(const SavedListingsState());
+  SavedListingsCubit({required SavedListingsRepository savedListingsRepository})
+    : _savedListingsRepository = savedListingsRepository,
+      super(const SavedListingsState());
 
   final SavedListingsRepository _savedListingsRepository;
 
@@ -49,8 +48,8 @@ class SavedListingsCubit extends Cubit<SavedListingsState> {
   Future<void> load() async {
     emit(state.copyWith(isLoading: true, failure: null));
     try {
-      final List<SavedListing> items =
-          await _savedListingsRepository.getSavedListings();
+      final List<SavedListing> items = await _savedListingsRepository
+          .getSavedListings();
       if (isClosed) return;
       emit(state.copyWith(isLoading: false, loaded: true, items: items));
     } on Failure catch (failure) {
@@ -58,10 +57,7 @@ class SavedListingsCubit extends Cubit<SavedListingsState> {
       emit(state.copyWith(isLoading: false, failure: failure));
     } catch (_) {
       if (isClosed) return;
-      emit(state.copyWith(
-        isLoading: false,
-        failure: const ServerFailure(''),
-      ));
+      emit(state.copyWith(isLoading: false, failure: const ServerFailure('')));
     }
   }
 

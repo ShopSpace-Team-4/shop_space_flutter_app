@@ -66,14 +66,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navAdd => 'Add listing';
 
   @override
-  String get savedTitle => 'Saved';
+  String get savedTitle => 'Saved Spaces';
 
   @override
-  String get savedEmptyTitle => 'No saved shops yet';
+  String get savedEmptyTitle => 'Nothing saved yet';
 
   @override
   String get savedEmptyMessage =>
-      'Shops you save will appear here so you can revisit them.';
+      'Browse spaces and tap the heart icon to save them here for later.';
+
+  @override
+  String get savedWishlistEmptySubtitle => 'Your wishlist is empty';
+
+  @override
+  String get savedExploreSpaces => 'Explore Spaces';
 
   @override
   String get savedSaveTooltip => 'Save this shop';

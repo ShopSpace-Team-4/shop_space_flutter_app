@@ -66,14 +66,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navAdd => 'إضافة قائمة';
 
   @override
-  String get savedTitle => 'المحفوظة';
+  String get savedTitle => 'المساحات المحفوظة';
 
   @override
-  String get savedEmptyTitle => 'لا توجد محلات محفوظة بعد';
+  String get savedEmptyTitle => 'لا يوجد شيء محفوظ بعد';
 
   @override
   String get savedEmptyMessage =>
-      'ستظهر المحلات التي تحفظها هنا لتتمكن من العودة إليها لاحقاً.';
+      'تصفح المساحات واضغط على أيقونة القلب لحفظها هنا لاحقاً.';
+
+  @override
+  String get savedWishlistEmptySubtitle => 'قائمتك فارغة';
+
+  @override
+  String get savedExploreSpaces => 'استكشف المساحات';
 
   @override
   String get savedSaveTooltip => 'احفظ هذا المحل';

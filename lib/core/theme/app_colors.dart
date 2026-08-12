@@ -47,6 +47,10 @@ abstract final class AppColors {
   static const Color outlineSubtle = Color(0xFFF1F5F9);
   static const Color outlineFocus = Color(0xFF93C5FD);
 
+  /// Saved empty-state icon circle gradient end (Figma `242:2576`): `#E0E7FF`,
+  /// with `#EFF6FF` (=[primaryContainer]) as the start.
+  static const Color savedIconGradientEnd = Color(0xFFE0E7FF);
+
   /// Home hero header gradient (Figma `95:4028`): `#0F172A` → `#3A1E8B`.
   /// Start equals [AppColors.surfaceInverse].
   static const Color heroGradientStart = Color(0xff0F172A);
