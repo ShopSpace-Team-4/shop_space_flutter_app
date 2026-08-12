@@ -40,12 +40,23 @@
   "homeAdvisorTitle": "مستشار المساحات الذكي",
   "homeAdvisorSubtitle": "ابحث عن مساحتك المثالية",
   "homeCategoriesTitle": "الفئات",
+  "homeCategoryAll": "الكل",
   "homeRecommendedTitle": "المساحات",
   "homeSeeAll": "عرض الكل",
   "homeNearbyTitle": "قوائم قريبة",
   "homeEmptyRecommended": "لا توجد توصيات بعد",
   "homeEmptyNearby": "لا توجد قوائم قريبة بعد",
   "homeEmptyCategories": "لا توجد فئات متاحة",
+  "homeCategoryEmptyTitle": "لا توجد مساحات ضمن فئة {category}",
+  "@homeCategoryEmptyTitle": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCategoryEmptyMessage": "جرّب فئة أخرى أو اعرض كل المساحات.",
+  "homeShowAll": "عرض الكل",
   "homeRentPerYear": "{amount}/سنة",
   "@homeRentPerYear": {
     "placeholders": {

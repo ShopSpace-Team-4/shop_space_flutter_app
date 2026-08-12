@@ -114,6 +114,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeCategoriesTitle => 'Categories';
 
   @override
+  String get homeCategoryAll => 'All';
+
+  @override
   String get homeRecommendedTitle => 'Spaces';
 
   @override
@@ -130,6 +133,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeEmptyCategories => 'No categories available';
+
+  @override
+  String homeCategoryEmptyTitle(String category) {
+    return 'No $category spaces found';
+  }
+
+  @override
+  String get homeCategoryEmptyMessage =>
+      'Try another category or show all spaces.';
+
+  @override
+  String get homeShowAll => 'Show all';
 
   @override
   String homeRentPerYear(String amount) {

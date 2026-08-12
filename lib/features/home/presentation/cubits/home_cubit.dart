@@ -21,6 +21,7 @@ abstract class HomeState with _$HomeState {
     @Default([]) List<String> categories,
     @Default([]) List<BrowseListing> recommended,
     @Default([]) List<BrowseListing> nearby,
+    String? selectedCategory,
     User? user,
     Failure? failure,
   }) = _HomeState;
@@ -35,9 +36,9 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required ListingRepository listingRepository,
     required UserRepository userRepository,
-  })  : _listingRepository = listingRepository,
-        _userRepository = userRepository,
-        super(const HomeState());
+  }) : _listingRepository = listingRepository,
+       _userRepository = userRepository,
+       super(const HomeState());
 
   final ListingRepository _listingRepository;
   final UserRepository _userRepository;
@@ -56,26 +57,22 @@ class HomeCubit extends Cubit<HomeState> {
       ) = await (
         _listingRepository.fetchMeta(),
         _listingRepository.browse(
-          const BrowseQuery(
-            status: ListingStatus.available,
-            limit: 5,
-          ),
+          const BrowseQuery(status: ListingStatus.available, limit: 5),
         ),
         _listingRepository.browse(
-          const BrowseQuery(
-            status: ListingStatus.available,
-            limit: 3,
-          ),
+          const BrowseQuery(status: ListingStatus.available, limit: 3),
         ),
       ).wait;
 
-      emit(HomeState(
-        isLoading: false,
-        categories: meta.categories,
-        recommended: recommendedPage.items,
-        nearby: nearbyPage.items,
-        user: user,
-      ));
+      emit(
+        HomeState(
+          isLoading: false,
+          categories: meta.categories,
+          recommended: recommendedPage.items,
+          nearby: nearbyPage.items,
+          user: user,
+        ),
+      );
     } on Failure catch (failure) {
       emit(state.copyWith(isLoading: false, failure: failure));
     } catch (_) {
@@ -97,4 +94,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// Pull-to-refresh alias (mirrors `MyListingsCubit.refresh`).
   Future<void> refresh() => load();
+
+  /// Sets the category chip filter. Pure client-side state — the existing
+  /// [HomeState.recommended]/[HomeState.nearby] lists are filtered in the UI,
+  /// no backend request is made. `null` selects the "All" chip.
+  void selectCategory(String? category) {
+    if (state.selectedCategory == category) return;
+    emit(state.copyWith(selectedCategory: category));
+  }
 }

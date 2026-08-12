@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- bool get isLoading; List<String> get categories; List<BrowseListing> get recommended; List<BrowseListing> get nearby; User? get user; Failure? get failure;
+ bool get isLoading; List<String> get categories; List<BrowseListing> get recommended; List<BrowseListing> get nearby; String? get selectedCategory; User? get user; Failure? get failure;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.categories, categories)&&const DeepCollectionEquality().equals(other.recommended, recommended)&&const DeepCollectionEquality().equals(other.nearby, nearby)&&(identical(other.user, user) || other.user == user)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.categories, categories)&&const DeepCollectionEquality().equals(other.recommended, recommended)&&const DeepCollectionEquality().equals(other.nearby, nearby)&&(identical(other.selectedCategory, selectedCategory) || other.selectedCategory == selectedCategory)&&(identical(other.user, user) || other.user == user)&&(identical(other.failure, failure) || other.failure == failure));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(categories),const DeepCollectionEquality().hash(recommended),const DeepCollectionEquality().hash(nearby),user,failure);
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(categories),const DeepCollectionEquality().hash(recommended),const DeepCollectionEquality().hash(nearby),selectedCategory,user,failure);
 
 @override
 String toString() {
-  return 'HomeState(isLoading: $isLoading, categories: $categories, recommended: $recommended, nearby: $nearby, user: $user, failure: $failure)';
+  return 'HomeState(isLoading: $isLoading, categories: $categories, recommended: $recommended, nearby: $nearby, selectedCategory: $selectedCategory, user: $user, failure: $failure)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, List<String> categories, List<BrowseListing> recommended, List<BrowseListing> nearby, User? user, Failure? failure
+ bool isLoading, List<String> categories, List<BrowseListing> recommended, List<BrowseListing> nearby, String? selectedCategory, User? user, Failure? failure
 });
 
 
@@ -62,13 +62,14 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? categories = null,Object? recommended = null,Object? nearby = null,Object? user = freezed,Object? failure = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? categories = null,Object? recommended = null,Object? nearby = null,Object? selectedCategory = freezed,Object? user = freezed,Object? failure = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<String>,recommended: null == recommended ? _self.recommended : recommended // ignore: cast_nullable_to_non_nullable
 as List<BrowseListing>,nearby: null == nearby ? _self.nearby : nearby // ignore: cast_nullable_to_non_nullable
-as List<BrowseListing>,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as List<BrowseListing>,selectedCategory: freezed == selectedCategory ? _self.selectedCategory : selectedCategory // ignore: cast_nullable_to_non_nullable
+as String?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as Failure?,
   ));
@@ -167,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  User? user,  Failure? failure)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  String? selectedCategory,  User? user,  Failure? failure)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.user,_that.failure);case _:
+return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.selectedCategory,_that.user,_that.failure);case _:
   return orElse();
 
 }
@@ -188,10 +189,10 @@ return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  User? user,  Failure? failure)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  String? selectedCategory,  User? user,  Failure? failure)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.user,_that.failure);case _:
+return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.selectedCategory,_that.user,_that.failure);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +209,10 @@ return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  User? user,  Failure? failure)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  List<String> categories,  List<BrowseListing> recommended,  List<BrowseListing> nearby,  String? selectedCategory,  User? user,  Failure? failure)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.user,_that.failure);case _:
+return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,_that.selectedCategory,_that.user,_that.failure);case _:
   return null;
 
 }
@@ -223,7 +224,7 @@ return $default(_that.isLoading,_that.categories,_that.recommended,_that.nearby,
 
 
 class _HomeState implements HomeState {
-  const _HomeState({this.isLoading = false, final  List<String> categories = const [], final  List<BrowseListing> recommended = const [], final  List<BrowseListing> nearby = const [], this.user, this.failure}): _categories = categories,_recommended = recommended,_nearby = nearby;
+  const _HomeState({this.isLoading = false, final  List<String> categories = const [], final  List<BrowseListing> recommended = const [], final  List<BrowseListing> nearby = const [], this.selectedCategory, this.user, this.failure}): _categories = categories,_recommended = recommended,_nearby = nearby;
   
 
 @override@JsonKey() final  bool isLoading;
@@ -248,6 +249,7 @@ class _HomeState implements HomeState {
   return EqualUnmodifiableListView(_nearby);
 }
 
+@override final  String? selectedCategory;
 @override final  User? user;
 @override final  Failure? failure;
 
@@ -261,16 +263,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._categories, _categories)&&const DeepCollectionEquality().equals(other._recommended, _recommended)&&const DeepCollectionEquality().equals(other._nearby, _nearby)&&(identical(other.user, user) || other.user == user)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._categories, _categories)&&const DeepCollectionEquality().equals(other._recommended, _recommended)&&const DeepCollectionEquality().equals(other._nearby, _nearby)&&(identical(other.selectedCategory, selectedCategory) || other.selectedCategory == selectedCategory)&&(identical(other.user, user) || other.user == user)&&(identical(other.failure, failure) || other.failure == failure));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_categories),const DeepCollectionEquality().hash(_recommended),const DeepCollectionEquality().hash(_nearby),user,failure);
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_categories),const DeepCollectionEquality().hash(_recommended),const DeepCollectionEquality().hash(_nearby),selectedCategory,user,failure);
 
 @override
 String toString() {
-  return 'HomeState(isLoading: $isLoading, categories: $categories, recommended: $recommended, nearby: $nearby, user: $user, failure: $failure)';
+  return 'HomeState(isLoading: $isLoading, categories: $categories, recommended: $recommended, nearby: $nearby, selectedCategory: $selectedCategory, user: $user, failure: $failure)';
 }
 
 
@@ -281,7 +283,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, List<String> categories, List<BrowseListing> recommended, List<BrowseListing> nearby, User? user, Failure? failure
+ bool isLoading, List<String> categories, List<BrowseListing> recommended, List<BrowseListing> nearby, String? selectedCategory, User? user, Failure? failure
 });
 
 
@@ -298,13 +300,14 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? categories = null,Object? recommended = null,Object? nearby = null,Object? user = freezed,Object? failure = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? categories = null,Object? recommended = null,Object? nearby = null,Object? selectedCategory = freezed,Object? user = freezed,Object? failure = freezed,}) {
   return _then(_HomeState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<String>,recommended: null == recommended ? _self._recommended : recommended // ignore: cast_nullable_to_non_nullable
 as List<BrowseListing>,nearby: null == nearby ? _self._nearby : nearby // ignore: cast_nullable_to_non_nullable
-as List<BrowseListing>,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as List<BrowseListing>,selectedCategory: freezed == selectedCategory ? _self.selectedCategory : selectedCategory // ignore: cast_nullable_to_non_nullable
+as String?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as Failure?,
   ));

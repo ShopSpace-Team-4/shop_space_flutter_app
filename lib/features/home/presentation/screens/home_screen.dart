@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/di/injectable.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/widgets/app_empty_view.dart';
 import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loading_view.dart';
+import '../../../listing/data/models/browse_listing.dart';
 import '../../../listing/repository/listing_repository.dart';
 import '../../../user/repository/user_repository.dart';
 import '../cubits/home_cubit.dart';
@@ -62,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<HomeCubit, HomeState>(
         bloc: _cubit,
         builder: (context, state) {
-          final bool hasContent = state.categories.isNotEmpty ||
+          final bool hasContent =
+              state.categories.isNotEmpty ||
               state.recommended.isNotEmpty ||
               state.nearby.isNotEmpty;
           if (state.isLoading && !hasContent) {
@@ -71,7 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state.failure != null && !hasContent) {
             return AppErrorView(failure: state.failure!, onRetry: _cubit.load);
           }
-          return _HomeContent(state: state, onRefresh: _cubit.refresh);
+          return _HomeContent(
+            state: state,
+            onRefresh: _cubit.refresh,
+            onCategorySelected: _cubit.selectCategory,
+          );
         },
       ),
     );
@@ -79,13 +87,39 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _HomeContent extends StatelessWidget {
-  const _HomeContent({required this.state, required this.onRefresh});
+  const _HomeContent({
+    required this.state,
+    required this.onRefresh,
+    required this.onCategorySelected,
+  });
 
   final HomeState state;
   final Future<void> Function() onRefresh;
+  final ValueChanged<String?> onCategorySelected;
+
+  /// Filters a loaded list by the selected category chip, in memory only.
+  /// `null` selection ("All") keeps everything; matches are case-insensitive
+  /// since chip values come from `GET /listings/meta` while listing categories
+  /// come from `GET /listings`.
+  List<BrowseListing> _filtered(List<BrowseListing> listings) {
+    final String? selected = state.selectedCategory;
+    if (selected == null) return listings;
+    return listings
+        .where(
+          (BrowseListing l) =>
+              l.category.toLowerCase() == selected.toLowerCase(),
+        )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<BrowseListing> recommended = _filtered(state.recommended);
+    final List<BrowseListing> nearby = _filtered(state.nearby);
+    final String? selected = state.selectedCategory;
+    final bool nothingMatches =
+        selected != null && recommended.isEmpty && nearby.isEmpty;
+
     return RefreshIndicator(
       onRefresh: onRefresh,
       child: ListView(
@@ -105,15 +139,62 @@ class _HomeContent extends StatelessWidget {
                     child: const HomeAdvisorCard(),
                   ),
                   SizedBox(height: 8.h),
-                  HomeCategoryChips(categories: state.categories),
+                  HomeCategoryChips(
+                    categories: state.categories,
+                    selectedCategory: state.selectedCategory,
+                    onSelected: onCategorySelected,
+                  ),
                   SizedBox(height: 8.h),
-                  HomeRecommendedRail(listings: state.recommended),
-                  SizedBox(height: 8.h),
-                  HomeNearbySection(listings: state.nearby),
+                  if (nothingMatches)
+                    _CategoryFilterEmptyView(
+                      category: selected,
+                      onShowAll: () => onCategorySelected(null),
+                    )
+                  else ...[
+                    HomeRecommendedRail(listings: recommended),
+                    SizedBox(height: 8.h),
+                    HomeNearbySection(listings: nearby),
+                  ],
                   SizedBox(height: AppSpacing.xxl.h),
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Combined empty state shown when a category filter leaves both home sections
+/// (Recommended + Nearby) empty (Figma `95:4028`). Mirrors the established
+/// `_EmptySearchView` pattern: `AppEmptyView` + a "Show all"
+/// `FilledButton.tonal` that clears the chip filter. The chips row stays
+/// visible above so the user can also pick another category instead.
+class _CategoryFilterEmptyView extends StatelessWidget {
+  const _CategoryFilterEmptyView({
+    required this.category,
+    required this.onShowAll,
+  });
+
+  final String category;
+  final VoidCallback onShowAll;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+      child: Column(
+        children: [
+          AppEmptyView(
+            title: l10n.homeCategoryEmptyTitle(category),
+            message: l10n.homeCategoryEmptyMessage,
+          ),
+          SizedBox(height: AppSpacing.lg.h),
+          FilledButton.tonal(
+            onPressed: onShowAll,
+            child: Text(l10n.homeShowAll),
           ),
         ],
       ),

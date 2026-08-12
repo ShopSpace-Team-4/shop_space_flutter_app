@@ -40,12 +40,23 @@
   "homeAdvisorTitle": "AI Space Advisor",
   "homeAdvisorSubtitle": "Find your ideal space",
   "homeCategoriesTitle": "Categories",
+  "homeCategoryAll": "All",
   "homeRecommendedTitle": "Spaces",
   "homeSeeAll": "See all",
   "homeNearbyTitle": "Nearby Listings",
   "homeEmptyRecommended": "No recommendations yet",
   "homeEmptyNearby": "No nearby listings yet",
   "homeEmptyCategories": "No categories available",
+  "homeCategoryEmptyTitle": "No {category} spaces found",
+  "@homeCategoryEmptyTitle": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCategoryEmptyMessage": "Try another category or show all spaces.",
+  "homeShowAll": "Show all",
   "homeRentPerYear": "{amount}/yr",
   "@homeRentPerYear": {
     "placeholders": {

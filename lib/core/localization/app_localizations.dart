@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Categories'**
   String get homeCategoriesTitle;
 
+  /// No description provided for @homeCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get homeCategoryAll;
+
   /// No description provided for @homeRecommendedTitle.
   ///
   /// In en, this message translates to:
@@ -331,6 +337,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No categories available'**
   String get homeEmptyCategories;
+
+  /// No description provided for @homeCategoryEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No {category} spaces found'**
+  String homeCategoryEmptyTitle(String category);
+
+  /// No description provided for @homeCategoryEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another category or show all spaces.'**
+  String get homeCategoryEmptyMessage;
+
+  /// No description provided for @homeShowAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get homeShowAll;
 
   /// No description provided for @homeRentPerYear.
   ///

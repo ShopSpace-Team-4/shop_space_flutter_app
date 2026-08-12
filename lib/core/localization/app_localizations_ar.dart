@@ -114,6 +114,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeCategoriesTitle => 'الفئات';
 
   @override
+  String get homeCategoryAll => 'الكل';
+
+  @override
   String get homeRecommendedTitle => 'المساحات';
 
   @override
@@ -130,6 +133,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeEmptyCategories => 'لا توجد فئات متاحة';
+
+  @override
+  String homeCategoryEmptyTitle(String category) {
+    return 'لا توجد مساحات ضمن فئة $category';
+  }
+
+  @override
+  String get homeCategoryEmptyMessage => 'جرّب فئة أخرى أو اعرض كل المساحات.';
+
+  @override
+  String get homeShowAll => 'عرض الكل';
 
   @override
   String homeRentPerYear(String amount) {
