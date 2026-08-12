@@ -177,8 +177,8 @@ class _HorizontalLayout extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.card.r),
           child: SizedBox(
-            width: 76.w,
-            height: 68.h,
+            width: 73.w,
+            height: 73.h,
             child: _Thumbnail(url: listing.thumbnailUrl),
           ),
         ),
