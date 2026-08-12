@@ -36,6 +36,7 @@ abstract final class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
+      fontFamily: AppTypography.displayFontFamily,
       textTheme: textTheme,
       scaffoldBackgroundColor: AppColors.background,
       appBarTheme: const AppBarTheme(

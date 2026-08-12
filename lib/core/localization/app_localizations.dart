@@ -1244,6 +1244,192 @@ abstract class AppLocalizations {
   /// **'Profile updated.'**
   String get profileEditSuccess;
 
+  /// No description provided for @profileVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification'**
+  String get profileVerification;
+
+  /// No description provided for @profileVerificationVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'ID & Business verified'**
+  String get profileVerificationVerified;
+
+  /// No description provided for @profileVerificationNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified yet'**
+  String get profileVerificationNotVerified;
+
+  /// No description provided for @profileListingsStat.
+  ///
+  /// In en, this message translates to:
+  /// **'Listings'**
+  String get profileListingsStat;
+
+  /// No description provided for @profileActiveListings.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active listings'**
+  String profileActiveListings(int count);
+
+  /// No description provided for @profileSettingsRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettingsRow;
+
+  /// No description provided for @profileSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications, privacy'**
+  String get profileSettingsSubtitle;
+
+  /// No description provided for @profileRoleSwitchSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Active role updated'**
+  String get profileRoleSwitchSuccess;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsSectionAccount;
+
+  /// No description provided for @settingsSectionNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsSectionNotifications;
+
+  /// No description provided for @settingsSectionPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get settingsSectionPrivacy;
+
+  /// No description provided for @settingsEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get settingsEditProfile;
+
+  /// No description provided for @settingsEditProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, photo, bio'**
+  String get settingsEditProfileSubtitle;
+
+  /// No description provided for @settingsChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get settingsChangePassword;
+
+  /// No description provided for @settingsChangePasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update or reset your password'**
+  String get settingsChangePasswordSubtitle;
+
+  /// No description provided for @settingsLinkGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Google account'**
+  String get settingsLinkGoogle;
+
+  /// No description provided for @settingsLinkGoogleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in faster with Google'**
+  String get settingsLinkGoogleSubtitle;
+
+  /// No description provided for @settingsNotifPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get settingsNotifPush;
+
+  /// No description provided for @settingsNotifPushSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiries, messages'**
+  String get settingsNotifPushSubtitle;
+
+  /// No description provided for @settingsNotifEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email alerts'**
+  String get settingsNotifEmail;
+
+  /// No description provided for @settingsNotifEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly digest'**
+  String get settingsNotifEmailSubtitle;
+
+  /// No description provided for @settingsNotifSms.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS alerts'**
+  String get settingsNotifSms;
+
+  /// No description provided for @settingsNotifSmsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical only'**
+  String get settingsNotifSmsSubtitle;
+
+  /// No description provided for @settingsDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get settingsDeleteAccount;
+
+  /// No description provided for @settingsDeleteAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanent action'**
+  String get settingsDeleteAccountSubtitle;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsLanguageSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select language'**
+  String get settingsLanguageSheetTitle;
+
+  /// No description provided for @settingsLanguageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEnglish;
+
+  /// No description provided for @settingsLanguageArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get settingsLanguageArabic;
+
   /// No description provided for @changePasswordTitle.
   ///
   /// In en, this message translates to:

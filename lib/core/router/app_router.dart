@@ -21,6 +21,7 @@ import '../../features/search/presentation/screens/search_screen.dart';
 import '../../features/search/presentation/screens/shop_detail_screen.dart';
 import '../../features/user/presentation/screens/change_password_screen.dart';
 import '../../features/user/presentation/screens/profile_screen.dart';
+import '../../features/user/presentation/screens/settings_screen.dart';
 import '../localization/app_localizations.dart';
 import '../responsive/app_adaptive_shell.dart';
 import '../widgets/placeholder_screen.dart';
@@ -160,6 +161,11 @@ class AppRouter {
           path: '/change-password',
           redirect: guard?.call,
           builder: (context, state) => const ChangePasswordScreen(),
+        ),
+        GoRoute(
+          path: '/settings',
+          redirect: guard?.call,
+          builder: (context, state) => const SettingsScreen(),
         ),
         GoRoute(
           path: '/my-listings',

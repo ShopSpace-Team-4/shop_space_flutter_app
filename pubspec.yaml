@@ -58,3 +58,27 @@ flutter:
     - assets/pngs/
     - assets/pngs/onboarding/
     - .env
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter_28pt-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/inter/Inter_28pt-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/inter/Inter_28pt-Light.ttf
+          weight: 300
+        - asset: assets/fonts/inter/Inter_28pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter_28pt-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/inter/Inter_28pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/inter/Inter_28pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/inter/Inter_28pt-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/inter/Inter_28pt-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/inter/Inter_28pt-Black.ttf
+          weight: 900

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- bool get isLoading; User? get user; String? get errorMessage; bool get isLinking; bool get linkSuccess; String? get linkError; bool get isUpdating; bool get updateSuccess; String? get updateError;
+ bool get isLoading; User? get user; String? get errorMessage; bool get isLinking; bool get linkSuccess; String? get linkError; bool get isUpdating; bool get updateSuccess; String? get updateError; int get listingsCount; int get activeListingsCount;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.user, user) || other.user == user)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isLinking, isLinking) || other.isLinking == isLinking)&&(identical(other.linkSuccess, linkSuccess) || other.linkSuccess == linkSuccess)&&(identical(other.linkError, linkError) || other.linkError == linkError)&&(identical(other.isUpdating, isUpdating) || other.isUpdating == isUpdating)&&(identical(other.updateSuccess, updateSuccess) || other.updateSuccess == updateSuccess)&&(identical(other.updateError, updateError) || other.updateError == updateError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.user, user) || other.user == user)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isLinking, isLinking) || other.isLinking == isLinking)&&(identical(other.linkSuccess, linkSuccess) || other.linkSuccess == linkSuccess)&&(identical(other.linkError, linkError) || other.linkError == linkError)&&(identical(other.isUpdating, isUpdating) || other.isUpdating == isUpdating)&&(identical(other.updateSuccess, updateSuccess) || other.updateSuccess == updateSuccess)&&(identical(other.updateError, updateError) || other.updateError == updateError)&&(identical(other.listingsCount, listingsCount) || other.listingsCount == listingsCount)&&(identical(other.activeListingsCount, activeListingsCount) || other.activeListingsCount == activeListingsCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,user,errorMessage,isLinking,linkSuccess,linkError,isUpdating,updateSuccess,updateError);
+int get hashCode => Object.hash(runtimeType,isLoading,user,errorMessage,isLinking,linkSuccess,linkError,isUpdating,updateSuccess,updateError,listingsCount,activeListingsCount);
 
 @override
 String toString() {
-  return 'ProfileState(isLoading: $isLoading, user: $user, errorMessage: $errorMessage, isLinking: $isLinking, linkSuccess: $linkSuccess, linkError: $linkError, isUpdating: $isUpdating, updateSuccess: $updateSuccess, updateError: $updateError)';
+  return 'ProfileState(isLoading: $isLoading, user: $user, errorMessage: $errorMessage, isLinking: $isLinking, linkSuccess: $linkSuccess, linkError: $linkError, isUpdating: $isUpdating, updateSuccess: $updateSuccess, updateError: $updateError, listingsCount: $listingsCount, activeListingsCount: $activeListingsCount)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, User? user, String? errorMessage, bool isLinking, bool linkSuccess, String? linkError, bool isUpdating, bool updateSuccess, String? updateError
+ bool isLoading, User? user, String? errorMessage, bool isLinking, bool linkSuccess, String? linkError, bool isUpdating, bool updateSuccess, String? updateError, int listingsCount, int activeListingsCount
 });
 
 
@@ -62,7 +62,7 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? user = freezed,Object? errorMessage = freezed,Object? isLinking = null,Object? linkSuccess = null,Object? linkError = freezed,Object? isUpdating = null,Object? updateSuccess = null,Object? updateError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? user = freezed,Object? errorMessage = freezed,Object? isLinking = null,Object? linkSuccess = null,Object? linkError = freezed,Object? isUpdating = null,Object? updateSuccess = null,Object? updateError = freezed,Object? listingsCount = null,Object? activeListingsCount = null,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,9 @@ as bool,linkError: freezed == linkError ? _self.linkError : linkError // ignore:
 as String?,isUpdating: null == isUpdating ? _self.isUpdating : isUpdating // ignore: cast_nullable_to_non_nullable
 as bool,updateSuccess: null == updateSuccess ? _self.updateSuccess : updateSuccess // ignore: cast_nullable_to_non_nullable
 as bool,updateError: freezed == updateError ? _self.updateError : updateError // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,listingsCount: null == listingsCount ? _self.listingsCount : listingsCount // ignore: cast_nullable_to_non_nullable
+as int,activeListingsCount: null == activeListingsCount ? _self.activeListingsCount : activeListingsCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 /// Create a copy of ProfileState
@@ -170,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError,  int listingsCount,  int activeListingsCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError);case _:
+return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError,_that.listingsCount,_that.activeListingsCount);case _:
   return orElse();
 
 }
@@ -191,10 +193,10 @@ return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError,  int listingsCount,  int activeListingsCount)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError);case _:
+return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError,_that.listingsCount,_that.activeListingsCount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +213,10 @@ return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  User? user,  String? errorMessage,  bool isLinking,  bool linkSuccess,  String? linkError,  bool isUpdating,  bool updateSuccess,  String? updateError,  int listingsCount,  int activeListingsCount)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError);case _:
+return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_that.linkSuccess,_that.linkError,_that.isUpdating,_that.updateSuccess,_that.updateError,_that.listingsCount,_that.activeListingsCount);case _:
   return null;
 
 }
@@ -226,7 +228,7 @@ return $default(_that.isLoading,_that.user,_that.errorMessage,_that.isLinking,_t
 
 
 class _ProfileState implements ProfileState {
-  const _ProfileState({this.isLoading = false, this.user, this.errorMessage, this.isLinking = false, this.linkSuccess = false, this.linkError, this.isUpdating = false, this.updateSuccess = false, this.updateError});
+  const _ProfileState({this.isLoading = false, this.user, this.errorMessage, this.isLinking = false, this.linkSuccess = false, this.linkError, this.isUpdating = false, this.updateSuccess = false, this.updateError, this.listingsCount = 0, this.activeListingsCount = 0});
   
 
 @override@JsonKey() final  bool isLoading;
@@ -238,6 +240,8 @@ class _ProfileState implements ProfileState {
 @override@JsonKey() final  bool isUpdating;
 @override@JsonKey() final  bool updateSuccess;
 @override final  String? updateError;
+@override@JsonKey() final  int listingsCount;
+@override@JsonKey() final  int activeListingsCount;
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +253,16 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.user, user) || other.user == user)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isLinking, isLinking) || other.isLinking == isLinking)&&(identical(other.linkSuccess, linkSuccess) || other.linkSuccess == linkSuccess)&&(identical(other.linkError, linkError) || other.linkError == linkError)&&(identical(other.isUpdating, isUpdating) || other.isUpdating == isUpdating)&&(identical(other.updateSuccess, updateSuccess) || other.updateSuccess == updateSuccess)&&(identical(other.updateError, updateError) || other.updateError == updateError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.user, user) || other.user == user)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isLinking, isLinking) || other.isLinking == isLinking)&&(identical(other.linkSuccess, linkSuccess) || other.linkSuccess == linkSuccess)&&(identical(other.linkError, linkError) || other.linkError == linkError)&&(identical(other.isUpdating, isUpdating) || other.isUpdating == isUpdating)&&(identical(other.updateSuccess, updateSuccess) || other.updateSuccess == updateSuccess)&&(identical(other.updateError, updateError) || other.updateError == updateError)&&(identical(other.listingsCount, listingsCount) || other.listingsCount == listingsCount)&&(identical(other.activeListingsCount, activeListingsCount) || other.activeListingsCount == activeListingsCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,user,errorMessage,isLinking,linkSuccess,linkError,isUpdating,updateSuccess,updateError);
+int get hashCode => Object.hash(runtimeType,isLoading,user,errorMessage,isLinking,linkSuccess,linkError,isUpdating,updateSuccess,updateError,listingsCount,activeListingsCount);
 
 @override
 String toString() {
-  return 'ProfileState(isLoading: $isLoading, user: $user, errorMessage: $errorMessage, isLinking: $isLinking, linkSuccess: $linkSuccess, linkError: $linkError, isUpdating: $isUpdating, updateSuccess: $updateSuccess, updateError: $updateError)';
+  return 'ProfileState(isLoading: $isLoading, user: $user, errorMessage: $errorMessage, isLinking: $isLinking, linkSuccess: $linkSuccess, linkError: $linkError, isUpdating: $isUpdating, updateSuccess: $updateSuccess, updateError: $updateError, listingsCount: $listingsCount, activeListingsCount: $activeListingsCount)';
 }
 
 
@@ -269,7 +273,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, User? user, String? errorMessage, bool isLinking, bool linkSuccess, String? linkError, bool isUpdating, bool updateSuccess, String? updateError
+ bool isLoading, User? user, String? errorMessage, bool isLinking, bool linkSuccess, String? linkError, bool isUpdating, bool updateSuccess, String? updateError, int listingsCount, int activeListingsCount
 });
 
 
@@ -286,7 +290,7 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? user = freezed,Object? errorMessage = freezed,Object? isLinking = null,Object? linkSuccess = null,Object? linkError = freezed,Object? isUpdating = null,Object? updateSuccess = null,Object? updateError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? user = freezed,Object? errorMessage = freezed,Object? isLinking = null,Object? linkSuccess = null,Object? linkError = freezed,Object? isUpdating = null,Object? updateSuccess = null,Object? updateError = freezed,Object? listingsCount = null,Object? activeListingsCount = null,}) {
   return _then(_ProfileState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
@@ -297,7 +301,9 @@ as bool,linkError: freezed == linkError ? _self.linkError : linkError // ignore:
 as String?,isUpdating: null == isUpdating ? _self.isUpdating : isUpdating // ignore: cast_nullable_to_non_nullable
 as bool,updateSuccess: null == updateSuccess ? _self.updateSuccess : updateSuccess // ignore: cast_nullable_to_non_nullable
 as bool,updateError: freezed == updateError ? _self.updateError : updateError // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,listingsCount: null == listingsCount ? _self.listingsCount : listingsCount // ignore: cast_nullable_to_non_nullable
+as int,activeListingsCount: null == activeListingsCount ? _self.activeListingsCount : activeListingsCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

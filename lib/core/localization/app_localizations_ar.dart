@@ -649,6 +649,103 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileEditSuccess => 'تم تحديث الملف الشخصي.';
 
   @override
+  String get profileVerification => 'التحقق';
+
+  @override
+  String get profileVerificationVerified =>
+      'تم التحقق من الهوية والنشاط التجاري';
+
+  @override
+  String get profileVerificationNotVerified => 'لم يتم التحقق بعد';
+
+  @override
+  String get profileListingsStat => 'القوائم';
+
+  @override
+  String profileActiveListings(int count) {
+    return '$count قوائم نشطة';
+  }
+
+  @override
+  String get profileSettingsRow => 'الإعدادات';
+
+  @override
+  String get profileSettingsSubtitle => 'الإشعارات والخصوصية';
+
+  @override
+  String get profileRoleSwitchSuccess => 'تم تحديث الدور النشط';
+
+  @override
+  String get settingsTitle => 'الإعدادات';
+
+  @override
+  String get settingsSectionAccount => 'الحساب';
+
+  @override
+  String get settingsSectionNotifications => 'الإشعارات';
+
+  @override
+  String get settingsSectionPrivacy => 'الخصوصية';
+
+  @override
+  String get settingsEditProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get settingsEditProfileSubtitle => 'الاسم، الصورة، والنبذة';
+
+  @override
+  String get settingsChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get settingsChangePasswordSubtitle =>
+      'حدّث كلمة المرور أو أعد تعيينها';
+
+  @override
+  String get settingsLinkGoogle => 'ربط حساب جوجل';
+
+  @override
+  String get settingsLinkGoogleSubtitle => 'سجّل الدخول بشكل أسرع عبر جوجل';
+
+  @override
+  String get settingsNotifPush => 'إشعارات التطبيق';
+
+  @override
+  String get settingsNotifPushSubtitle => 'الاستفسارات والرسائل';
+
+  @override
+  String get settingsNotifEmail => 'تنبيهات البريد';
+
+  @override
+  String get settingsNotifEmailSubtitle => 'ملخص أسبوعي';
+
+  @override
+  String get settingsNotifSms => 'تنبيهات الرسائل';
+
+  @override
+  String get settingsNotifSmsSubtitle => 'الأساسية فقط';
+
+  @override
+  String get settingsDeleteAccount => 'حذف الحساب';
+
+  @override
+  String get settingsDeleteAccountSubtitle => 'إجراء نهائي';
+
+  @override
+  String get settingsSectionAppearance => 'المظهر';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsLanguageSheetTitle => 'اختر اللغة';
+
+  @override
+  String get settingsLanguageEnglish => 'English';
+
+  @override
+  String get settingsLanguageArabic => 'العربية';
+
+  @override
   String get changePasswordTitle => 'تغيير كلمة المرور';
 
   @override
