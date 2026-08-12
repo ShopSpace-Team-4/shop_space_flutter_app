@@ -209,20 +209,32 @@ abstract class AppLocalizations {
   /// No description provided for @savedTitle.
   ///
   /// In en, this message translates to:
-  /// **'Saved'**
+  /// **'Saved Spaces'**
   String get savedTitle;
 
   /// No description provided for @savedEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'No saved shops yet'**
+  /// **'Nothing saved yet'**
   String get savedEmptyTitle;
 
   /// No description provided for @savedEmptyMessage.
   ///
   /// In en, this message translates to:
-  /// **'Shops you save will appear here so you can revisit them.'**
+  /// **'Browse spaces and tap the heart icon to save them here for later.'**
   String get savedEmptyMessage;
+
+  /// No description provided for @savedWishlistEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your wishlist is empty'**
+  String get savedWishlistEmptySubtitle;
+
+  /// No description provided for @savedExploreSpaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Spaces'**
+  String get savedExploreSpaces;
 
   /// No description provided for @savedSaveTooltip.
   ///
