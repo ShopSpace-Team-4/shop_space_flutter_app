@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../listing/data/models/listing_status.dart';
+import '../../../listing/repository/listing_repository.dart';
 import '../../data/models/user.dart';
 import '../../repository/user_repository.dart';
 import '../../../auth/google/auth_google_service.dart';
@@ -22,34 +24,43 @@ abstract class ProfileState with _$ProfileState {
     @Default(false) bool isUpdating,
     @Default(false) bool updateSuccess,
     String? updateError,
+    @Default(0) int listingsCount,
+    @Default(0) int activeListingsCount,
   }) = _ProfileState;
 }
 
-/// Minimal account-screen data loader (T034, US6). Fetches the signed-in
-/// user's profile (name/email/phone) via `UserRepository.getProfile()` and
-/// exposes loading/loaded/error states. Also links a Google identity to the
-/// existing password account (`UserRepository.linkGoogle`, API guide §5.6) and
-/// updates the profile name/phone (`UserRepository.updateProfile`, §5.2).
+/// Account-screen data loader (T034, US6): fetches the signed-in user's
+/// profile (name/email) via `UserRepository.getProfile()` and exposes
+/// loading/loaded/error states. Also links a Google identity to the existing
+/// password account (`UserRepository.linkGoogle`, API guide §5.6), updates the
+/// profile name/phone (`UserRepository.updateProfile`, §5.2), and loads the
+/// landlord listing counts shown in the header stats card
+/// (silent-on-failure — never blocks the header).
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({
     required UserRepository repository,
     required AuthGoogleService googleAuth,
+    required ListingRepository listingRepository,
     required AppLocalizations l10n,
   })  : _repository = repository,
         _googleAuth = googleAuth,
+        _listingRepository = listingRepository,
         _l10n = l10n,
         super(const ProfileState());
 
   final UserRepository _repository;
   final AuthGoogleService _googleAuth;
+  final ListingRepository _listingRepository;
   final AppLocalizations _l10n;
+
+  bool _statsLoading = false;
 
   Future<void> load() async {
     if (state.isLoading) return;
     emit(state.copyWith(isLoading: true, errorMessage: null));
     try {
       final User user = await _repository.getProfile();
-      emit(ProfileState(isLoading: false, user: user));
+      emit(state.copyWith(isLoading: false, user: user));
     } on Failure catch (failure) {
       emit(state.copyWith(
         isLoading: false,
@@ -57,6 +68,27 @@ class ProfileCubit extends Cubit<ProfileState> {
       ));
     } catch (_) {
       emit(state.copyWith(isLoading: false, errorMessage: _l10n.errorServer));
+    }
+  }
+
+  /// Loads the My Listings summary for the header stats (US6, Figma
+  /// `242:2958`). `activeListingsCount` counts only the `available` listings.
+  /// Failures are silent on purpose — a stats hiccup must never block the
+  /// header or surface an error screen.
+  Future<void> loadListingStats() async {
+    if (_statsLoading) return;
+    _statsLoading = true;
+    try {
+      final listings = await _listingRepository.getMyListings();
+      _statsLoading = false;
+      emit(state.copyWith(
+        listingsCount: listings.length,
+        activeListingsCount: listings
+            .where((listing) => listing.status == ListingStatus.available)
+            .length,
+      ));
+    } on Exception {
+      _statsLoading = false;
     }
   }
 

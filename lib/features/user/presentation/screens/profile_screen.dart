@@ -1,27 +1,34 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/storage/preferences_service.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
-import '../../../../core/validation/form_validators.dart';
 import '../../../../core/widgets/app_loading_view.dart';
 import '../../../auth/google/auth_google_service.dart';
 import '../../../auth/presentation/cubits/auth_session_cubit.dart';
-import '../../../auth/presentation/widgets/labeled_input.dart';
+import '../../../listing/repository/listing_repository.dart';
 import '../../data/models/user.dart';
+import '../../data/models/user_role.dart';
 import '../../repository/user_repository.dart';
 import '../cubits/profile_cubit.dart';
+import '../cubits/roles_cubit.dart';
 
-/// Minimal account screen (T036, US6): shows the signed-in user's name and
-/// email from [ProfileCubit], links to Change Password, links a Google
-/// identity, and signs the user out. The router's [AuthGuard] redirects to
-/// `/login` once the session is cleared by [AuthSessionCubit.signOut]. Fully
+/// Account screen (US6, Figma `242:2958`): a gradient header with the avatar,
+/// name/email, tappable role chips (each held role renders as a pill; the
+/// active one is solid white) and a Listings stat card, above a 4-row menu —
+/// My Listings, Verification (read-only), Settings and Sign Out. Role chips
+/// switch the active dashboard via [RolesCubit.switchActiveRole]; Sign Out
+/// clears the session through [AuthSessionCubit.signOut] (the router's
+/// [AuthGuard] redirects to `/login`). Rows/navigation use `context.push`
+/// (Settings, My Listings) so a back affordance stays available. Fully
 /// responsive (screenutil + flex).
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -32,9 +39,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late final ProfileCubit _cubit;
+  late final RolesCubit _rolesCubit;
   late final AuthSessionCubit _session;
-  late final FormValidators _validators;
+
   bool _signingOut = false;
+  bool _roleSwitchHandled = false;
 
   bool _initialized = false;
 
@@ -47,16 +56,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _cubit = ProfileCubit(
       repository: getIt<UserRepository>(),
       googleAuth: getIt<AuthGoogleService>(),
+      listingRepository: getIt<ListingRepository>(),
       l10n: l10n,
     );
-    _validators = FormValidators(l10n);
+    _rolesCubit = RolesCubit(
+      repository: getIt<UserRepository>(),
+      session: getIt<AuthSessionCubit>(),
+      preferences: getIt<PreferencesService>(),
+      l10n: l10n,
+    );
     _session = getIt<AuthSessionCubit>();
     _cubit.load();
+    _cubit.loadListingStats();
   }
 
   @override
   void dispose() {
     _cubit.close();
+    _rolesCubit.close();
     super.dispose();
   }
 
@@ -65,93 +82,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _session.signOut();
   }
 
-  void _onProfileState(BuildContext context, ProfileState state) {
+  void _switchRole(UserRole role) {
+    if (_rolesCubit.state.isSwitchingRole) return;
+    _roleSwitchHandled = false;
+    _rolesCubit.switchActiveRole(role);
+  }
+
+  void _onRolesState(BuildContext context, RolesState state) {
+    if (_roleSwitchHandled) return;
     final AppLocalizations l10n = AppLocalizations.of(context);
-    final String? message;
-    if (state.linkSuccess) {
-      message = l10n.profileLinkGoogleSuccess;
-    } else if (state.linkError != null) {
-      message = state.linkError;
-    } else {
-      return;
-    }
+    final String? message = state.isSuccess
+        ? l10n.profileRoleSwitchSuccess
+        : state.errorMessage;
+    if (message == null) return;
+    _roleSwitchHandled = true;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message!)));
-    _cubit.clearLinkFeedback();
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
-  String _fullName(User user) =>
-      '${user.firstName} ${user.lastName}'.trim();
-
-  /// Converts the stored phone (E.164 `+20…` or local form) to the 11-digit
-  /// local form the edit form validates and submits (D4).
-  static String _localPhone(String phone) {
-    final String digits = phone.replaceAll(RegExp(r'\D'), '');
-    if (digits.length == 11 && digits.startsWith('01')) return digits;
-    if (digits.length == 13 && digits.startsWith('20')) {
-      return digits.substring(2);
-    }
-    return phone;
-  }
-
-  /// Opens the edit-profile bottom sheet (prefilled from the current [User]).
-  /// On success the sheet pops with `true` and this method shows the feedback
-  /// SnackBar; the header already re-renders because the cubit stores the
-  /// recached [User].
-  Future<void> _openEditProfile(User user) async {
-    _cubit.clearUpdateFeedback();
-    final bool? saved = await showModalBottomSheet<bool>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (_) => _EditProfileSheet(
-        cubit: _cubit,
-        validators: _validators,
-        user: user,
-      ),
-    );
-    if (saved != true) return;
-    _cubit.clearUpdateFeedback();
-    if (!mounted) return;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).profileEditSuccess)),
-      );
-  }
+  String _fullName(User user) => '${user.firstName} ${user.lastName}'.trim();
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context);
-
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.profileTitle)),
-      body: SafeArea(
-        child: BlocConsumer<ProfileCubit, ProfileState>(
-          bloc: _cubit,
-          listener: _onProfileState,
-          builder: (BuildContext context, ProfileState state) {
-            final User? user = state.user;
-            if (user != null) {
-              return _ProfileContent(
-                fullName: _fullName(user),
-                email: user.email,
-                phone: user.phone,
-                isLinking: state.isLinking,
-                signingOut: _signingOut,
-                onEditProfile: () => _openEditProfile(user),
-                onLinkGoogle: _cubit.linkGoogle,
-                onSignOut: _signOut,
-              );
-            }
-            if (state.errorMessage != null) {
-              return _ProfileError(
-                message: state.errorMessage!,
-                onRetry: _cubit.load,
-              );
-            }
-            return const AppLoadingView();
+      backgroundColor: AppColors.background,
+      body: BlocListener<RolesCubit, RolesState>(
+        bloc: _rolesCubit,
+        listener: _onRolesState,
+        child: BlocBuilder<AuthSessionCubit, AuthSessionState>(
+          bloc: _session,
+          builder: (BuildContext context, AuthSessionState sessionState) {
+            return BlocBuilder<RolesCubit, RolesState>(
+              bloc: _rolesCubit,
+              builder: (BuildContext context, RolesState rolesState) {
+                return BlocBuilder<ProfileCubit, ProfileState>(
+                  bloc: _cubit,
+                  builder: (BuildContext context, ProfileState state) {
+                    final User? user = state.user;
+                    if (user != null) {
+                      return _ProfileContent(
+                        fullName: _fullName(user),
+                        email: user.email,
+                        roles: user.roles,
+                        isVerified: user.isVerified,
+                        avatarUrl: user.avatarUrl,
+                        activeRole: sessionState is AuthSessionAuthenticated
+                            ? sessionState.activeRole
+                            : UserRole.tenant,
+                        isSwitchingRole: rolesState.isSwitchingRole,
+                        signingOut: _signingOut,
+                        listingsCount: state.listingsCount,
+                        activeListingsCount: state.activeListingsCount,
+                        onRoleSwitch: _switchRole,
+                        onSignOut: _signOut,
+                      );
+                    }
+                    if (state.errorMessage != null) {
+                      return _ProfileError(
+                        message: state.errorMessage!,
+                        onRetry: _cubit.load,
+                      );
+                    }
+                    return const AppLoadingView();
+                  },
+                );
+              },
+            );
           },
         ),
       ),
@@ -163,139 +160,502 @@ class _ProfileContent extends StatelessWidget {
   const _ProfileContent({
     required this.fullName,
     required this.email,
-    required this.phone,
-    required this.isLinking,
+    required this.roles,
+    required this.isVerified,
+    required this.avatarUrl,
+    required this.activeRole,
+    required this.isSwitchingRole,
     required this.signingOut,
-    required this.onEditProfile,
-    required this.onLinkGoogle,
+    required this.listingsCount,
+    required this.activeListingsCount,
+    required this.onRoleSwitch,
     required this.onSignOut,
   });
 
   final String fullName;
   final String email;
-  final String? phone;
-  final bool isLinking;
+  final List<UserRole> roles;
+  final bool isVerified;
+  final String? avatarUrl;
+  final UserRole activeRole;
+  final bool isSwitchingRole;
   final bool signingOut;
-  final VoidCallback onEditProfile;
-  final VoidCallback onLinkGoogle;
+  final int listingsCount;
+  final int activeListingsCount;
+  final ValueChanged<UserRole> onRoleSwitch;
   final VoidCallback onSignOut;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context);
+    final bool isLandlord = roles.contains(UserRole.landlord);
+    // Decided: show the active count ONLY when > 0, fall back to the total
+    // otherwise; hide the line entirely for tenant-only accounts so a
+    // non-landlord never sees "0 active listings".
+    final int? listingSubtitleCount =
+        isLandlord && (activeListingsCount > 0 || listingsCount > 0)
+            ? (activeListingsCount > 0 ? activeListingsCount : listingsCount)
+            : null;
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(AppSpacing.xl.w),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 480.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: AppSpacing.sm.h),
-              Center(
-                child: CircleAvatar(
-                  radius: 40.r,
-                  backgroundColor: AppColors.primaryContainer,
-                  child: Icon(
-                    Icons.person_outline,
-                    size: 40.sp,
-                    color: AppColors.primary,
-                  ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ProfileHeader(
+            fullName: fullName,
+            email: email,
+            roles: roles,
+            avatarUrl: avatarUrl,
+            activeRole: activeRole,
+            isSwitchingRole: isSwitchingRole,
+            listingsCount: listingsCount,
+            onRoleSwitch: onRoleSwitch,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.xl.w,
+              AppSpacing.lg.h,
+              AppSpacing.xl.w,
+              AppSpacing.xl.h,
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 560.w),
+                child: _ProfileMenu(
+                  l10n: l10n,
+                  isVerified: isVerified,
+                  listingSubtitleCount: listingSubtitleCount,
+                  signingOut: signingOut,
+                  onSignOut: onSignOut,
                 ),
               ),
-              SizedBox(height: AppSpacing.lg.h),
-              Text(
-                fullName,
-                textAlign: TextAlign.center,
-                style: AppTypography.heading2,
-              ),
-              SizedBox(height: AppSpacing.xs.h),
-              Text(
-                email,
-                textAlign: TextAlign.center,
-                style: AppTypography.bodyLarge.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              if (phone != null && phone!.isNotEmpty) ...[
-                SizedBox(height: AppSpacing.xs.h),
-                Text(
-                  phone!,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.bodyLarge.copyWith(
-                    color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({
+    required this.fullName,
+    required this.email,
+    required this.roles,
+    required this.avatarUrl,
+    required this.activeRole,
+    required this.isSwitchingRole,
+    required this.listingsCount,
+    required this.onRoleSwitch,
+  });
+
+  final String fullName;
+  final String email;
+  final List<UserRole> roles;
+  final String? avatarUrl;
+  final UserRole activeRole;
+  final bool isSwitchingRole;
+  final int listingsCount;
+  final ValueChanged<UserRole> onRoleSwitch;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context);
+    // Figma renders landlord first, then tenant; only roles the user actually
+    // holds render, so a tenant-only account shows a single active chip.
+    final List<UserRole> held = [
+      if (roles.contains(UserRole.landlord)) UserRole.landlord,
+      if (roles.contains(UserRole.tenant)) UserRole.tenant,
+    ];
+
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.heroGradientStart, AppColors.heroGradientEnd],
+        ),
+      ),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.xl.w,
+        AppSpacing.md.h,
+        AppSpacing.xl.w,
+        AppSpacing.xl.h,
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _ProfileAvatar(url: avatarUrl),
+                SizedBox(width: AppSpacing.md.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        fullName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.bodyLarge.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textInverse,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.bodySmall.copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.textInverse.withValues(alpha: 0.55),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-              SizedBox(height: AppSpacing.xl.h),
-              Card(
-                margin: EdgeInsets.zero,
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.edit_outlined),
-                      title: Text(l10n.profileEditProfile),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: onEditProfile,
+            ),
+            SizedBox(height: AppSpacing.md.h),
+            if (held.isNotEmpty) ...[
+              Wrap(
+                spacing: AppSpacing.sm.w,
+                runSpacing: AppSpacing.sm.h,
+                children: [
+                  for (final UserRole role in held)
+                    _RoleChip(
+                      label: role == UserRole.landlord
+                          ? '🏢 ${l10n.roleLandlord}'
+                          : '🔍 ${l10n.roleTenant}',
+                      isActive: role == activeRole,
+                      isSwitching: isSwitchingRole && role == activeRole,
+                      onTap: role == activeRole
+                          ? null
+                          : () => onRoleSwitch(role),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.storefront_outlined),
-                      title: Text(l10n.myListingsTitle),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.go('/my-listings'),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.support_agent_outlined),
-                      title: Text(l10n.navAdvisor),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.push('/advisor'),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.lock_outline),
-                      title: Text(l10n.profileChangePassword),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.go('/change-password'),
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/svgs/google_icon.svg',
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      title: Text(l10n.profileLinkGoogle),
-                      trailing: isLinking
-                          ? SizedBox(
-                              width: 20.w,
-                              height: 20.h,
-                              child:
-                                  const CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.chevron_right),
-                      onTap: isLinking ? null : onLinkGoogle,
-                    ),
-                  ],
+                ],
+              ),
+              SizedBox(height: AppSpacing.md.h),
+            ],
+            _StatCard(listingsCount: listingsCount, l10n: l10n),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileAvatar extends StatelessWidget {
+  const _ProfileAvatar({required this.url});
+
+  final String? url;
+
+  @override
+  Widget build(BuildContext context) {
+    final String? imageUrl = url;
+    final Widget fallback = Container(
+      color: AppColors.surface.withValues(alpha: 0.20),
+      child: Icon(Icons.person, size: 28.sp, color: AppColors.textInverse),
+    );
+
+    return ClipOval(
+      child: SizedBox(
+        width: 56.r,
+        height: 56.r,
+        child: (imageUrl == null || imageUrl.isEmpty)
+            ? fallback
+            : CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                errorWidget: (context, _, _) => fallback,
+              ),
+      ),
+    );
+  }
+}
+
+class _RoleChip extends StatelessWidget {
+  const _RoleChip({
+    required this.label,
+    required this.isActive,
+    required this.isSwitching,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isActive;
+  final bool isSwitching;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: isActive
+          ? AppColors.surface
+          : AppColors.surface.withValues(alpha: 0.15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: AppTypography.bodySmall.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: isActive
+                      ? AppColors.surfaceInverse
+                      : AppColors.textInverse,
                 ),
               ),
-              SizedBox(height: AppSpacing.xl.h),
-              SizedBox(
-                height: 48.h,
-                child: OutlinedButton.icon(
-                  onPressed: signingOut ? null : onSignOut,
-                  icon: signingOut
-                      ? SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: const CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.logout),
-                  label: Text(l10n.profileSignOut),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.error,
-                    side: const BorderSide(color: AppColors.error),
+              if (isSwitching) ...[
+                SizedBox(width: 6.w),
+                SizedBox(
+                  width: 12.r,
+                  height: 12.r,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.listingsCount, required this.l10n});
+
+  final int listingsCount;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.md.h,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surface.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.medium.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$listingsCount',
+            style: AppTypography.bodyLarge.copyWith(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w800,
+              color: AppColors.textInverse,
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            l10n.profileListingsStat,
+            style: AppTypography.caption.copyWith(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0,
+              color: AppColors.textInverse.withValues(alpha: 0.5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileMenu extends StatelessWidget {
+  const _ProfileMenu({
+    required this.l10n,
+    required this.isVerified,
+    required this.listingSubtitleCount,
+    required this.signingOut,
+    required this.onSignOut,
+  });
+
+  final AppLocalizations l10n;
+  final bool isVerified;
+  final int? listingSubtitleCount;
+  final bool signingOut;
+  final VoidCallback onSignOut;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.card.r),
+      ),
+      child: Column(
+        children: [
+          _ProfileRow(
+            icon: Icon(Icons.grid_view_outlined, size: 20.sp),
+            title: l10n.myListingsTitle,
+            subtitle: listingSubtitleCount == null
+                ? null
+                : l10n.profileActiveListings(listingSubtitleCount!),
+            onTap: () => context.push('/my-listings'),
+          ),
+          const _ProfileDivider(),
+          _ProfileRow(
+            icon: Icon(Icons.verified_outlined, size: 20.sp),
+            title: l10n.profileVerification,
+            subtitle: isVerified
+                ? l10n.profileVerificationVerified
+                : l10n.profileVerificationNotVerified,
+            onTap: null,
+            showChevron: false,
+          ),
+          const _ProfileDivider(),
+          _ProfileRow(
+            icon: Icon(Icons.settings_outlined, size: 20.sp),
+            title: l10n.profileSettingsRow,
+            subtitle: l10n.profileSettingsSubtitle,
+            onTap: () => context.push('/settings'),
+          ),
+          const _ProfileDivider(),
+          _ProfileRow(
+            icon: Icon(Icons.logout, size: 20.sp),
+            title: l10n.profileSignOut,
+            onTap: signingOut ? null : onSignOut,
+            showChevron: false,
+            destructive: true,
+            trailing: signingOut
+                ? SizedBox(
+                    width: 14.r,
+                    height: 14.r,
+                    child: const CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileDivider extends StatelessWidget {
+  const _ProfileDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1.h,
+      thickness: 1,
+      indent: AppSpacing.lg.w,
+      endIndent: AppSpacing.lg.w,
+      color: AppColors.outlineSubtle,
+    );
+  }
+}
+
+class _ProfileRow extends StatelessWidget {
+  const _ProfileRow({
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    required this.onTap,
+    this.showChevron = true,
+    this.destructive = false,
+    this.trailing,
+  });
+
+  final Widget icon;
+  final String title;
+  final String? subtitle;
+  final VoidCallback? onTap;
+  final bool showChevron;
+  final bool destructive;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color boxColor =
+        destructive ? AppColors.errorContainer : AppColors.surfaceVariant;
+    final Color iconColor =
+        destructive ? AppColors.error : AppColors.surfaceInverse;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 65.h,
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+          child: Row(
+            children: [
+              Container(
+                width: 38.r,
+                height: 38.r,
+                decoration: BoxDecoration(
+                  color: boxColor,
+                  borderRadius: BorderRadius.circular(AppRadius.medium.r),
+                ),
+                child: Center(
+                  child: IconTheme.merge(
+                    data: IconThemeData(color: iconColor),
+                    child: icon,
                   ),
                 ),
               ),
+              SizedBox(width: AppSpacing.md.w),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.bodySmall.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: destructive
+                            ? AppColors.error
+                            : AppColors.textPrimary,
+                      ),
+                    ),
+                    if (subtitle != null) ...[
+                      SizedBox(height: 2.h),
+                      Text(
+                        subtitle!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.caption.copyWith(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0,
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (trailing != null) ...[
+                SizedBox(width: AppSpacing.sm.w),
+                trailing!,
+              ] else if (showChevron)
+                Icon(
+                  Icons.chevron_right,
+                  size: 14.sp,
+                  color: AppColors.textTertiary,
+                ),
             ],
           ),
         ),
@@ -332,164 +692,6 @@ class _ProfileError extends StatelessWidget {
               child: Text(l10n.retry),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Edit-profile bottom sheet (profile → "Edit Profile"): a prefilled form for
-/// first name / last name / phone, validated with the existing
-/// [FormValidators]. Submitting calls [ProfileCubit.updateProfile]; the sheet
-/// pops with `true` on success (inline error stays open for retry on failure).
-/// Fully responsive (screenutil + flex).
-class _EditProfileSheet extends StatefulWidget {
-  const _EditProfileSheet({
-    required this.cubit,
-    required this.validators,
-    required this.user,
-  });
-
-  final ProfileCubit cubit;
-  final FormValidators validators;
-  final User user;
-
-  @override
-  State<_EditProfileSheet> createState() => _EditProfileSheetState();
-}
-
-class _EditProfileSheetState extends State<_EditProfileSheet> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController _firstName;
-  late final TextEditingController _lastName;
-  late final TextEditingController _phone;
-
-  @override
-  void initState() {
-    super.initState();
-    _firstName = TextEditingController(text: widget.user.firstName);
-    _lastName = TextEditingController(text: widget.user.lastName);
-    _phone = TextEditingController(
-      text: _ProfileScreenState._localPhone(widget.user.phone),
-    );
-  }
-
-  @override
-  void dispose() {
-    _firstName.dispose();
-    _lastName.dispose();
-    _phone.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
-    FocusScope.of(context).unfocus();
-    if (!_formKey.currentState!.validate()) return;
-    widget.cubit.updateProfile(
-      firstName: _firstName.text,
-      lastName: _lastName.text,
-      phone: _phone.text,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context);
-
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          AppSpacing.lg.w,
-          0,
-          AppSpacing.lg.w,
-          AppSpacing.xl.h,
-        ),
-        child: BlocConsumer<ProfileCubit, ProfileState>(
-          bloc: widget.cubit,
-          listener: (BuildContext context, ProfileState state) {
-            if (!state.updateSuccess) return;
-            // The sheet may have been dismissed mid-request; never pop a
-            // route that isn't this sheet anymore.
-            if (!context.mounted) return;
-            Navigator.of(context).pop(true);
-          },
-          builder: (BuildContext context, ProfileState state) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    l10n.profileEditTitle,
-                    style: AppTypography.heading4.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.lg.h),
-                  Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        LabeledInput(
-                          label: l10n.authFirstNameLabel,
-                          controller: _firstName,
-                          validator: widget.validators.name,
-                          textInputAction: TextInputAction.next,
-                          textCapitalization: TextCapitalization.words,
-                        ),
-                        SizedBox(height: AppSpacing.lg.h),
-                        LabeledInput(
-                          label: l10n.authLastNameLabel,
-                          controller: _lastName,
-                          validator: widget.validators.name,
-                          textInputAction: TextInputAction.next,
-                          textCapitalization: TextCapitalization.words,
-                        ),
-                        SizedBox(height: AppSpacing.lg.h),
-                        LabeledInput(
-                          label: l10n.authPhoneLabel,
-                          controller: _phone,
-                          validator: widget.validators.phone,
-                          keyboardType: TextInputType.phone,
-                          textInputAction: TextInputAction.done,
-                          onFieldSubmitted: (_) => _submit(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state.updateError != null) ...[
-                    SizedBox(height: AppSpacing.sm.h),
-                    Text(
-                      state.updateError!,
-                      textAlign: TextAlign.center,
-                      style: AppTypography.bodySmall.copyWith(
-                        color: AppColors.error,
-                      ),
-                    ),
-                  ],
-                  SizedBox(height: AppSpacing.lg.h),
-                  SizedBox(
-                    height: 48.h,
-                    child: FilledButton(
-                      onPressed: state.isUpdating ? null : _submit,
-                      child: state.isUpdating
-                          ? SizedBox(
-                              width: 20.w,
-                              height: 20.h,
-                              child: const CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.onPrimary,
-                              ),
-                            )
-                          : Text(l10n.profileEditSave),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
         ),
       ),
     );

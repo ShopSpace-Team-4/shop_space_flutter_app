@@ -648,6 +648,101 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEditSuccess => 'Profile updated.';
 
   @override
+  String get profileVerification => 'Verification';
+
+  @override
+  String get profileVerificationVerified => 'ID & Business verified';
+
+  @override
+  String get profileVerificationNotVerified => 'Not verified yet';
+
+  @override
+  String get profileListingsStat => 'Listings';
+
+  @override
+  String profileActiveListings(int count) {
+    return '$count active listings';
+  }
+
+  @override
+  String get profileSettingsRow => 'Settings';
+
+  @override
+  String get profileSettingsSubtitle => 'Notifications, privacy';
+
+  @override
+  String get profileRoleSwitchSuccess => 'Active role updated';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSectionAccount => 'Account';
+
+  @override
+  String get settingsSectionNotifications => 'Notifications';
+
+  @override
+  String get settingsSectionPrivacy => 'Privacy';
+
+  @override
+  String get settingsEditProfile => 'Edit profile';
+
+  @override
+  String get settingsEditProfileSubtitle => 'Name, photo, bio';
+
+  @override
+  String get settingsChangePassword => 'Change password';
+
+  @override
+  String get settingsChangePasswordSubtitle => 'Update or reset your password';
+
+  @override
+  String get settingsLinkGoogle => 'Link Google account';
+
+  @override
+  String get settingsLinkGoogleSubtitle => 'Sign in faster with Google';
+
+  @override
+  String get settingsNotifPush => 'Push notifications';
+
+  @override
+  String get settingsNotifPushSubtitle => 'Enquiries, messages';
+
+  @override
+  String get settingsNotifEmail => 'Email alerts';
+
+  @override
+  String get settingsNotifEmailSubtitle => 'Weekly digest';
+
+  @override
+  String get settingsNotifSms => 'SMS alerts';
+
+  @override
+  String get settingsNotifSmsSubtitle => 'Critical only';
+
+  @override
+  String get settingsDeleteAccount => 'Delete account';
+
+  @override
+  String get settingsDeleteAccountSubtitle => 'Permanent action';
+
+  @override
+  String get settingsSectionAppearance => 'Appearance';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLanguageSheetTitle => 'Select language';
+
+  @override
+  String get settingsLanguageEnglish => 'English';
+
+  @override
+  String get settingsLanguageArabic => 'العربية';
+
+  @override
   String get changePasswordTitle => 'Change password';
 
   @override
