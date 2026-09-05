@@ -1,11 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthTokens {
-  const AuthTokens({required this.accessToken, required this.refreshToken});
+import '../../features/auth/data/models/auth_tokens.dart';
 
-  final String accessToken;
-  final String refreshToken;
-}
+export '../../features/auth/data/models/auth_tokens.dart';
 
 abstract class TokenStorage {
   Future<AuthTokens?> read();
@@ -37,8 +34,8 @@ class SecureTokenStorage implements TokenStorage {
 
   @override
   Future<void> write(AuthTokens tokens) async {
-    await _storage.write(key: _accessTokenKey, value: tokens.accessToken);
     await _storage.write(key: _refreshTokenKey, value: tokens.refreshToken);
+    await _storage.write(key: _accessTokenKey, value: tokens.accessToken);
   }
 
   @override

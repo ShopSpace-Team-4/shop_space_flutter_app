@@ -114,6 +114,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeCategoriesTitle => 'الفئات';
 
   @override
+  String get homeCategoryAll => 'الكل';
+
+  @override
   String get homeRecommendedTitle => 'المساحات';
 
   @override
@@ -130,6 +133,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeEmptyCategories => 'لا توجد فئات متاحة';
+
+  @override
+  String homeCategoryEmptyTitle(String category) {
+    return 'لا توجد مساحات ضمن فئة $category';
+  }
+
+  @override
+  String get homeCategoryEmptyMessage => 'جرّب فئة أخرى أو اعرض كل المساحات.';
+
+  @override
+  String get homeShowAll => 'عرض الكل';
 
   @override
   String homeRentPerYear(String amount) {
@@ -762,6 +776,30 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم تغيير كلمة المرور. يرجى تسجيل الدخول مرة أخرى.';
 
   @override
+  String get authConfirmPasswordLabel => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get authPasswordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get changePasswordRequirements => 'المتطلبات';
+
+  @override
+  String get changePasswordRequirementLength => '8 أحرف على الأقل';
+
+  @override
+  String get changePasswordRequirementLowercase => 'حرف صغير واحد (a–z)';
+
+  @override
+  String get changePasswordRequirementUppercase => 'حرف كبير واحد (A–Z)';
+
+  @override
+  String get changePasswordRequirementNumber => 'رقم واحد (0–9)';
+
+  @override
+  String get changePasswordRequirementSpecial => 'حرف خاص واحد (@\$!%*?&)';
+
+  @override
   String get activeRoleLabel => 'الدور النشط';
 
   @override
@@ -1014,10 +1052,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formDistrictHint => 'اختر الحي';
 
   @override
-  String get formFieldAddress => 'العنوان (اختياري)';
+  String get formFieldAddress => 'العنوان';
 
   @override
-  String get formFieldDescription => 'الوصف (اختياري)';
+  String get formAddressRequired => 'أدخل العنوان';
+
+  @override
+  String get formFieldDescription => 'الوصف';
+
+  @override
+  String get formDescriptionRequired => 'أدخل الوصف';
 
   @override
   String get formFieldAmenities => 'المرافق';
@@ -1026,7 +1070,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formAmenitiesHint => 'اختر ما ينطبق';
 
   @override
-  String get formFieldFloors => 'عدد الطوابق (اختياري)';
+  String get formFieldFloors => 'عدد الطوابق';
+
+  @override
+  String get formFloorsRequired => 'أدخل عدد الطوابق';
 
   @override
   String get formFieldFloorNumber => 'رقم الطابق';
@@ -1042,6 +1089,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get formFieldMinimumLease => 'الحد الأدنى لمدة الإيجار';
+
+  @override
+  String get formMinimumLeaseRequired => 'أدخل الحد الأدنى لمدة الإيجار';
 
   @override
   String get formFieldAnnualRent => 'الإيجار السنوي (جنيه)';
@@ -1060,6 +1110,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get formFieldSecurityDeposit => 'التأمين (أشهر)';
+
+  @override
+  String get formSecurityDepositRequired => 'أدخل التأمين (أشهر)';
 
   @override
   String get formPhotoAdd => 'أضف صوراً';

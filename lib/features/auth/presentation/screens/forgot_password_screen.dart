@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/validation/form_validators.dart';
-import '../../repository/auth_repository.dart';
 import '../cubits/forgot_password_cubit.dart';
 import '../widgets/labeled_input.dart';
 
@@ -40,16 +38,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     _initialized = true;
     final AppLocalizations l10n = AppLocalizations.of(context);
     _validators = FormValidators(l10n);
-    _cubit = ForgotPasswordCubit(
-      repository: getIt<AuthRepository>(),
-      l10n: l10n,
-    );
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<ForgotPasswordCubit>();
   }
 
   @override
   void dispose() {
     _email.dispose();
-    _cubit.close();
     super.dispose();
   }
 

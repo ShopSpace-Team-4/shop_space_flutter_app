@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/localization/localization_cubit.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -13,10 +12,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/validation/form_validators.dart';
 import '../../../../core/widgets/app_loading_view.dart';
-import '../../../auth/google/auth_google_service.dart';
-import '../../../listing/repository/listing_repository.dart';
 import '../../data/models/user.dart';
-import '../../repository/user_repository.dart';
 import '../cubits/profile_cubit.dart';
 import '../widgets/edit_profile_sheet.dart';
 import '../widgets/language_picker_sheet.dart';
@@ -46,21 +42,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    final AppLocalizations l10n = AppLocalizations.of(context);
-    _cubit = ProfileCubit(
-      repository: getIt<UserRepository>(),
-      googleAuth: getIt<AuthGoogleService>(),
-      listingRepository: getIt<ListingRepository>(),
-      l10n: l10n,
-    );
-    _validators = FormValidators(l10n);
-    _cubit.load();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Shared session-scoped instance provided above the navigator (see
+    // bootstrap.dart); the BlocProvider owns its lifecycle. Edit-profile /
+    // link-google changes land on the SAME cubit ProfileScreen listens to, so
+    // nothing is stale when navigating back.
+    _cubit = context.read<ProfileCubit>();
+    _validators = FormValidators(AppLocalizations.of(context));
   }
 
   void _onProfileState(BuildContext context, ProfileState state) {

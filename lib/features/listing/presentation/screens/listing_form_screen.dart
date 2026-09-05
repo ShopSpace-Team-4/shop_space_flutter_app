@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -14,7 +13,6 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loading_view.dart';
-import '../../repository/listing_repository.dart';
 import '../cubits/listing_form_cubit.dart';
 import '../widgets/listing_form_controllers.dart';
 import '../widgets/listing_form_step_details.dart';
@@ -57,22 +55,14 @@ class _ListingFormScreenState extends State<ListingFormScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = ListingFormCubit(
-      repository: getIt<ListingRepository>(),
-      isEditMode: _isEditMode,
-      listingId: widget.listingId,
-    );
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<ListingFormCubit>();
     _controllers = ListingFormControllers();
-    _cubit.fetchMeta();
-    if (_isEditMode) {
-      _cubit.loadForEdit(widget.listingId!);
-    }
   }
 
   @override
   void dispose() {
     _controllers.dispose();
-    _cubit.close();
     super.dispose();
   }
 

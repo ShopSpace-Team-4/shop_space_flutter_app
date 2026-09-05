@@ -30,6 +30,8 @@ class TokenRefresher {
       return await _refreshTokens(current);
     } on Failure {
       return null;
+    } catch (_) {
+      return null;
     }
   }
 }

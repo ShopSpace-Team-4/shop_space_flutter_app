@@ -74,16 +74,22 @@ class SessionInterceptor extends Interceptor {
       return;
     }
     err.requestOptions.extra[_retriedKey] = true;
+    final Dio? dio = _dio;
+    if (dio == null) {
+      handler.next(err);
+      return;
+    }
     try {
-      final Response<dynamic> response =
-          await _dio!.fetch<dynamic>(err.requestOptions);
+      final Response<dynamic> response = await dio.fetch<dynamic>(
+        err.requestOptions,
+      );
       handler.resolve(response);
     } on DioException catch (retryError) {
       if (retryError.response?.statusCode == 401) {
         await _session.onSessionExpired();
       }
       handler.reject(retryError, true);
-    } catch (_) {
+    } catch (retryError) {
       handler.next(err);
     }
   }

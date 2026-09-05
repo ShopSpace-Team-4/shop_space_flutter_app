@@ -74,20 +74,23 @@ class ProfileCubit extends Cubit<ProfileState> {
   /// Loads the My Listings summary for the header stats (US6, Figma
   /// `242:2958`). `activeListingsCount` counts only the `available` listings.
   /// Failures are silent on purpose — a stats hiccup must never block the
-  /// header or surface an error screen.
+  /// header or surface an error screen. The `finally` guarantees the re-entry
+  /// guard resets even when a [Failure] (which is not an `Exception`) escapes
+  /// the repository call, so the stats can always be retried.
   Future<void> loadListingStats() async {
     if (_statsLoading) return;
     _statsLoading = true;
     try {
       final listings = await _listingRepository.getMyListings();
-      _statsLoading = false;
       emit(state.copyWith(
         listingsCount: listings.length,
         activeListingsCount: listings
             .where((listing) => listing.status == ListingStatus.available)
             .length,
       ));
-    } on Exception {
+    } catch (_) {
+      // Intentional no-op: stats stay at their previous values on failure.
+    } finally {
       _statsLoading = false;
     }
   }

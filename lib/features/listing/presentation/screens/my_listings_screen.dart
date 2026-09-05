@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -17,7 +16,6 @@ import '../../../../core/widgets/app_loading_view.dart';
 import '../../data/models/listing_status.dart';
 import '../../data/models/listing_summary.dart';
 import '../../data/models/shop_listing.dart';
-import '../../repository/listing_repository.dart';
 import '../cubits/my_listings_cubit.dart';
 import '../list_a_shop_flow.dart';
 import '../widgets/listing_card.dart';
@@ -46,14 +44,8 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = MyListingsCubit(repository: getIt<ListingRepository>());
-    _cubit.loadList();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<MyListingsCubit>();
   }
 
   /// "List a shop" entry (FR-001/FR-002): shared roles[] gate — landlord goes

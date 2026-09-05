@@ -146,6 +146,9 @@ class ListingFormStepDetails extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
           onChanged: (String value) =>
               cubit.updateField(ListingFormFieldKeys.address, value),
+          validator: (String? value) => (value == null || value.trim().isEmpty)
+              ? l10n.formAddressRequired
+              : null,
           decoration: _decoration(),
         ),
         SizedBox(height: AppSpacing.lg.h),
@@ -158,6 +161,9 @@ class ListingFormStepDetails extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
           onChanged: (String value) =>
               cubit.updateField(ListingFormFieldKeys.description, value),
+          validator: (String? value) => (value == null || value.trim().isEmpty)
+              ? l10n.formDescriptionRequired
+              : null,
           decoration: _decoration(),
         ),
       ],

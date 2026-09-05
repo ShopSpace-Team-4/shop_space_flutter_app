@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -13,7 +12,6 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_loading_view.dart';
 import '../../data/models/listing_status.dart';
 import '../../data/models/shop_listing.dart';
-import '../../repository/listing_repository.dart';
 import '../cubits/my_listings_cubit.dart';
 import '../widgets/listing_detail_pane.dart';
 import '../widgets/status_picker.dart';
@@ -40,14 +38,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = MyListingsCubit(repository: getIt<ListingRepository>());
-    _cubit.loadDetail(widget.listingId);
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<MyListingsCubit>();
   }
 
   @override

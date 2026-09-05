@@ -114,6 +114,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeCategoriesTitle => 'Categories';
 
   @override
+  String get homeCategoryAll => 'All';
+
+  @override
   String get homeRecommendedTitle => 'Spaces';
 
   @override
@@ -130,6 +133,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeEmptyCategories => 'No categories available';
+
+  @override
+  String homeCategoryEmptyTitle(String category) {
+    return 'No $category spaces found';
+  }
+
+  @override
+  String get homeCategoryEmptyMessage =>
+      'Try another category or show all spaces.';
+
+  @override
+  String get homeShowAll => 'Show all';
 
   @override
   String homeRentPerYear(String amount) {
@@ -752,10 +767,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePasswordTitle => 'Change password';
 
   @override
-  String get changePasswordSubmit => 'Update password';
+  String get changePasswordSubmit => 'Update Password';
 
   @override
   String get changePasswordSuccess => 'Password changed. Please sign in again.';
+
+  @override
+  String get authConfirmPasswordLabel => 'Confirm new password';
+
+  @override
+  String get authPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get changePasswordRequirements => 'Requirements';
+
+  @override
+  String get changePasswordRequirementLength => 'At least 8 characters';
+
+  @override
+  String get changePasswordRequirementLowercase => 'One lowercase letter (a–z)';
+
+  @override
+  String get changePasswordRequirementUppercase => 'One uppercase letter (A–Z)';
+
+  @override
+  String get changePasswordRequirementNumber => 'One number (0–9)';
+
+  @override
+  String get changePasswordRequirementSpecial =>
+      'One special character (@\$!%*?&)';
 
   @override
   String get activeRoleLabel => 'Active role';
@@ -1012,10 +1052,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formDistrictHint => 'Select a district';
 
   @override
-  String get formFieldAddress => 'Address (optional)';
+  String get formFieldAddress => 'Address';
 
   @override
-  String get formFieldDescription => 'Description (optional)';
+  String get formAddressRequired => 'Enter the address';
+
+  @override
+  String get formFieldDescription => 'Description';
+
+  @override
+  String get formDescriptionRequired => 'Enter the description';
 
   @override
   String get formFieldAmenities => 'Amenities';
@@ -1024,7 +1070,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formAmenitiesHint => 'Select any that apply';
 
   @override
-  String get formFieldFloors => 'Number of floors (optional)';
+  String get formFieldFloors => 'Number of floors';
+
+  @override
+  String get formFloorsRequired => 'Enter the number of floors';
 
   @override
   String get formFieldFloorNumber => 'Floor number';
@@ -1040,6 +1089,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get formFieldMinimumLease => 'Minimum lease term';
+
+  @override
+  String get formMinimumLeaseRequired => 'Enter the minimum lease term';
 
   @override
   String get formFieldAnnualRent => 'Annual rent (EGP)';
@@ -1058,6 +1110,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get formFieldSecurityDeposit => 'Security deposit (months)';
+
+  @override
+  String get formSecurityDepositRequired =>
+      'Enter the security deposit in months';
 
   @override
   String get formPhotoAdd => 'Add photos';

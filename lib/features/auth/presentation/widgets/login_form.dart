@@ -3,15 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/validation/form_validators.dart';
-import '../../google/auth_google_service.dart';
-import '../../repository/auth_repository.dart';
-import '../cubits/auth_session_cubit.dart';
 import '../cubits/google_sign_in_cubit.dart';
 import '../cubits/login_cubit.dart';
 import 'auth_cta_button.dart';
@@ -50,24 +46,15 @@ class _LoginFormState extends State<LoginForm> {
     _initialized = true;
     final AppLocalizations l10n = AppLocalizations.of(context);
     _validators = FormValidators(l10n);
-    _cubit = LoginCubit(
-      repository: getIt<AuthRepository>(),
-      l10n: l10n,
-      session: getIt<AuthSessionCubit>(),
-    );
-    _googleCubit = GoogleSignInCubit(
-      googleAuth: getIt<AuthGoogleService>(),
-      session: getIt<AuthSessionCubit>(),
-      l10n: l10n,
-    );
+    // Provided by AuthScreen's BlocProviders; they own the cubits' lifecycles.
+    _cubit = context.read<LoginCubit>();
+    _googleCubit = context.read<GoogleSignInCubit>();
   }
 
   @override
   void dispose() {
     _email.dispose();
     _password.dispose();
-    _cubit.close();
-    _googleCubit.close();
     super.dispose();
   }
 

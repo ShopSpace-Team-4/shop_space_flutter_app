@@ -9,6 +9,17 @@ import 'failures.dart';
 class ErrorMapper {
   const ErrorMapper();
 
+  /// Normalizes an endpoint path for matchers: strips a leading slash and the
+  /// `/api/v1` prefix (the base URL already carries it, but retried/redirected
+  /// requests may surface the full path).
+  static String normalizePath(String path) {
+    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
+    if (normalized.startsWith('api/v1/')) {
+      normalized = normalized.substring('api/v1/'.length);
+    }
+    return normalized;
+  }
+
   static const String networkMessageKey = 'errorNetwork';
   static const String timeoutMessageKey = 'errorTimeout';
   static const String offlineMessageKey = 'errorOffline';
@@ -121,9 +132,19 @@ class ErrorMapper {
   /// Maps a 401 on an unauthenticated endpoint. The backend rejects with
   /// `error.name: UnauthorizedException` and a human `message`; an unverified
   /// account mentions verification, everything else is a credentials problem.
+  /// Prefers the structured `error.name` field when present, falling back to
+  /// the human `message` (auth endpoints may not always include the nested
+  /// error body).
   Failure _mapUnauthenticated401(DioException error) {
     final dynamic data = error.response?.data;
     if (data is Map) {
+      final dynamic errorBody = data['error'];
+      if (errorBody is Map) {
+        final dynamic name = errorBody['name'];
+        if (name is String && name.toLowerCase().contains('verif')) {
+          return const EmailNotVerified(emailNotVerifiedMessageKey);
+        }
+      }
       final dynamic message = data['message'];
       if (message is String && message.toLowerCase().contains('verif')) {
         return const EmailNotVerified(emailNotVerifiedMessageKey);
@@ -140,7 +161,7 @@ class ErrorMapper {
   /// a listing delete). Returns `null` for anything that isn't a saved endpoint.
   Failure? _mapSavedBadResponse(DioException error) {
     final RequestOptions options = error.requestOptions;
-    final String path = _SavedPaths.normalized(options.path);
+    final String path = ErrorMapper.normalizePath(options.path);
     if (!_SavedPaths.isSavedPath(path)) {
       return null;
     }
@@ -160,7 +181,7 @@ class ErrorMapper {
   /// for anything that isn't the chat endpoint.
   Failure? _mapAdvisorBadResponse(DioException error) {
     final RequestOptions options = error.requestOptions;
-    final String path = _AdvisorPaths.normalized(options.path);
+    final String path = ErrorMapper.normalizePath(options.path);
     if (!_AdvisorPaths.isAdvisorChatPath(path)) {
       return null;
     }
@@ -184,7 +205,7 @@ class ErrorMapper {
   /// through to the shared pipeline).
   Failure? _mapAuthGoogleBadResponse(DioException error) {
     final RequestOptions options = error.requestOptions;
-    final String path = _AuthGooglePaths.normalized(options.path);
+    final String path = ErrorMapper.normalizePath(options.path);
     if (!_AuthGooglePaths.isAuthGooglePath(path)) {
       return null;
     }
@@ -212,7 +233,7 @@ class ErrorMapper {
   /// `null` for anything that isn't the link endpoint.
   Failure? _mapLinkGoogleBadResponse(DioException error) {
     final RequestOptions options = error.requestOptions;
-    final String path = _LinkGooglePaths.normalized(options.path);
+    final String path = ErrorMapper.normalizePath(options.path);
     if (!_LinkGooglePaths.isLinkGooglePath(path)) {
       return null;
     }
@@ -229,7 +250,7 @@ class ErrorMapper {
   /// pipeline, e.g. `GET /listings/my-listings` and `GET /listings/:id`).
   Failure? _mapListingBadResponse(DioException error) {
     final RequestOptions options = error.requestOptions;
-    final String path = _ListingPaths.normalized(options.path);
+    final String path = ErrorMapper.normalizePath(options.path);
     if (!_ListingPaths.isListingPath(path)) {
       return null;
     }
@@ -336,82 +357,40 @@ class ErrorMapper {
 /// Matcher for the `/listings*` endpoint family used by [ErrorMapper].
 /// Tolerates a leading slash and the `/api/v1` prefix (the base URL already
 /// carries it, but retried/redirected requests may surface the full path).
+/// Paths must be normalized via [ErrorMapper.normalizePath] before matching.
 abstract final class _ListingPaths {
-  /// [path] must already be normalized via [normalized].
+  /// [path] must already be normalized via [ErrorMapper.normalizePath].
   static bool isListingPath(String path) =>
       path == 'listings' || path.startsWith('listings/');
-
-  static String normalized(String path) {
-    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
-    if (normalized.startsWith('api/v1/')) {
-      normalized = normalized.substring('api/v1/'.length);
-    }
-    return normalized;
-  }
 }
 
 /// Matcher for the finalized saved-listings endpoints used by [ErrorMapper]:
 /// `POST /listings/:id/save`, `DELETE /listings/:id/save`, and
 /// `GET /users/me/saved-listings` (API guide §7, contract `saved-listings.md`).
-/// Normalization mirrors [_ListingPaths].
 abstract final class _SavedPaths {
-  /// [path] must already be normalized via [normalized].
+  /// [path] must already be normalized via [ErrorMapper.normalizePath].
   static bool isSavedPath(String path) =>
       RegExp(r'^listings/[^/]+/save$').hasMatch(path) ||
       path == 'users/me/saved-listings';
-
-  static String normalized(String path) {
-    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
-    if (normalized.startsWith('api/v1/')) {
-      normalized = normalized.substring('api/v1/'.length);
-    }
-    return normalized;
-  }
 }
 
 /// Matcher for the advisor chat endpoint (`POST /advisor/chat`) used by
-/// [ErrorMapper] (contract `contracts/advisor-chat-api.md`). Normalization
-/// mirrors [_SavedPaths].
+/// [ErrorMapper] (contract `contracts/advisor-chat-api.md`).
 abstract final class _AdvisorPaths {
-  /// [path] must already be normalized via [normalized].
+  /// [path] must already be normalized via [ErrorMapper.normalizePath].
   static bool isAdvisorChatPath(String path) => path == 'advisor/chat';
-
-  static String normalized(String path) {
-    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
-    if (normalized.startsWith('api/v1/')) {
-      normalized = normalized.substring('api/v1/'.length);
-    }
-    return normalized;
-  }
 }
 
 /// Matcher for the Google-account linking endpoint (`PATCH /users/me/link-google`)
 /// used by [ErrorMapper] (API guide §5.6, contract `google-signin-flow.md`).
-/// Normalization mirrors [_SavedPaths].
 abstract final class _LinkGooglePaths {
-  /// [path] must already be normalized via [normalized].
+  /// [path] must already be normalized via [ErrorMapper.normalizePath].
   static bool isLinkGooglePath(String path) => path == 'users/me/link-google';
-
-  static String normalized(String path) {
-    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
-    if (normalized.startsWith('api/v1/')) {
-      normalized = normalized.substring('api/v1/'.length);
-    }
-    return normalized;
-  }
 }
 
 /// Matcher for the Google sign-in endpoint (`POST /auth/google`) used by
-/// [ErrorMapper]. Normalization mirrors [_SavedPaths].
+/// [ErrorMapper].
 abstract final class _AuthGooglePaths {
-  /// [path] must already be normalized via [normalized].
+  /// [path] must already be normalized via [ErrorMapper.normalizePath].
   static bool isAuthGooglePath(String path) => path == 'auth/google';
-
-  static String normalized(String path) {
-    String normalized = path.replaceFirst(RegExp(r'^/+'), '');
-    if (normalized.startsWith('api/v1/')) {
-      normalized = normalized.substring('api/v1/'.length);
-    }
-    return normalized;
-  }
 }

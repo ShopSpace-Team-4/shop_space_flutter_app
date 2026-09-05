@@ -14,18 +14,18 @@ _CreateListingRequest _$CreateListingRequestFromJson(
   areaSqm: (json['areaSqm'] as num).toDouble(),
   city: json['city'] as String,
   district: json['district'] as String,
-  address: json['address'] as String?,
-  description: json['description'] as String?,
+  address: json['address'] as String,
+  description: json['description'] as String,
   amenities: (json['amenities'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
-  numberOfFloors: (json['numberOfFloors'] as num?)?.toInt(),
+  numberOfFloors: (json['numberOfFloors'] as num).toInt(),
   floorNumber: (json['floorNumber'] as num).toInt(),
-  availableFrom: json['availableFrom'] as String?,
-  minimumLeaseTerm: json['minimumLeaseTerm'] as String?,
+  availableFrom: json['availableFrom'] as String,
+  minimumLeaseTerm: json['minimumLeaseTerm'] as String,
   annualRent: (json['annualRent'] as num).toDouble(),
   currency: json['currency'] as String,
-  securityDepositMonths: (json['securityDepositMonths'] as num?)?.toInt(),
+  securityDepositMonths: (json['securityDepositMonths'] as num).toInt(),
 );
 
 Map<String, dynamic> _$CreateListingRequestToJson(

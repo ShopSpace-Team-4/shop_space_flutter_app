@@ -22,9 +22,10 @@ class LocalizationCubit extends Cubit<Locale> {
       emit(Locale(saved));
     } else if (state == const Locale('en')) {
       final Locale systemLocale = PlatformDispatcher.instance.locale;
-      String systemLanguage = systemLocale.languageCode;
-      if (systemLocale.countryCode == 'EG') {
-        systemLanguage = 'ar';
+      final String systemLanguage = systemLocale.languageCode;
+      if (systemLanguage == 'ar') {
+        emit(const Locale('ar'));
+        return;
       }
       emit(Locale(systemLanguage));
     }

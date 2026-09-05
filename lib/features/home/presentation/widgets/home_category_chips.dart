@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -13,19 +12,22 @@ import 'home_section_heading.dart';
 /// single-select chip row. The active chip is filled with the primary color;
 /// the rest use a white fill (`AppColors.surface`) with an outline border and
 /// muted text. Chips are rendered as returned by `GET /listings/meta` (English
-/// enum categories — localized labels flagged for Phase 3). Tapping a chip
-/// selects it and deep-links to `/search?category=<value>`.
-class HomeCategoryChips extends StatefulWidget {
-  const HomeCategoryChips({super.key, required this.categories});
+/// enum categories — localized labels flagged for Phase 3). A leading "All"
+/// chip resets the filter. Tapping a chip reports the selection via
+/// [onSelected] (`null` = "All"); the parent filters the already-loaded
+/// Recommended/Nearby lists in memory — no `/search` deep link, no backend
+/// request.
+class HomeCategoryChips extends StatelessWidget {
+  const HomeCategoryChips({
+    super.key,
+    required this.categories,
+    required this.selectedCategory,
+    required this.onSelected,
+  });
 
   final List<String> categories;
-
-  @override
-  State<HomeCategoryChips> createState() => _HomeCategoryChipsState();
-}
-
-class _HomeCategoryChipsState extends State<HomeCategoryChips> {
-  int _selectedIndex = 0;
+  final String? selectedCategory;
+  final ValueChanged<String?> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,9 @@ class _HomeCategoryChipsState extends State<HomeCategoryChips> {
       children: [
         HomeSectionHeading(title: l10n.homeCategoriesTitle),
         SizedBox(height: AppSpacing.md.h),
-        if (widget.categories.isEmpty)
+        if (categories.isEmpty)
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Text(
               l10n.homeEmptyCategories,
               style: AppTypography.bodySmall.copyWith(
@@ -50,21 +52,24 @@ class _HomeCategoryChipsState extends State<HomeCategoryChips> {
             height: 32.h,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: widget.categories.length,
-              separatorBuilder: (context, index) => SizedBox(width: 8.w),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+              itemCount: categories.length + 1,
+              separatorBuilder: (context, index) =>
+                  SizedBox(width: AppSpacing.sm.w),
               itemBuilder: (context, index) {
-                final String category = widget.categories[index];
-                final bool isActive = index == _selectedIndex;
+                if (index == 0) {
+                  return _CategoryChip(
+                    label: l10n.homeCategoryAll,
+                    isActive: selectedCategory == null,
+                    onTap: () => onSelected(null),
+                  );
+                }
+                final String category = categories[index - 1];
+                final bool isActive = selectedCategory == category;
                 return _CategoryChip(
                   label: category,
                   isActive: isActive,
-                  onTap: () {
-                    setState(() => _selectedIndex = index);
-                    context.go(
-                      '/search?category=${Uri.encodeQueryComponent(category)}',
-                    );
-                  },
+                  onTap: () => onSelected(category),
                 );
               },
             ),
@@ -101,7 +106,7 @@ class _CategoryChip extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppRadius.pill),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Center(
               child: Text(
                 label,

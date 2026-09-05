@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../listing/data/models/browse_listing.dart';
 import 'home_listing_card.dart';
@@ -28,7 +29,7 @@ class HomeNearbySection extends StatelessWidget {
         SizedBox(height: 10.h),
         if (listings.isEmpty)
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Text(
               l10n.homeEmptyNearby,
               style: AppTypography.bodySmall.copyWith(
@@ -38,7 +39,7 @@ class HomeNearbySection extends StatelessWidget {
           )
         else
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Column(
               children: [
                 for (final (int i, BrowseListing listing) in listings.indexed) ...[

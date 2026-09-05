@@ -86,4 +86,34 @@ abstract final class AppTypography {
     fontWeight: FontWeight.w400,
     height: 20.8 / 13,
   );
+
+  /// Bottom-bar tab label (Figma `Frame 51`: 10px Inter).
+  static TextStyle get navLabel => TextStyle(
+    fontFamily: displayFontFamily,
+    fontSize: 10.sp,
+    height: 15 / 10,
+    fontWeight: FontWeight.w400,
+  );
+
+  /// Bottom-bar selected tab label (bold).
+  static TextStyle get navLabelSelected => TextStyle(
+    fontFamily: displayFontFamily,
+    fontSize: 10.sp,
+    height: 15 / 10,
+    fontWeight: FontWeight.w700,
+  );
+
+  /// Navigation-rail destination label (11px Inter).
+  static TextStyle get railLabel => TextStyle(
+    fontFamily: displayFontFamily,
+    fontSize: 11.sp,
+    fontWeight: FontWeight.w500,
+  );
+
+  /// Navigation-rail selected destination label (bold).
+  static TextStyle get railLabelSelected => TextStyle(
+    fontFamily: displayFontFamily,
+    fontSize: 11.sp,
+    fontWeight: FontWeight.w700,
+  );
 }

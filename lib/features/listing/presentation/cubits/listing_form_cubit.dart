@@ -397,17 +397,34 @@ class ListingFormCubit extends Cubit<ListingFormState> {
     final double? areaSqm = _asDouble(f[ListingFormFieldKeys.areaSqm]);
     final int? floorNumber = _asInt(f[ListingFormFieldKeys.floorNumber]);
     final double? annualRent = _asDouble(f[ListingFormFieldKeys.annualRent]);
+    final int? numberOfFloors =
+        _asInt(f[ListingFormFieldKeys.numberOfFloors]);
+    final int? securityDepositMonths =
+        _asInt(f[ListingFormFieldKeys.securityDepositMonths]);
     final String? title = _asTrimmed(f[ListingFormFieldKeys.title]);
     final String? category = _asTrimmed(f[ListingFormFieldKeys.category]);
     final String? city = _asTrimmed(f[ListingFormFieldKeys.city]);
     final String? district = _asTrimmed(f[ListingFormFieldKeys.district]);
+    final String? address = _asTrimmed(f[ListingFormFieldKeys.address]);
+    final String? description =
+        _asTrimmed(f[ListingFormFieldKeys.description]);
+    final String? availableFrom =
+        _asTrimmed(f[ListingFormFieldKeys.availableFrom]);
+    final String? minimumLeaseTerm =
+        _asTrimmed(f[ListingFormFieldKeys.minimumLeaseTerm]);
     if (title == null ||
         category == null ||
         city == null ||
         district == null ||
         areaSqm == null ||
         floorNumber == null ||
-        annualRent == null) {
+        annualRent == null ||
+        numberOfFloors == null ||
+        securityDepositMonths == null ||
+        address == null ||
+        description == null ||
+        availableFrom == null ||
+        minimumLeaseTerm == null) {
       return null;
     }
     return CreateListingRequest(
@@ -416,16 +433,16 @@ class ListingFormCubit extends Cubit<ListingFormState> {
       areaSqm: areaSqm,
       city: city,
       district: district,
-      address: _asTrimmed(f[ListingFormFieldKeys.address]),
-      description: _asTrimmed(f[ListingFormFieldKeys.description]),
+      address: address,
+      description: description,
       amenities: List<String>.from(f[ListingFormFieldKeys.amenities] ?? const []),
-      numberOfFloors: _asInt(f[ListingFormFieldKeys.numberOfFloors]),
+      numberOfFloors: numberOfFloors,
       floorNumber: floorNumber,
-      availableFrom: _asTrimmed(f[ListingFormFieldKeys.availableFrom]),
-      minimumLeaseTerm: _asTrimmed(f[ListingFormFieldKeys.minimumLeaseTerm]),
+      availableFrom: availableFrom,
+      minimumLeaseTerm: minimumLeaseTerm,
       annualRent: annualRent,
       currency: _asTrimmed(f[ListingFormFieldKeys.currency]) ?? 'EGP',
-      securityDepositMonths: _asInt(f[ListingFormFieldKeys.securityDepositMonths]),
+      securityDepositMonths: securityDepositMonths,
     );
   }
 
@@ -438,17 +455,34 @@ class ListingFormCubit extends Cubit<ListingFormState> {
     final double? areaSqm = _asDouble(f[ListingFormFieldKeys.areaSqm]);
     final int? floorNumber = _asInt(f[ListingFormFieldKeys.floorNumber]);
     final double? annualRent = _asDouble(f[ListingFormFieldKeys.annualRent]);
+    final int? numberOfFloors =
+        _asInt(f[ListingFormFieldKeys.numberOfFloors]);
+    final int? securityDepositMonths =
+        _asInt(f[ListingFormFieldKeys.securityDepositMonths]);
     final String? title = _asTrimmed(f[ListingFormFieldKeys.title]);
     final String? category = _asTrimmed(f[ListingFormFieldKeys.category]);
     final String? city = _asTrimmed(f[ListingFormFieldKeys.city]);
     final String? district = _asTrimmed(f[ListingFormFieldKeys.district]);
+    final String? address = _asTrimmed(f[ListingFormFieldKeys.address]);
+    final String? description =
+        _asTrimmed(f[ListingFormFieldKeys.description]);
+    final String? availableFrom =
+        _asTrimmed(f[ListingFormFieldKeys.availableFrom]);
+    final String? minimumLeaseTerm =
+        _asTrimmed(f[ListingFormFieldKeys.minimumLeaseTerm]);
     if (title == null ||
         category == null ||
         city == null ||
         district == null ||
         areaSqm == null ||
         floorNumber == null ||
-        annualRent == null) {
+        annualRent == null ||
+        numberOfFloors == null ||
+        securityDepositMonths == null ||
+        address == null ||
+        description == null ||
+        availableFrom == null ||
+        minimumLeaseTerm == null) {
       return null;
     }
     return UpdateListingRequest(
@@ -457,15 +491,15 @@ class ListingFormCubit extends Cubit<ListingFormState> {
       areaSqm: areaSqm,
       city: city,
       district: district,
-      address: _asTrimmed(f[ListingFormFieldKeys.address]),
-      description: _asTrimmed(f[ListingFormFieldKeys.description]),
+      address: address,
+      description: description,
       amenities: List<String>.from(f[ListingFormFieldKeys.amenities] ?? const []),
-      numberOfFloors: _asInt(f[ListingFormFieldKeys.numberOfFloors]),
+      numberOfFloors: numberOfFloors,
       floorNumber: floorNumber,
-      availableFrom: _asTrimmed(f[ListingFormFieldKeys.availableFrom]),
-      minimumLeaseTerm: _asTrimmed(f[ListingFormFieldKeys.minimumLeaseTerm]),
+      availableFrom: availableFrom,
+      minimumLeaseTerm: minimumLeaseTerm,
       annualRent: annualRent,
-      securityDepositMonths: _asInt(f[ListingFormFieldKeys.securityDepositMonths]),
+      securityDepositMonths: securityDepositMonths,
     );
   }
 
