@@ -84,13 +84,8 @@ class _SearchScreenState extends State<SearchScreen> {
     super.didChangeDependencies();
     if (!_initialized) {
       _initialized = true;
-      final AppLocalizations l10n = AppLocalizations.of(context);
-      _cubit = SearchCubit(
-        listingRepository: getIt<ListingRepository>(),
-        savedListingsRepository: getIt<SavedListingsRepository>(),
-      );
-      _cubit.loadOptions(LocalityOptions.cities(l10n));
-      _cubit.load();
+      // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+      _cubit = context.read<SearchCubit>();
       _scrollController.addListener(_onScroll);
     }
     _maybeHandleFocusRequest();
@@ -110,7 +105,6 @@ class _SearchScreenState extends State<SearchScreen> {
     _scrollController.dispose();
     _searchController.dispose();
     _searchFocusNode.dispose();
-    _cubit.close();
     super.dispose();
   }
 
@@ -306,11 +300,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   Expanded(
                     child: _selectedListingId == null
                         ? const _ShopDetailPlaceholder()
-                        : _ShopDetailRegion(
-                            key: ValueKey(_selectedListingId),
-                            listingId: _selectedListingId!,
-                            onReturnToResults: () =>
-                                setState(() => _selectedListingId = null),
+                        : BlocProvider(
+                            create: (_) => ListingDetailCubit(
+                              listingRepository:
+                                  getIt<ListingRepository>(),
+                              savedListingsRepository:
+                                  getIt<SavedListingsRepository>(),
+                            )..load(_selectedListingId!),
+                            child: _ShopDetailRegion(
+                              key: ValueKey(_selectedListingId),
+                              listingId: _selectedListingId!,
+                              onReturnToResults: () => setState(
+                                  () => _selectedListingId = null),
+                            ),
                           ),
                   ),
                 ],
@@ -669,17 +671,8 @@ class _ShopDetailRegionState extends State<_ShopDetailRegion> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = ListingDetailCubit(
-      listingRepository: getIt<ListingRepository>(),
-      savedListingsRepository: getIt<SavedListingsRepository>(),
-    );
-    _cubit.load(widget.listingId);
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the BlocProvider wrapping this region; it owns the cubit.
+    _cubit = context.read<ListingDetailCubit>();
   }
 
   @override

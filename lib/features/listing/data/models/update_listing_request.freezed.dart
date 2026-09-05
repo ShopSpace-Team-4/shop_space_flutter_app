@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UpdateListingRequest {
 
- String get title; String get category; double get areaSqm; String get city; String get district; String? get address; String? get description; List<String> get amenities; int? get numberOfFloors; int get floorNumber; String? get availableFrom; String? get minimumLeaseTerm; double get annualRent;@JsonKey(includeIfNull: false) String? get currency; int? get securityDepositMonths;
+ String get title; String get category; double get areaSqm; String get city; String get district; String get address; String get description; List<String> get amenities; int get numberOfFloors; int get floorNumber; String get availableFrom; String get minimumLeaseTerm; double get annualRent;@JsonKey(includeIfNull: false) String? get currency; int get securityDepositMonths;
 /// Create a copy of UpdateListingRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UpdateListingRequestCopyWith<$Res>  {
   factory $UpdateListingRequestCopyWith(UpdateListingRequest value, $Res Function(UpdateListingRequest) _then) = _$UpdateListingRequestCopyWithImpl;
 @useResult
 $Res call({
- String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, String? availableFrom, String? minimumLeaseTerm, double annualRent,@JsonKey(includeIfNull: false) String? currency, int? securityDepositMonths
+ String title, String category, double areaSqm, String city, String district, String address, String description, List<String> amenities, int numberOfFloors, int floorNumber, String availableFrom, String minimumLeaseTerm, double annualRent,@JsonKey(includeIfNull: false) String? currency, int securityDepositMonths
 });
 
 
@@ -65,24 +65,24 @@ class _$UpdateListingRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateListingRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? currency = freezed,Object? securityDepositMonths = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = null,Object? description = null,Object? amenities = null,Object? numberOfFloors = null,Object? floorNumber = null,Object? availableFrom = null,Object? minimumLeaseTerm = null,Object? annualRent = null,Object? currency = freezed,Object? securityDepositMonths = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,areaSqm: null == areaSqm ? _self.areaSqm : areaSqm // ignore: cast_nullable_to_non_nullable
 as double,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String,district: null == district ? _self.district : district // ignore: cast_nullable_to_non_nullable
-as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,amenities: null == amenities ? _self.amenities : amenities // ignore: cast_nullable_to_non_nullable
-as List<String>,numberOfFloors: freezed == numberOfFloors ? _self.numberOfFloors : numberOfFloors // ignore: cast_nullable_to_non_nullable
-as int?,floorNumber: null == floorNumber ? _self.floorNumber : floorNumber // ignore: cast_nullable_to_non_nullable
-as int,availableFrom: freezed == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
-as String?,minimumLeaseTerm: freezed == minimumLeaseTerm ? _self.minimumLeaseTerm : minimumLeaseTerm // ignore: cast_nullable_to_non_nullable
-as String?,annualRent: null == annualRent ? _self.annualRent : annualRent // ignore: cast_nullable_to_non_nullable
+as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,amenities: null == amenities ? _self.amenities : amenities // ignore: cast_nullable_to_non_nullable
+as List<String>,numberOfFloors: null == numberOfFloors ? _self.numberOfFloors : numberOfFloors // ignore: cast_nullable_to_non_nullable
+as int,floorNumber: null == floorNumber ? _self.floorNumber : floorNumber // ignore: cast_nullable_to_non_nullable
+as int,availableFrom: null == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
+as String,minimumLeaseTerm: null == minimumLeaseTerm ? _self.minimumLeaseTerm : minimumLeaseTerm // ignore: cast_nullable_to_non_nullable
+as String,annualRent: null == annualRent ? _self.annualRent : annualRent // ignore: cast_nullable_to_non_nullable
 as double,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String?,securityDepositMonths: freezed == securityDepositMonths ? _self.securityDepositMonths : securityDepositMonths // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,securityDepositMonths: null == securityDepositMonths ? _self.securityDepositMonths : securityDepositMonths // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -167,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  String? availableFrom,  String? minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int? securityDepositMonths)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String category,  double areaSqm,  String city,  String district,  String address,  String description,  List<String> amenities,  int numberOfFloors,  int floorNumber,  String availableFrom,  String minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int securityDepositMonths)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpdateListingRequest() when $default != null:
 return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.currency,_that.securityDepositMonths);case _:
@@ -188,7 +188,7 @@ return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.distri
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  String? availableFrom,  String? minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int? securityDepositMonths)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String category,  double areaSqm,  String city,  String district,  String address,  String description,  List<String> amenities,  int numberOfFloors,  int floorNumber,  String availableFrom,  String minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int securityDepositMonths)  $default,) {final _that = this;
 switch (_that) {
 case _UpdateListingRequest():
 return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.currency,_that.securityDepositMonths);case _:
@@ -208,7 +208,7 @@ return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.distri
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String category,  double areaSqm,  String city,  String district,  String? address,  String? description,  List<String> amenities,  int? numberOfFloors,  int floorNumber,  String? availableFrom,  String? minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int? securityDepositMonths)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String category,  double areaSqm,  String city,  String district,  String address,  String description,  List<String> amenities,  int numberOfFloors,  int floorNumber,  String availableFrom,  String minimumLeaseTerm,  double annualRent, @JsonKey(includeIfNull: false)  String? currency,  int securityDepositMonths)?  $default,) {final _that = this;
 switch (_that) {
 case _UpdateListingRequest() when $default != null:
 return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.district,_that.address,_that.description,_that.amenities,_that.numberOfFloors,_that.floorNumber,_that.availableFrom,_that.minimumLeaseTerm,_that.annualRent,_that.currency,_that.securityDepositMonths);case _:
@@ -223,7 +223,7 @@ return $default(_that.title,_that.category,_that.areaSqm,_that.city,_that.distri
 @JsonSerializable()
 
 class _UpdateListingRequest implements UpdateListingRequest {
-  const _UpdateListingRequest({required this.title, required this.category, required this.areaSqm, required this.city, required this.district, this.address, this.description, required final  List<String> amenities, this.numberOfFloors, required this.floorNumber, this.availableFrom, this.minimumLeaseTerm, required this.annualRent, @JsonKey(includeIfNull: false) this.currency, this.securityDepositMonths}): _amenities = amenities;
+  const _UpdateListingRequest({required this.title, required this.category, required this.areaSqm, required this.city, required this.district, required this.address, required this.description, required final  List<String> amenities, required this.numberOfFloors, required this.floorNumber, required this.availableFrom, required this.minimumLeaseTerm, required this.annualRent, @JsonKey(includeIfNull: false) this.currency, required this.securityDepositMonths}): _amenities = amenities;
   factory _UpdateListingRequest.fromJson(Map<String, dynamic> json) => _$UpdateListingRequestFromJson(json);
 
 @override final  String title;
@@ -231,8 +231,8 @@ class _UpdateListingRequest implements UpdateListingRequest {
 @override final  double areaSqm;
 @override final  String city;
 @override final  String district;
-@override final  String? address;
-@override final  String? description;
+@override final  String address;
+@override final  String description;
  final  List<String> _amenities;
 @override List<String> get amenities {
   if (_amenities is EqualUnmodifiableListView) return _amenities;
@@ -240,13 +240,13 @@ class _UpdateListingRequest implements UpdateListingRequest {
   return EqualUnmodifiableListView(_amenities);
 }
 
-@override final  int? numberOfFloors;
+@override final  int numberOfFloors;
 @override final  int floorNumber;
-@override final  String? availableFrom;
-@override final  String? minimumLeaseTerm;
+@override final  String availableFrom;
+@override final  String minimumLeaseTerm;
 @override final  double annualRent;
 @override@JsonKey(includeIfNull: false) final  String? currency;
-@override final  int? securityDepositMonths;
+@override final  int securityDepositMonths;
 
 /// Create a copy of UpdateListingRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -281,7 +281,7 @@ abstract mixin class _$UpdateListingRequestCopyWith<$Res> implements $UpdateList
   factory _$UpdateListingRequestCopyWith(_UpdateListingRequest value, $Res Function(_UpdateListingRequest) _then) = __$UpdateListingRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String category, double areaSqm, String city, String district, String? address, String? description, List<String> amenities, int? numberOfFloors, int floorNumber, String? availableFrom, String? minimumLeaseTerm, double annualRent,@JsonKey(includeIfNull: false) String? currency, int? securityDepositMonths
+ String title, String category, double areaSqm, String city, String district, String address, String description, List<String> amenities, int numberOfFloors, int floorNumber, String availableFrom, String minimumLeaseTerm, double annualRent,@JsonKey(includeIfNull: false) String? currency, int securityDepositMonths
 });
 
 
@@ -298,24 +298,24 @@ class __$UpdateListingRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateListingRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = freezed,Object? description = freezed,Object? amenities = null,Object? numberOfFloors = freezed,Object? floorNumber = null,Object? availableFrom = freezed,Object? minimumLeaseTerm = freezed,Object? annualRent = null,Object? currency = freezed,Object? securityDepositMonths = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? category = null,Object? areaSqm = null,Object? city = null,Object? district = null,Object? address = null,Object? description = null,Object? amenities = null,Object? numberOfFloors = null,Object? floorNumber = null,Object? availableFrom = null,Object? minimumLeaseTerm = null,Object? annualRent = null,Object? currency = freezed,Object? securityDepositMonths = null,}) {
   return _then(_UpdateListingRequest(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,areaSqm: null == areaSqm ? _self.areaSqm : areaSqm // ignore: cast_nullable_to_non_nullable
 as double,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String,district: null == district ? _self.district : district // ignore: cast_nullable_to_non_nullable
-as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,amenities: null == amenities ? _self._amenities : amenities // ignore: cast_nullable_to_non_nullable
-as List<String>,numberOfFloors: freezed == numberOfFloors ? _self.numberOfFloors : numberOfFloors // ignore: cast_nullable_to_non_nullable
-as int?,floorNumber: null == floorNumber ? _self.floorNumber : floorNumber // ignore: cast_nullable_to_non_nullable
-as int,availableFrom: freezed == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
-as String?,minimumLeaseTerm: freezed == minimumLeaseTerm ? _self.minimumLeaseTerm : minimumLeaseTerm // ignore: cast_nullable_to_non_nullable
-as String?,annualRent: null == annualRent ? _self.annualRent : annualRent // ignore: cast_nullable_to_non_nullable
+as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,amenities: null == amenities ? _self._amenities : amenities // ignore: cast_nullable_to_non_nullable
+as List<String>,numberOfFloors: null == numberOfFloors ? _self.numberOfFloors : numberOfFloors // ignore: cast_nullable_to_non_nullable
+as int,floorNumber: null == floorNumber ? _self.floorNumber : floorNumber // ignore: cast_nullable_to_non_nullable
+as int,availableFrom: null == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
+as String,minimumLeaseTerm: null == minimumLeaseTerm ? _self.minimumLeaseTerm : minimumLeaseTerm // ignore: cast_nullable_to_non_nullable
+as String,annualRent: null == annualRent ? _self.annualRent : annualRent // ignore: cast_nullable_to_non_nullable
 as double,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String?,securityDepositMonths: freezed == securityDepositMonths ? _self.securityDepositMonths : securityDepositMonths // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,securityDepositMonths: null == securityDepositMonths ? _self.securityDepositMonths : securityDepositMonths // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

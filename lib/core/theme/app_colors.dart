@@ -51,10 +51,20 @@ abstract final class AppColors {
   /// with `#EFF6FF` (=[primaryContainer]) as the start.
   static const Color savedIconGradientEnd = Color(0xFFE0E7FF);
 
+  /// Change-password hero lock block gradient end (Figma `270:7299`):
+  /// `#DBEAFE`, with `#EFF6FF` (=[primaryContainer]) as the start. Added for
+  /// the T037 revamp; the back button instead reuses [surfaceVariant] (the
+  /// Figma-exact fill per pull).
+  static const Color lockGradientEnd = Color(0xFFDBEAFE);
+
   /// Home hero header gradient (Figma `95:4028`): `#0F172A` → `#3A1E8B`.
   /// Start equals [AppColors.surfaceInverse].
   static const Color heroGradientStart = Color(0xff0F172A);
   static const Color heroGradientEnd = Color(0xFF1E3A8A);
+
+  /// Pure black base token, e.g. the α0.40 scrim behind the floating
+  /// back/close button over listing photos (`shop_detail_pane.dart`).
+  static const Color black = Color(0xFF000000);
 
   /// AI Space Advisor promo card gradient (Figma `95:4028`): `#3A1E8B` →
   /// `#4F8EE6`.

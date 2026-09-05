@@ -77,16 +77,10 @@ class AppAdaptiveShell extends StatelessWidget {
                 unselectedIconTheme: const IconThemeData(
                   color: AppColors.textTertiary,
                 ),
-                selectedLabelTextStyle: TextStyle(
-                  fontFamily: AppTypography.displayFontFamily,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w700,
+                selectedLabelTextStyle: AppTypography.railLabelSelected.copyWith(
                   color: AppColors.primary,
                 ),
-                unselectedLabelTextStyle: TextStyle(
-                  fontFamily: AppTypography.displayFontFamily,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w500,
+                unselectedLabelTextStyle: AppTypography.railLabel.copyWith(
                   color: AppColors.textTertiary,
                 ),
                 destinations: [
@@ -229,13 +223,10 @@ class _BottomTab extends StatelessWidget {
             SizedBox(height: 1.h),
             Text(
               tab.label,
-              style: TextStyle(
-                fontFamily: AppTypography.displayFontFamily,
-                fontSize: 10.sp,
-                height: 15 / 10,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
-                color: color,
-              ),
+              style: (selected
+                      ? AppTypography.navLabelSelected
+                      : AppTypography.navLabel)
+                  .copyWith(color: color),
             ),
           ],
         ),

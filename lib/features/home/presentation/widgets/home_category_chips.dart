@@ -39,7 +39,7 @@ class HomeCategoryChips extends StatelessWidget {
         SizedBox(height: AppSpacing.md.h),
         if (categories.isEmpty)
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Text(
               l10n.homeEmptyCategories,
               style: AppTypography.bodySmall.copyWith(
@@ -52,9 +52,10 @@ class HomeCategoryChips extends StatelessWidget {
             height: 32.h,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
               itemCount: categories.length + 1,
-              separatorBuilder: (context, index) => SizedBox(width: 8.w),
+              separatorBuilder: (context, index) =>
+                  SizedBox(width: AppSpacing.sm.w),
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return _CategoryChip(
@@ -105,7 +106,7 @@ class _CategoryChip extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppRadius.pill),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Center(
               child: Text(
                 label,

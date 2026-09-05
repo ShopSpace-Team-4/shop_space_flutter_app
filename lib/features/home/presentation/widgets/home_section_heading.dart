@@ -8,7 +8,7 @@ import '../../../../core/theme/app_typography.dart';
 /// Shared home section header (Figma `95:4028`): Inter 13 w700 `#0F172A`
 /// heading, optionally with a trailing text action (e.g. "See all"). Reused by
 /// Categories / Recommended / Nearby so headings stay identical. Padded
-/// `16.w` horizontally to align with the 343-wide cards below.
+/// `AppSpacing.lg` horizontally to align with the 343-wide cards below.
 class HomeSectionHeading extends StatelessWidget {
   const HomeSectionHeading({
     super.key,
@@ -24,7 +24,7 @@ class HomeSectionHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
       child: Row(
         children: [
           Expanded(

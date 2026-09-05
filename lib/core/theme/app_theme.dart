@@ -7,7 +7,7 @@ import 'app_typography.dart';
 
 @immutable
 abstract final class AppTheme {
-  static ThemeData build(BuildContext context) {
+  static ThemeData build() {
     const colorScheme = ColorScheme.light(
       primary: AppColors.primary,
       onPrimary: AppColors.onPrimary,

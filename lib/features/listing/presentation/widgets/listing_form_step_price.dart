@@ -10,11 +10,11 @@ import '../cubits/listing_form_cubit.dart';
 import 'listing_form_controllers.dart';
 
 /// Step 3 of the create/edit form — Price & lease (listing-form.md §Steps,
-/// FR-008). Floor count (optional int), floor number (0 = ground → "Ground"
+/// FR-008). Floor count (required int), floor number (0 = ground → "Ground"
 /// in EN/AR), available-from date picker (submitted `YYYY-MM-DD`), minimum
 /// lease term (free text), annual rent (> 0) with a display-only VAT preview
 /// (×1.15, never submitted), fixed read-only currency "EGP", and security
-/// deposit in whole months (optional).
+/// deposit in whole months (required).
 class ListingFormStepPrice extends StatelessWidget {
   const ListingFormStepPrice({
     super.key,
@@ -42,6 +42,16 @@ class ListingFormStepPrice extends StatelessWidget {
           textInputAction: TextInputAction.next,
           onChanged: (String value) =>
               cubit.updateField(ListingFormFieldKeys.numberOfFloors, value),
+          validator: (String? value) {
+            final int? floors = int.tryParse(value?.trim() ?? '');
+            if (value == null ||
+                value.trim().isEmpty ||
+                floors == null ||
+                floors <= 0) {
+              return l10n.formFloorsRequired;
+            }
+            return null;
+          },
           decoration: _decoration(),
         ),
         SizedBox(height: AppSpacing.lg.h),
@@ -65,29 +75,39 @@ class ListingFormStepPrice extends StatelessWidget {
         SizedBox(height: AppSpacing.lg.h),
         _FormLabel(l10n.formFieldAvailableFrom),
         SizedBox(height: AppSpacing.xs.h),
-        InkWell(
-          onTap: () => _pickDate(context, availableFrom),
-          borderRadius: BorderRadius.circular(AppRadius.field),
-          child: InputDecorator(
-            decoration: _decoration(),
-            child: Row(
-              children: [
-                Icon(Icons.calendar_today_outlined,
-                    size: 18.sp, color: AppColors.textTertiary),
-                SizedBox(width: AppSpacing.sm.w),
-                Text(
-                  availableFrom == null || availableFrom.isEmpty
-                      ? l10n.formAvailableFromRequired
-                      : availableFrom,
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: availableFrom == null || availableFrom.isEmpty
-                        ? AppColors.textTertiary
-                        : AppColors.textPrimary,
-                  ),
+        FormField<String>(
+          initialValue: availableFrom,
+          validator: (String? value) => (value == null || value.isEmpty)
+              ? l10n.formAvailableFromRequired
+              : null,
+          builder: (FormFieldState<String> fieldState) {
+            final String value = fieldState.value ?? '';
+            return InkWell(
+              onTap: () => _pickDate(context, availableFrom,
+                  onPicked: fieldState.didChange),
+              borderRadius: BorderRadius.circular(AppRadius.field),
+              child: InputDecorator(
+                decoration: _decoration(errorText: fieldState.errorText),
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_today_outlined,
+                        size: 18.sp, color: AppColors.textTertiary),
+                    SizedBox(width: AppSpacing.sm.w),
+                    Expanded(
+                      child: Text(
+                        value.isEmpty ? l10n.formAvailableFromRequired : value,
+                        style: AppTypography.bodyMedium.copyWith(
+                          color: value.isEmpty
+                              ? AppColors.textTertiary
+                              : AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
         SizedBox(height: AppSpacing.lg.h),
         _FormLabel(l10n.formFieldMinimumLease),
@@ -97,6 +117,10 @@ class ListingFormStepPrice extends StatelessWidget {
           textInputAction: TextInputAction.next,
           onChanged: (String value) =>
               cubit.updateField(ListingFormFieldKeys.minimumLeaseTerm, value),
+          validator: (String? value) =>
+              (value == null || value.trim().isEmpty)
+                  ? l10n.formMinimumLeaseRequired
+                  : null,
           decoration: _decoration(),
         ),
         SizedBox(height: AppSpacing.lg.h),
@@ -157,13 +181,27 @@ class ListingFormStepPrice extends StatelessWidget {
           textInputAction: TextInputAction.done,
           onChanged: (String value) =>
               cubit.updateField(ListingFormFieldKeys.securityDepositMonths, value),
+          validator: (String? value) {
+            final int? months = int.tryParse(value?.trim() ?? '');
+            if (value == null ||
+                value.trim().isEmpty ||
+                months == null ||
+                months <= 0) {
+              return l10n.formSecurityDepositRequired;
+            }
+            return null;
+          },
           decoration: _decoration(),
         ),
       ],
     );
   }
 
-  Future<void> _pickDate(BuildContext context, String? current) async {
+  Future<void> _pickDate(
+    BuildContext context,
+    String? current, {
+    ValueChanged<String>? onPicked,
+  }) async {
     final AppLocalizations l10n = AppLocalizations.of(context);
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -175,6 +213,7 @@ class ListingFormStepPrice extends StatelessWidget {
     if (picked == null) return;
     final String serialized = picked.toIso8601String().split('T').first;
     cubit.updateField(ListingFormFieldKeys.availableFrom, serialized);
+    onPicked?.call(serialized);
   }
 
   static DateTime? _parseDate(String? value) {
@@ -187,8 +226,10 @@ class ListingFormStepPrice extends StatelessWidget {
     return value is String ? value : null;
   }
 
-  InputDecoration _decoration({String? hint}) => InputDecoration(
+  InputDecoration _decoration({String? hint, String? errorText}) =>
+      InputDecoration(
         hintText: hint,
+        errorText: errorText,
         filled: true,
         fillColor: AppColors.surfaceVariant,
         contentPadding: EdgeInsets.symmetric(

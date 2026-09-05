@@ -10,10 +10,15 @@ import 'core/di/injectable.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/localization_cubit.dart';
 import 'core/router/app_router.dart';
+import 'core/storage/preferences_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/google/auth_google_service.dart';
 import 'features/auth/presentation/cubits/auth_session_cubit.dart';
+import 'features/listing/repository/listing_repository.dart';
 import 'features/onboarding/presentation/cubits/onboarding_cubit.dart';
+import 'features/user/presentation/cubits/profile_cubit.dart';
+import 'features/user/presentation/cubits/roles_cubit.dart';
+import 'features/user/repository/user_repository.dart';
 
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -87,7 +92,7 @@ class ShopSpaceApp extends StatelessWidget {
             Widget app = MaterialApp.router(
               title: 'ShopSpace',
               debugShowCheckedModeBanner: false,
-              theme: AppTheme.build(context),
+              theme: AppTheme.build(),
               locale: locale,
               supportedLocales: const [Locale('en'), Locale('ar')],
               localizationsDelegates: const [
@@ -97,6 +102,56 @@ class ShopSpaceApp extends StatelessWidget {
                 GlobalCupertinoLocalizations.delegate,
               ],
               routerConfig: router,
+              // Session-scoped providers live ABOVE the navigator so every
+              // route — including root-level pushes like /settings and
+              // /change-password — resolves the SAME shared ProfileCubit /
+              // RolesCubit (the old per-screen instances made profile edits in
+              // Settings invisible on Profile). MaterialApp.builder runs below
+              // Localizations, so AppLocalizations is resolvable here. The
+              // BlocProvider owns each cubit's lifecycle: created on
+              // authentication, disposed automatically on sign-out.
+              builder: (context, child) {
+                final AuthSessionCubit? session = sessionCubit;
+                if (session == null) {
+                  return child ?? const SizedBox.shrink();
+                }
+                return BlocBuilder<AuthSessionCubit, AuthSessionState>(
+                  bloc: session,
+                  // Rebuild only when the auth status actually flips, so
+                  // token refreshes / role updates don't churn the navigator.
+                  buildWhen: (previous, current) =>
+                      (previous is AuthSessionAuthenticated) !=
+                      (current is AuthSessionAuthenticated),
+                  builder: (context, authState) {
+                    if (authState is! AuthSessionAuthenticated) {
+                      return child ?? const SizedBox.shrink();
+                    }
+                    return MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (_) => ProfileCubit(
+                            repository: getIt<UserRepository>(),
+                            googleAuth: getIt<AuthGoogleService>(),
+                            listingRepository: getIt<ListingRepository>(),
+                            l10n: AppLocalizations.of(context),
+                          )
+                            ..load()
+                            ..loadListingStats(),
+                        ),
+                        BlocProvider(
+                          create: (_) => RolesCubit(
+                            repository: getIt<UserRepository>(),
+                            session: session,
+                            preferences: getIt<PreferencesService>(),
+                            l10n: AppLocalizations.of(context),
+                          ),
+                        ),
+                      ],
+                      child: child ?? const SizedBox.shrink(),
+                    );
+                  },
+                );
+              },
             );
             if (sessionCubit != null) {
               app = BlocProvider.value(value: sessionCubit!, child: app);

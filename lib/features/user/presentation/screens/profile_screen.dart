@@ -6,18 +6,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
-import '../../../../core/storage/preferences_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_loading_view.dart';
-import '../../../auth/google/auth_google_service.dart';
 import '../../../auth/presentation/cubits/auth_session_cubit.dart';
-import '../../../listing/repository/listing_repository.dart';
 import '../../data/models/user.dart';
 import '../../data/models/user_role.dart';
-import '../../repository/user_repository.dart';
 import '../cubits/profile_cubit.dart';
 import '../cubits/roles_cubit.dart';
 
@@ -52,29 +48,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    final AppLocalizations l10n = AppLocalizations.of(context);
-    _cubit = ProfileCubit(
-      repository: getIt<UserRepository>(),
-      googleAuth: getIt<AuthGoogleService>(),
-      listingRepository: getIt<ListingRepository>(),
-      l10n: l10n,
-    );
-    _rolesCubit = RolesCubit(
-      repository: getIt<UserRepository>(),
-      session: getIt<AuthSessionCubit>(),
-      preferences: getIt<PreferencesService>(),
-      l10n: l10n,
-    );
+    // Shared session-scoped instances provided above the navigator (see
+    // bootstrap.dart); the BlocProvider owns their lifecycle, so this screen
+    // never creates or closes them.
+    _cubit = context.read<ProfileCubit>();
+    _rolesCubit = context.read<RolesCubit>();
     _session = getIt<AuthSessionCubit>();
-    _cubit.load();
-    _cubit.loadListingStats();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    _rolesCubit.close();
-    super.dispose();
   }
 
   void _signOut() {

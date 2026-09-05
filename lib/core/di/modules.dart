@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/auth/data/auth_datasource.dart';
-import '../../features/auth/data/models/auth_tokens.dart' as feature;
 import '../../features/auth/data/models/refresh_token_request.dart';
 import '../../features/auth/presentation/cubits/auth_session_cubit.dart';
 import '../../features/onboarding/presentation/cubits/onboarding_cubit.dart';
@@ -44,15 +43,12 @@ abstract class CoreModule {
   TokenRefresher tokenRefresher(TokenStorage storage) => TokenRefresher(
         storage: storage,
         refreshTokens: (AuthTokens current) async {
-          final feature.AuthTokens refreshed = await GetIt.instance
+          final AuthTokens refreshed = await GetIt.instance
               .get<AuthDataSource>()
               .refreshToken(
                 RefreshTokenRequest(refreshToken: current.refreshToken),
               );
-          return AuthTokens(
-            accessToken: refreshed.accessToken,
-            refreshToken: refreshed.refreshToken,
-          );
+          return refreshed;
         },
       );
 

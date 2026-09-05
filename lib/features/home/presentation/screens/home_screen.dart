@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_empty_view.dart';
 import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loading_view.dart';
 import '../../../listing/data/models/browse_listing.dart';
-import '../../../listing/repository/listing_repository.dart';
-import '../../../user/repository/user_repository.dart';
 import '../cubits/home_cubit.dart';
 import '../widgets/home_advisor_card.dart';
 import '../widgets/home_category_chips.dart';
@@ -46,17 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = HomeCubit(
-      listingRepository: getIt<ListingRepository>(),
-      userRepository: getIt<UserRepository>(),
-    );
-    _cubit.load();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<HomeCubit>();
   }
 
   @override
@@ -135,7 +123,7 @@ class _HomeContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
                     child: const HomeAdvisorCard(),
                   ),
                   SizedBox(height: 8.h),
@@ -184,7 +172,10 @@ class _CategoryFilterEmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.xl.h,
+      ),
       child: Column(
         children: [
           AppEmptyView(

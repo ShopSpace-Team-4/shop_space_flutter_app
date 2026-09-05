@@ -32,8 +32,16 @@ class BecomeLandlordSheet extends StatefulWidget {
       context: context,
       isDismissible: true,
       showDragHandle: true,
-      builder: (context) =>
-          BecomeLandlordSheet(onSuccess: onSuccess),
+      builder: (context) => BlocProvider(
+        // The provider owns this sheet-scoped cubit's lifecycle (destroyed
+        // with the bottom-sheet route).
+        create: (_) => BecomeLandlordCubit(
+          repository: getIt<UserRepository>(),
+          session: getIt<AuthSessionCubit>(),
+          preferences: getIt<PreferencesService>(),
+        ),
+        child: BecomeLandlordSheet(onSuccess: onSuccess),
+      ),
     );
   }
 
@@ -43,21 +51,16 @@ class BecomeLandlordSheet extends StatefulWidget {
 
 class _BecomeLandlordSheetState extends State<BecomeLandlordSheet> {
   late final BecomeLandlordCubit _cubit;
+  bool _initialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    _cubit = BecomeLandlordCubit(
-      repository: getIt<UserRepository>(),
-      session: getIt<AuthSessionCubit>(),
-      preferences: getIt<PreferencesService>(),
-    );
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
+    // Provided by the BlocProvider in [BecomeLandlordSheet.show]; it owns this
+    // bottom-sheet-scoped cubit's lifecycle.
+    _cubit = context.read<BecomeLandlordCubit>();
   }
 
   @override

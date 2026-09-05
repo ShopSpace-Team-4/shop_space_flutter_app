@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -162,7 +164,10 @@ class AuthSessionCubit extends Cubit<AuthSessionState>
 
   void _restore(AuthTokens tokens) {
     emit(const AuthSessionState.authenticated(isHydrating: true));
-    _hydrateUser(tokens);
+    // Hydration is intentionally fire-and-forget (D3): a valid stored token
+    // unblocks the UI immediately; profile fetch failure is non-fatal except
+    // for a final 401, which drops the session.
+    unawaited(_hydrateUser(tokens));
   }
 
   Future<void> _hydrateUser(AuthTokens tokens) async {

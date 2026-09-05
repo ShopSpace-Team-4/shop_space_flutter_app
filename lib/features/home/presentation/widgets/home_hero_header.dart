@@ -78,7 +78,7 @@ class _SearchPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white.withValues(alpha: 0.10),
+      color: AppColors.surface.withValues(alpha: 0.10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.pill),
         side: BorderSide(color: AppColors.surface.withValues(alpha: 0.15)),

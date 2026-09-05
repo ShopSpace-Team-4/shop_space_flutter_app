@@ -494,7 +494,7 @@ class _OverlayCircleButton extends StatelessWidget {
     return Tooltip(
       message: tooltip,
       child: Material(
-        color: Colors.black.withValues(alpha: 0.40),
+        color: AppColors.black.withValues(alpha: 0.40),
         shape: const CircleBorder(),
         clipBehavior: Clip.antiAlias,
         child: InkWell(

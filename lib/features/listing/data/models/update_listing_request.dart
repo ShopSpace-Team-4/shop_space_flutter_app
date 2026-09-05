@@ -14,16 +14,16 @@ abstract class UpdateListingRequest with _$UpdateListingRequest {
     required double areaSqm,
     required String city,
     required String district,
-    String? address,
-    String? description,
+    required String address,
+    required String description,
     required List<String> amenities,
-    int? numberOfFloors,
+    required int numberOfFloors,
     required int floorNumber,
-    String? availableFrom,
-    String? minimumLeaseTerm,
+    required String availableFrom,
+    required String minimumLeaseTerm,
     required double annualRent,
     @JsonKey(includeIfNull: false) String? currency,
-    int? securityDepositMonths,
+    required int securityDepositMonths,
   }) = _UpdateListingRequest;
 
   factory UpdateListingRequest.fromJson(Map<String, dynamic> json) =>

@@ -1475,7 +1475,7 @@ abstract class AppLocalizations {
   /// No description provided for @changePasswordSubmit.
   ///
   /// In en, this message translates to:
-  /// **'Update password'**
+  /// **'Update Password'**
   String get changePasswordSubmit;
 
   /// No description provided for @changePasswordSuccess.
@@ -1483,6 +1483,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password changed. Please sign in again.'**
   String get changePasswordSuccess;
+
+  /// No description provided for @authConfirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get authConfirmPasswordLabel;
+
+  /// No description provided for @authPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get authPasswordsDoNotMatch;
+
+  /// No description provided for @changePasswordRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get changePasswordRequirements;
+
+  /// No description provided for @changePasswordRequirementLength.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get changePasswordRequirementLength;
+
+  /// No description provided for @changePasswordRequirementLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'One lowercase letter (a–z)'**
+  String get changePasswordRequirementLowercase;
+
+  /// No description provided for @changePasswordRequirementUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'One uppercase letter (A–Z)'**
+  String get changePasswordRequirementUppercase;
+
+  /// No description provided for @changePasswordRequirementNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'One number (0–9)'**
+  String get changePasswordRequirementNumber;
+
+  /// No description provided for @changePasswordRequirementSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'One special character (@\$!%*?&)'**
+  String get changePasswordRequirementSpecial;
 
   /// No description provided for @activeRoleLabel.
   ///
@@ -1961,14 +2009,26 @@ abstract class AppLocalizations {
   /// No description provided for @formFieldAddress.
   ///
   /// In en, this message translates to:
-  /// **'Address (optional)'**
+  /// **'Address'**
   String get formFieldAddress;
+
+  /// No description provided for @formAddressRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the address'**
+  String get formAddressRequired;
 
   /// No description provided for @formFieldDescription.
   ///
   /// In en, this message translates to:
-  /// **'Description (optional)'**
+  /// **'Description'**
   String get formFieldDescription;
+
+  /// No description provided for @formDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the description'**
+  String get formDescriptionRequired;
 
   /// No description provided for @formFieldAmenities.
   ///
@@ -1985,8 +2045,14 @@ abstract class AppLocalizations {
   /// No description provided for @formFieldFloors.
   ///
   /// In en, this message translates to:
-  /// **'Number of floors (optional)'**
+  /// **'Number of floors'**
   String get formFieldFloors;
+
+  /// No description provided for @formFloorsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the number of floors'**
+  String get formFloorsRequired;
 
   /// No description provided for @formFieldFloorNumber.
   ///
@@ -2017,6 +2083,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minimum lease term'**
   String get formFieldMinimumLease;
+
+  /// No description provided for @formMinimumLeaseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the minimum lease term'**
+  String get formMinimumLeaseRequired;
 
   /// No description provided for @formFieldAnnualRent.
   ///
@@ -2053,6 +2125,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Security deposit (months)'**
   String get formFieldSecurityDeposit;
+
+  /// No description provided for @formSecurityDepositRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the security deposit in months'**
+  String get formSecurityDepositRequired;
 
   /// No description provided for @formPhotoAdd.
   ///

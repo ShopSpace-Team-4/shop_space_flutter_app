@@ -6,14 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
-import '../../repository/auth_repository.dart';
 import '../cubits/otp_cubit.dart';
 import '../widgets/otp_input.dart';
 
@@ -39,13 +37,23 @@ class _OtpScreenState extends State<OtpScreen> {
   Timer? _countdownTimer;
   int _secondsRemaining = 0;
   bool _showSuccess = false;
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
     _email = (widget.email ?? '').trim();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    // Skipped when the route carries no email (the fallback UI is shown).
     if (_email.isNotEmpty) {
-      _cubit = OtpCubit(repository: getIt<AuthRepository>(), email: _email);
+      _cubit = context.read<OtpCubit>();
     }
   }
 
@@ -53,7 +61,6 @@ class _OtpScreenState extends State<OtpScreen> {
   void dispose() {
     _countdownTimer?.cancel();
     _codeController.dispose();
-    _cubit?.close();
     super.dispose();
   }
 
@@ -91,14 +98,18 @@ class _OtpScreenState extends State<OtpScreen> {
     }
     if (_countdownTimer == null || !_countdownTimer!.isActive) {
       _secondsRemaining = remaining;
-      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         final int left = until.difference(DateTime.now()).inSeconds;
         if (!mounted) {
-          _countdownTimer?.cancel();
+          timer.cancel();
+          _countdownTimer = null;
           return;
         }
         setState(() => _secondsRemaining = left <= 0 ? 0 : left);
-        if (left <= 0) _countdownTimer!.cancel();
+        if (left <= 0) {
+          timer.cancel();
+          _countdownTimer = null;
+        }
       });
     }
   }
@@ -122,12 +133,12 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.authOtp)),
       body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: EdgeInsets.all(AppSpacing.xl.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg.h),
             Text(
               l10n.errorValidation,
               textAlign: TextAlign.center,
@@ -135,7 +146,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 color: AppColors.textSecondary,
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl.h),
             FilledButton(
               onPressed: () => context.go('/login'),
               child: Text(l10n.authBackToLogin),
@@ -164,7 +175,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _buildHeader(l10n),
-                      const SizedBox(height: AppSpacing.xxl),
+                      SizedBox(height: AppSpacing.xxl.h),
                       _buildSuccess(l10n),
                     ],
                   );
@@ -223,13 +234,13 @@ class _OtpScreenState extends State<OtpScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(Icons.check_circle_outline, size: 48.sp, color: AppColors.success),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         Text(
           l10n.authOtpSuccess,
           textAlign: TextAlign.center,
           style: AppTypography.heading4.copyWith(fontSize: 20.sp),
         ),
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         FilledButton(
           onPressed: () => context.go('/login'),
           child: Text(l10n.authLoginSubmit),
@@ -251,9 +262,9 @@ class _OtpScreenState extends State<OtpScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildHeader(l10n),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         _buildEmailImage(),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         Text(
           l10n.authOtpEnterCode,
           textAlign: TextAlign.center,
@@ -262,7 +273,7 @@ class _OtpScreenState extends State<OtpScreen> {
             color: AppColors.textPrimary,
           ),
         ),
-        const SizedBox(height: AppSpacing.xs),
+        SizedBox(height: AppSpacing.xs.h),
         Text(
           l10n.authOtpSubtitle(_email),
           textAlign: TextAlign.center,
@@ -271,9 +282,9 @@ class _OtpScreenState extends State<OtpScreen> {
             color: AppColors.textMuted,
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         _buildResendRow(l10n, state, coolingDown, locked),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         OtpInput(
           controller: _codeController,
           semanticsLabel: l10n.authOtpFieldSemanticLabel,
@@ -283,10 +294,10 @@ class _OtpScreenState extends State<OtpScreen> {
             if (canVerify) _verify();
           },
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md.h),
         _buildHint(l10n),
         if (locked) ...[
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md.h),
           Text(
             l10n.authOtpLocked,
             textAlign: TextAlign.center,
@@ -296,7 +307,7 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
           ),
         ] else if (state.attemptsRemaining < OtpCubit.maxAttempts) ...[
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md.h),
           Text(
             l10n.authOtpAttemptsRemaining(state.attemptsRemaining),
             textAlign: TextAlign.center,
@@ -307,7 +318,7 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
         ],
         if (state.failure != null && !locked) ...[
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md.h),
           Text(
             failureMessage(l10n, state.failure!),
             textAlign: TextAlign.center,
@@ -317,7 +328,7 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
           ),
         ],
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         _buildVerifyButton(l10n, state, canVerify),
       ],
     );
@@ -333,7 +344,7 @@ class _OtpScreenState extends State<OtpScreen> {
           shape: BoxShape.circle,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg.w),
           child: Image.asset('assets/pngs/gmail.png', fit: BoxFit.contain),
         ),
       ),
@@ -384,13 +395,13 @@ class _OtpScreenState extends State<OtpScreen> {
 
   Widget _buildHint(AppLocalizations l10n) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.md.h,
       ),
       decoration: BoxDecoration(
         color: AppColors.successContainer,
-        borderRadius: BorderRadius.circular(AppRadius.medium),
+        borderRadius: BorderRadius.circular(AppRadius.medium.r),
       ),
       child: Row(
         children: [
@@ -399,7 +410,7 @@ class _OtpScreenState extends State<OtpScreen> {
             size: 18.sp,
             color: AppColors.successOnContainer,
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm.w),
           Expanded(
             child: Text(
               l10n.authOtpEmailHint,

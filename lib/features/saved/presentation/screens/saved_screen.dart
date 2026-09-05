@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/errors/failure_messages.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -14,7 +13,6 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loading_view.dart';
 import '../../data/models/saved_listing.dart';
-import '../../repository/saved_listings_repository.dart';
 import '../cubits/saved_listings_cubit.dart';
 import '../widgets/saved_listing_card.dart';
 
@@ -47,16 +45,8 @@ class _SavedScreenState extends State<SavedScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = SavedListingsCubit(
-      savedListingsRepository: getIt<SavedListingsRepository>(),
-    );
-    _cubit.load();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<SavedListingsCubit>();
   }
 
   @override
@@ -208,10 +198,10 @@ class _DecorativeHeart extends StatelessWidget {
       width: 44.r,
       height: 44.r,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.10),
+        color: AppColors.surface.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(AppRadius.card.r),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.15),
+          color: AppColors.surface.withValues(alpha: 0.15),
           width: 1,
         ),
       ),

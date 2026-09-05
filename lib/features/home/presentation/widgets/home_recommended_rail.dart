@@ -33,7 +33,7 @@ class HomeRecommendedRail extends StatelessWidget {
         SizedBox(height: AppSpacing.md.h),
         if (listings.isEmpty)
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
             child: Text(
               l10n.homeEmptyRecommended,
               style: AppTypography.bodySmall.copyWith(
@@ -46,7 +46,7 @@ class HomeRecommendedRail extends StatelessWidget {
             height: 208.h,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
               itemCount: listings.length,
               separatorBuilder: (context, index) => SizedBox(width: 7.w),
               itemBuilder: (context, index) {

@@ -38,8 +38,8 @@ class HomeAdvisorCard extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg.r,
-              vertical: AppSpacing.md.r,
+              horizontal: AppSpacing.lg.w,
+              vertical: AppSpacing.md.h,
             ),
             child: Row(
               children: [

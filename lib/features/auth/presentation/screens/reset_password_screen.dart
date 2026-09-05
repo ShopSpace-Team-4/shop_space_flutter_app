@@ -6,13 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../../core/di/injectable.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/validation/form_validators.dart';
-import '../../repository/auth_repository.dart';
 import '../cubits/otp_cubit.dart';
 import '../cubits/reset_password_cubit.dart';
 import '../widgets/labeled_input.dart';
@@ -61,12 +59,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _initialized = true;
     final AppLocalizations l10n = AppLocalizations.of(context);
     _validators = FormValidators(l10n);
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    // Skipped when the route carries no email (the fallback UI is shown).
     if (_email.isNotEmpty) {
-      _cubit = ResetPasswordCubit(
-        repository: getIt<AuthRepository>(),
-        l10n: l10n,
-        email: _email,
-      );
+      _cubit = context.read<ResetPasswordCubit>();
     }
   }
 
@@ -76,7 +72,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _otpController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _cubit?.close();
     super.dispose();
   }
 
@@ -114,14 +109,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     }
     if (_countdownTimer == null || !_countdownTimer!.isActive) {
       _secondsRemaining = remaining;
-      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         final int left = until.difference(DateTime.now()).inSeconds;
         if (!mounted) {
-          _countdownTimer?.cancel();
+          timer.cancel();
+          _countdownTimer = null;
           return;
         }
         setState(() => _secondsRemaining = left <= 0 ? 0 : left);
-        if (left <= 0) _countdownTimer!.cancel();
+        if (left <= 0) {
+          timer.cancel();
+          _countdownTimer = null;
+        }
       });
     }
   }

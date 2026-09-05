@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/di/injectable.dart';
-import '../../../listing/repository/listing_repository.dart';
-import '../../../saved/repository/saved_listings_repository.dart';
 import '../cubits/listing_detail_cubit.dart';
 import '../widgets/shop_detail_pane.dart';
 
@@ -37,17 +34,8 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
     super.didChangeDependencies();
     if (_initialized) return;
     _initialized = true;
-    _cubit = ListingDetailCubit(
-      listingRepository: getIt<ListingRepository>(),
-      savedListingsRepository: getIt<SavedListingsRepository>(),
-    );
-    _cubit.load(widget.listingId);
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
+    // Provided by the router's BlocProvider; it owns this cubit's lifecycle.
+    _cubit = context.read<ListingDetailCubit>();
   }
 
   void _goBack() {
